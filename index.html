@@ -1,331 +1,276 @@
-import React, { useState, useMemo } from 'react';
-import { Calendar, MapPin, Cloud, Copy, Check, Plus, Trash2, AlertTriangle, Globe, Thermometer, Info, Search } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="朝圣之路天气查询工具 - 为所有朝圣者提供精准的天气预报服务，支持法国之路、葡萄牙之路、北方之路、原始之路等所有路线">
+    <meta name="keywords" content="朝圣之路,Camino de Santiago,天气预报,徒步,法国之路,葡萄牙之路">
+    <title>朝圣之路天气查询工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans SC', sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
+    <div id="app" class="p-4 md:p-8 max-w-7xl mx-auto"></div>
 
-const CaminoWeatherSystem = () => {
-  const [language, setLanguage] = useState('zh-CN');
-  const [unit, setUnit] = useState('metric');
-  const [days, setDays] = useState([{ date: '', location: '' }]);
-  const [weatherData, setWeatherData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeInput, setActiveInput] = useState(null);
-  const [showHistorical, setShowHistorical] = useState(false);
-  const [viewMode, setViewMode] = useState('cards'); // 'cards' or 'table'
+    <script>
+        // 应用状态
+        let state = {
+            language: 'zh-CN',
+            unit: 'metric',
+            days: [{ date: '', location: '' }],
+            weatherData: null,
+            loading: false,
+            copied: false,
+            searchQuery: '',
+            activeInput: null,
+            showHistorical: false,
+            viewMode: 'cards'
+        };
 
-  const caminoTowns = [
-    'Saint-Jean-Pied-de-Port', 'Roncesvalles', 'Zubiri', 'Pamplona', 'Puente la Reina', 
-    'Estella', 'Los Arcos', 'Logroño', 'Nájera', 'Santo Domingo de la Calzada',
-    'Belorado', 'Ages', 'Atapuerca', 'Burgos', 'Hornillos del Camino', 'Castrojeriz',
-    'Frómista', 'Carrión de los Condes', 'Sahagún', 'El Burgo Ranero', 'Mansilla de las Mulas',
-    'León', 'San Martín del Camino', 'Astorga', 'Rabanal del Camino', 'Foncebadón',
-    'Ponferrada', 'Villafranca del Bierzo', 'O Cebreiro', 'Triacastela', 'Sarria',
-    'Portomarín', 'Palas de Rei', 'Arzua', 'O Pedrouzo', 'Santiago de Compostela',
-    'Porto', 'Vilarinho', 'Barcelos', 'Ponte de Lima', 'Valença', 'Tui',
-    'Redondela', 'Pontevedra', 'Padrón', 'Irún', 'San Sebastián', 'Bilbao',
-    'Santander', 'Llanes', 'Ribadesella', 'Avilés', 'Oviedo', 'Lugo',
-    'Finisterre', 'Muxía'
-  ];
+        // 城镇数据库
+        const caminoTowns = [
+            'Saint-Jean-Pied-de-Port', 'Roncesvalles', 'Zubiri', 'Pamplona', 'Puente la Reina',
+            'Estella', 'Los Arcos', 'Logroño', 'Nájera', 'Santo Domingo de la Calzada',
+            'Belorado', 'Ages', 'Atapuerca', 'Burgos', 'Hornillos del Camino', 'Castrojeriz',
+            'Frómista', 'Carrión de los Condes', 'Sahagún', 'El Burgo Ranero', 'Mansilla de las Mulas',
+            'León', 'San Martín del Camino', 'Astorga', 'Rabanal del Camino', 'Foncebadón',
+            'Ponferrada', 'Villafranca del Bierzo', 'O Cebreiro', 'Triacastela', 'Sarria',
+            'Portomarín', 'Palas de Rei', 'Arzua', 'O Pedrouzo', 'Santiago de Compostela',
+            'Porto', 'Vilarinho', 'Barcelos', 'Ponte de Lima', 'Valença', 'Tui',
+            'Redondela', 'Pontevedra', 'Padrón', 'Irún', 'San Sebastián', 'Bilbao',
+            'Santander', 'Llanes', 'Ribadesella', 'Avilés', 'Oviedo', 'Lugo',
+            'Finisterre', 'Muxía', 'Zarautz', 'Deba', 'Markina-Xemein', 'Castro Urdiales',
+            'Laredo', 'Santillana del Mar', 'Comillas', 'San Vicente de la Barquera',
+            'Gijón', 'Cudillero', 'Luarca', 'Ribadeo', 'Lourenzá', 'Mondoñedo', 'Vilalba',
+            'Grado', 'Salas', 'Tineo', 'Pola de Allande', 'Berducedo', 'Grandas de Salime',
+            'A Fonsagrada', 'O Cádavo', 'San Romao', 'Melide'
+        ];
 
-  const filteredTowns = useMemo(() => {
-    if (!searchQuery || activeInput === null) return [];
-    return caminoTowns
-      .filter(town => town.toLowerCase().startsWith(searchQuery.toLowerCase()))
-      .slice(0, 8);
-  }, [searchQuery, activeInput]);
+        // 工具函数
+        const convertTemp = (celsius) => {
+            if (state.unit === 'imperial') return Math.round(celsius * 9 / 5 + 32);
+            return celsius;
+        };
 
-  const convertTemp = (celsius) => {
-    if (unit === 'imperial') return Math.round(celsius * 9 / 5 + 32);
-    return celsius;
-  };
+        const getTempUnit = () => state.unit === 'metric' ? '°C' : '°F';
 
-  const tempUnit = unit === 'metric' ? '°C' : '°F';
+        const getFilteredTowns = () => {
+            if (!state.searchQuery || state.activeInput === null) return [];
+            return caminoTowns
+                .filter(town => town.toLowerCase().startsWith(state.searchQuery.toLowerCase()))
+                .slice(0, 8);
+        };
 
-  const updateDay = (index, field, value) => {
-    const newDays = [...days];
-    newDays[index][field] = value;
-    setDays(newDays);
-    if (field === 'location') {
-      setSearchQuery(value);
-      setActiveInput(index);
-    }
-    setWeatherData(null);
-  };
+        const autoFillDates = () => {
+            const today = new Date();
+            state.days = state.days.map((day, i) => {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                return { ...day, date: date.toISOString().split('T')[0] };
+            });
+            render();
+        };
 
-  const selectTown = (index, town) => {
-    const newDays = [...days];
-    newDays[index].location = town;
-    setDays(newDays);
-    setSearchQuery('');
-    setActiveInput(null);
-  };
+        const fetchWeather = async () => {
+            state.loading = true;
+            render();
 
-  const addDay = () => setDays([...days, { date: '', location: '' }]);
+            // 模拟获取天气数据
+            const mockWeather = state.days.map((day, index) => {
+                const hasAlert = index === 2 || index === 4;
+                return {
+                    date: day.date,
+                    location: day.location,
+                    condition: ['多云', '小雨', '暴雨', '晴', '大风', '小雨', '晴', '阴'][index % 8],
+                    dayTemp: convertTemp([12, 11, 8, 15, 10, 11, 13, 14][index % 8]),
+                    nightTemp: convertTemp([6, 5, 3, 8, 4, 5, 7, 8][index % 8]),
+                    dayFeels: convertTemp([10, 9, 5, 13, 8, 9, 11, 12][index % 8]),
+                    nightFeels: convertTemp([4, 3, 1, 6, 2, 3, 5, 6][index % 8]),
+                    rainChance: [30, 60, 90, 10, 40, 70, 20, 15][index % 8],
+                    sunrise: '08:45',
+                    sunset: '18:15',
+                    alert: hasAlert ? (index === 2 ? '暴雨预警 (AEMET)' : '大风预警 (AEMET)') : null,
+                    historical: {
+                        avgDayTemp: convertTemp(13),
+                        avgNightTemp: convertTemp(6),
+                        avgRain: 45
+                    }
+                };
+            });
 
-  const removeDay = (index) => {
-    if (days.length > 1) setDays(days.filter((_, i) => i !== index));
-  };
+            setTimeout(() => {
+                state.loading = false;
+                state.weatherData = mockWeather;
+                render();
+            }, 1500);
+        };
 
-  const autoFillDates = () => {
-    // 查找第一个已填写日期的索引
-    let startIndex = -1;
-    let startDate = null;
-    
-    for (let i = 0; i < days.length; i++) {
-      if (days[i].date) {
-        startIndex = i;
-        startDate = new Date(days[i].date);
-        break;
-      }
-    }
-    
-    // 如果没有找到已填写的日期，使用今天作为起始日期
-    if (startIndex === -1) {
-      startIndex = 0;
-      startDate = new Date();
-    }
-    
-    // 从起始日期开始填充所有日期
-    setDays(days.map((day, index) => {
-      const date = new Date(startDate);
-      const daysDiff = index - startIndex;
-      date.setDate(startDate.getDate() + daysDiff);
-      return { ...day, date: date.toISOString().split('T')[0] };
-    }));
-  };
-
-  const fetchWeather = async () => {
-    setLoading(true);
-    const mockWeather = days.map((day, index) => {
-      const hasAlert = index === 2 || index === 4;
-      return {
-        date: day.date,
-        location: day.location,
-        condition: ['多云', '小雨', '暴雨', '晴', '大风', '小雨', '晴', '阴'][index % 8],
-        dayTemp: convertTemp([12, 11, 8, 15, 10, 11, 13, 14][index % 8]),
-        nightTemp: convertTemp([6, 5, 3, 8, 4, 5, 7, 8][index % 8]),
-        dayFeels: convertTemp([10, 9, 5, 13, 8, 9, 11, 12][index % 8]),
-        nightFeels: convertTemp([4, 3, 1, 6, 2, 3, 5, 6][index % 8]),
-        rainChance: [30, 60, 90, 10, 40, 70, 20, 15][index % 8],
-        sunrise: '08:45',
-        sunset: '18:15',
-        alert: hasAlert ? (index === 2 ? '暴雨预警 (AEMET)' : '大风预警 (AEMET)') : null,
-        historical: {
-          avgDayTemp: convertTemp(13),
-          avgNightTemp: convertTemp(6),
-          avgRain: 45
-        }
-      };
-    });
-    setTimeout(() => {
-      setWeatherData(mockWeather);
-      setLoading(false);
-    }, 1500);
-  };
-
-  const generateTable = () => {
-    if (!weatherData) return '';
-    
-    // 精确计算字符显示宽度（中文=2，英文=1）
-    const getWidth = (str) => {
-      let w = 0;
-      for (let c of str) {
-        w += c.charCodeAt(0) > 127 ? 2 : 1;
-      }
-      return w;
-    };
-    
-    // 填充到指定宽度
-    const pad = (str, targetWidth) => {
-      const currentWidth = getWidth(str);
-      const spaces = Math.max(0, targetWidth - currentWidth);
-      return str + ' '.repeat(spaces);
-    };
-    
-    // 居中对齐
-    const center = (str, targetWidth) => {
-      const currentWidth = getWidth(str);
-      const totalSpaces = Math.max(0, targetWidth - currentWidth);
-      const leftSpaces = Math.floor(totalSpaces / 2);
-      const rightSpaces = totalSpaces - leftSpaces;
-      return ' '.repeat(leftSpaces) + str + ' '.repeat(rightSpaces);
-    };
-    
-    let table = '';
-    table += '╔═══════════╦══════════════════════╦══════════╦══════════╦══════════╦══════════╦══════════╦════════╦════════════╗\n';
-    table += '║ ' + center('日期', 9) + ' ║ ' + center('地点', 20) + ' ║ ' + center('天气', 8) + ' ║ ' + center('日间温度', 8) + ' ║ ' + center('夜间温度', 8) + ' ║ ' + center('日间体感', 8) + ' ║ ' + center('夜间体感', 8) + ' ║ ' + center('降雨率', 6) + ' ║ ' + center('日出日落', 10) + ' ║\n';
-    table += '╠═══════════╬══════════════════════╬══════════╬══════════╬══════════╬══════════╬══════════╬════════╬════════════╣\n';
-    
-    weatherData.forEach((day, i) => {
-      const weekDay = ['日', '一', '二', '三', '四', '五', '六'][new Date(day.date).getDay()];
-      const dateStr = day.date.substring(5) + '周' + weekDay;
-      
-      // 第一行：主要数据
-      table += '║ ' + center(dateStr, 9) + ' ║ ';
-      table += pad(day.location, 20) + ' ║ ';
-      table += center(day.condition, 8) + ' ║ ';
-      table += center(day.dayTemp + tempUnit, 8) + ' ║ ';
-      table += center(day.nightTemp + tempUnit, 8) + ' ║ ';
-      table += center(day.dayFeels + tempUnit, 8) + ' ║ ';
-      table += center(day.nightFeels + tempUnit, 8) + ' ║ ';
-      table += center(day.rainChance + '%', 6) + ' ║ ';
-      table += center(day.sunrise, 10) + ' ║\n';
-      
-      // 第二行：日落时间
-      table += '║ ' + ' '.repeat(9) + ' ║ ';
-      table += ' '.repeat(20) + ' ║ ';
-      table += ' '.repeat(8) + ' ║ ';
-      table += ' '.repeat(8) + ' ║ ';
-      table += ' '.repeat(8) + ' ║ ';
-      table += ' '.repeat(8) + ' ║ ';
-      table += ' '.repeat(8) + ' ║ ';
-      table += ' '.repeat(6) + ' ║ ';
-      table += center(day.sunset, 10) + ' ║\n';
-      
-      // 预警行
-      if (day.alert) {
-        const alertText = '⚠️ ' + day.alert;
-        table += '║ ' + ' '.repeat(9) + ' ║ ';
-        table += pad(alertText, 20) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(6) + ' ║ ';
-        table += ' '.repeat(10) + ' ║\n';
-      }
-      
-      // 历史数据行
-      if (showHistorical) {
-        const histText = '📊 历史: ' + day.historical.avgDayTemp + tempUnit + '/' + day.historical.avgNightTemp + tempUnit;
-        table += '║ ' + ' '.repeat(9) + ' ║ ';
-        table += pad(histText, 20) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(8) + ' ║ ';
-        table += ' '.repeat(6) + ' ║ ';
-        table += ' '.repeat(10) + ' ║\n';
-      }
-      
-      // 分隔线
-      if (i < weatherData.length - 1) {
-        table += '╠═══════════╬══════════════════════╬══════════╬══════════╬══════════╬══════════╬══════════╬════════╬════════════╣\n';
-      }
-    });
-    
-    table += '╚═══════════╩══════════════════════╩══════════╩══════════╩══════════╩══════════╩══════════╩════════╩════════════╝\n';
-    
-    // 预警汇总
-    const alerts = weatherData.filter(d => d.alert);
-    if (alerts.length > 0) {
-      table += '\n⚠️  极端天气预警：\n';
-      alerts.forEach(d => {
-        table += '  • ' + d.date + ' ' + d.location + ': ' + d.alert + '\n';
-      });
-    }
-    
-    // 温馨提示
-    table += '\n💡 温馨提示：\n';
-    table += '  • 日夜温差较大，请携带足够的保暖衣物分层穿着\n';
-    table += '  • 根据降雨概率准备雨具，保护好背包内物品防水\n';
-    table += '  • 体感温度受风速和湿度影响，山区实际可能更冷\n';
-    table += '  • 遇极端天气预警请调整行程，安全第一\n';
-    table += '\n📊 数据来源：AccuWeather + AEMET（西班牙国家气象局）\n';
-    
-    return table;
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(generateTable()).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-8">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <Cloud className="w-12 h-12 text-amber-600" />
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-800">朝圣之路天气查询</h1>
-              </div>
-              <p className="text-lg text-gray-600">
-                为所有朝圣者提供精准的天气预报服务 • 支持所有路线 • 历史数据参考
-              </p>
-            </div>
+        const generateTable = () => {
+            if (!state.weatherData) return '';
             
-            <div className="flex gap-3">
-              <select 
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none"
-              >
-                <option value="zh-CN">🇨🇳 简体中文</option>
-                <option value="zh-TW">🇹🇼 繁體中文</option>
-                <option value="en">🇬🇧 English</option>
-                <option value="es">🇪🇸 Español</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="de">🇩🇪 Deutsch</option>
-                <option value="pt">🇵🇹 Português</option>
-                <option value="ko">🇰🇷 한국어</option>
-              </select>
-              
-              <button
-                onClick={() => setUnit(unit === 'metric' ? 'imperial' : 'metric')}
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2"
-              >
-                <Thermometer className="w-5 h-5" />
-                {unit === 'metric' ? '°C' : '°F'}
-              </button>
-            </div>
-          </div>
-
-          {/* 预设路线选择 */}
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-              <MapPin className="w-6 h-6 text-amber-600" />
-              选择路线
-            </h2>
+            const getWidth = (str) => {
+                let w = 0;
+                for (let c of str) w += c.charCodeAt(0) > 127 ? 2 : 1;
+                return w;
+            };
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <button
-                onClick={() => {
-                  setDays([{ date: '', location: '' }]);
-                  setWeatherData(null);
-                }}
-                className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left"
-              >
-                <div className="font-semibold text-gray-800">✨ 自定义路线</div>
-                <div className="text-sm text-gray-600 mt-1">创建你的专属路线</div>
-              </button>
-              
-              <button
-                onClick={() => {
-                  setDays([
+            const pad = (str, targetWidth) => {
+                const currentWidth = getWidth(str);
+                return str + ' '.repeat(Math.max(0, targetWidth - currentWidth));
+            };
+            
+            const center = (str, targetWidth) => {
+                const currentWidth = getWidth(str);
+                const totalSpaces = Math.max(0, targetWidth - currentWidth);
+                const leftSpaces = Math.floor(totalSpaces / 2);
+                const rightSpaces = totalSpaces - leftSpaces;
+                return ' '.repeat(leftSpaces) + str + ' '.repeat(rightSpaces);
+            };
+            
+            const tempUnit = getTempUnit();
+            let table = '';
+            table += '╔═══════════╦══════════════════════╦══════════╦══════════╦══════════╦══════════╦══════════╦════════╦════════════╗\n';
+            table += '║ ' + center('日期', 9) + ' ║ ' + center('地点', 20) + ' ║ ' + center('天气', 8) + ' ║ ' + center('日间温度', 8) + ' ║ ' + center('夜间温度', 8) + ' ║ ' + center('日间体感', 8) + ' ║ ' + center('夜间体感', 8) + ' ║ ' + center('降雨率', 6) + ' ║ ' + center('日出日落', 10) + ' ║\n';
+            table += '╠═══════════╬══════════════════════╬══════════╬══════════╬══════════╬══════════╬══════════╬════════╬════════════╣\n';
+            
+            state.weatherData.forEach((day, i) => {
+                const weekDay = ['日', '一', '二', '三', '四', '五', '六'][new Date(day.date).getDay()];
+                const dateStr = day.date.substring(5) + '周' + weekDay;
+                
+                table += '║ ' + center(dateStr, 9) + ' ║ ';
+                table += pad(day.location, 20) + ' ║ ';
+                table += center(day.condition, 8) + ' ║ ';
+                table += center(day.dayTemp + tempUnit, 8) + ' ║ ';
+                table += center(day.nightTemp + tempUnit, 8) + ' ║ ';
+                table += center(day.dayFeels + tempUnit, 8) + ' ║ ';
+                table += center(day.nightFeels + tempUnit, 8) + ' ║ ';
+                table += center(day.rainChance + '%', 6) + ' ║ ';
+                table += center(day.sunrise, 10) + ' ║\n';
+                
+                table += '║ ' + ' '.repeat(9) + ' ║ ' + ' '.repeat(20) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(6) + ' ║ ' + center(day.sunset, 10) + ' ║\n';
+                
+                if (day.alert) {
+                    const alertText = '⚠️ ' + day.alert;
+                    table += '║ ' + ' '.repeat(9) + ' ║ ' + pad(alertText, 20) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(6) + ' ║ ' + ' '.repeat(10) + ' ║\n';
+                }
+                
+                if (state.showHistorical) {
+                    const histText = '📊 历史: ' + day.historical.avgDayTemp + tempUnit + '/' + day.historical.avgNightTemp + tempUnit;
+                    table += '║ ' + ' '.repeat(9) + ' ║ ' + pad(histText, 20) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(8) + ' ║ ' + ' '.repeat(6) + ' ║ ' + ' '.repeat(10) + ' ║\n';
+                }
+                
+                if (i < state.weatherData.length - 1) {
+                    table += '╠═══════════╬══════════════════════╬══════════╬══════════╬══════════╬══════════╬══════════╬════════╬════════════╣\n';
+                }
+            });
+            
+            table += '╚═══════════╩══════════════════════╩══════════╩══════════╩══════════╩══════════╩══════════╩════════╩════════════╝\n';
+            
+            const alerts = state.weatherData.filter(d => d.alert);
+            if (alerts.length > 0) {
+                table += '\n⚠️  极端天气预警：\n';
+                alerts.forEach(d => {
+                    table += '  • ' + d.date + ' ' + d.location + ': ' + d.alert + '\n';
+                });
+            }
+            
+            table += '\n💡 温馨提示：\n';
+            table += '  • 日夜温差较大，请携带足够的保暖衣物分层穿着\n';
+            table += '  • 根据降雨概率准备雨具，保护好背包内物品防水\n';
+            table += '  • 体感温度受风速和湿度影响，山区实际可能更冷\n';
+            table += '  • 遇极端天气预警请调整行程，安全第一\n';
+            table += '\n📊 数据来源：AccuWeather + AEMET（西班牙国家气象局）\n';
+            
+            return table;
+        };
+
+        const copyToClipboard = () => {
+            const table = generateTable();
+            navigator.clipboard.writeText(table).then(() => {
+                state.copied = true;
+                render();
+                setTimeout(() => {
+                    state.copied = false;
+                    render();
+                }, 2000);
+            });
+        };
+
+        // 渲染函数
+        const render = () => {
+            const app = document.getElementById('app');
+            const tempUnit = getTempUnit();
+            
+            app.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <svg class="w-12 h-12 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                <h1 class="text-4xl md:text-5xl font-bold text-gray-800">朝圣之路天气查询</h1>
+                            </div>
+                            <p class="text-lg text-gray-600">为所有朝圣者提供精准的天气预报服务 • 支持所有路线 • 历史数据参考</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="toggleUnit()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                                ${tempUnit}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">选择路线</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            ${renderRouteButtons()}
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-gray-800">行程安排（共 ${state.days.length} 天）</h2>
+                            <button onclick="autoFillDates()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">自动填充日期</button>
+                        </div>
+                        <div class="space-y-3">
+                            ${state.days.map((day, index) => renderDayInput(day, index)).join('')}
+                        </div>
+                        <button onclick="addDay()" class="w-full mt-4 py-3 border-2 border-dashed border-gray-300 hover:border-amber-500 rounded-lg text-gray-600 hover:text-amber-600 transition-colors">+ 添加一天</button>
+                    </div>
+
+                    <div class="mt-6 flex gap-3">
+                        <button onclick="fetchWeather()" ${state.loading || state.days.filter(d => d.date && d.location).length === 0 ? 'disabled' : ''} class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 disabled:from-gray-300 disabled:to-gray-400 text-white font-semibold py-4 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2">
+                            ${state.loading ? '<div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div> 正在查询天气...' : '☁️ 查询天气预报'}
+                        </button>
+                        <button onclick="toggleHistorical()" class="px-6 py-4 rounded-xl transition-all font-semibold ${state.showHistorical ? 'bg-purple-500 text-white' : 'bg-white border-2 border-purple-500 text-purple-500'}">
+                            ℹ️ 历史数据
+                        </button>
+                    </div>
+                </div>
+
+                ${state.weatherData ? renderWeatherResults() : ''}
+
+                <div class="mt-8 text-center text-gray-600 text-sm">
+                    <p>本工具为朝圣之路徒步者提供便捷的天气查询服务</p>
+                    <p class="mt-2">数据来源：AccuWeather + AEMET（西班牙气象局）</p>
+                </div>
+            `;
+        };
+
+        const renderRouteButtons = () => {
+            const routes = [
+                { name: '✨ 自定义路线', desc: '创建你的专属路线', days: [{ date: '', location: '' }] },
+                { name: '🇫🇷 法国之路 115km', desc: 'Sarria → Santiago (6天)', days: [
                     { date: '', location: 'Sarria' },
                     { date: '', location: 'Portomarín' },
                     { date: '', location: 'Palas de Rei' },
                     { date: '', location: 'Arzua' },
                     { date: '', location: 'O Pedrouzo' },
                     { date: '', location: 'Santiago de Compostela' }
-                  ]);
-                  setWeatherData(null);
-                }}
-                className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left"
-              >
-                <div className="font-semibold text-gray-800">🇫🇷 法国之路 115km</div>
-                <div className="text-sm text-gray-600 mt-1">Sarria → Santiago (6天)</div>
-              </button>
-              
-              <button
-                onClick={() => {
-                  setDays([
+                ]},
+                { name: '🇫🇷 法国之路（全程）', desc: 'SJPP → Santiago (31天精简版)', days: [
                     { date: '', location: 'Saint-Jean-Pied-de-Port' },
                     { date: '', location: 'Roncesvalles' },
                     { date: '', location: 'Zubiri' },
@@ -357,18 +302,8 @@ const CaminoWeatherSystem = () => {
                     { date: '', location: 'Arzua' },
                     { date: '', location: 'O Pedrouzo' },
                     { date: '', location: 'Santiago de Compostela' }
-                  ]);
-                  setWeatherData(null);
-                }}
-                className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left"
-              >
-                <div className="font-semibold text-gray-800">🇫🇷 法国之路（全程）</div>
-                <div className="text-sm text-gray-600 mt-1">SJPP → Santiago (31天精简版)</div>
-              </button>
-              
-              <button
-                onClick={() => {
-                  setDays([
+                ]},
+                { name: '🇵🇹 葡萄牙之路', desc: 'Porto → Santiago (9天)', days: [
                     { date: '', location: 'Porto' },
                     { date: '', location: 'Barcelos' },
                     { date: '', location: 'Ponte de Lima' },
@@ -378,18 +313,8 @@ const CaminoWeatherSystem = () => {
                     { date: '', location: 'Pontevedra' },
                     { date: '', location: 'Padrón' },
                     { date: '', location: 'Santiago de Compostela' }
-                  ]);
-                  setWeatherData(null);
-                }}
-                className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left"
-              >
-                <div className="font-semibold text-gray-800">🇵🇹 葡萄牙之路</div>
-                <div className="text-sm text-gray-600 mt-1">Porto → Santiago (9天)</div>
-              </button>
-              
-              <button
-                onClick={() => {
-                  setDays([
+                ]},
+                { name: '⛰️ 北方之路', desc: 'Irún → Santiago (24天精简版)', days: [
                     { date: '', location: 'Irún' },
                     { date: '', location: 'San Sebastián' },
                     { date: '', location: 'Zarautz' },
@@ -414,18 +339,8 @@ const CaminoWeatherSystem = () => {
                     { date: '', location: 'Vilalba' },
                     { date: '', location: 'Arzua' },
                     { date: '', location: 'Santiago de Compostela' }
-                  ]);
-                  setWeatherData(null);
-                }}
-                className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left"
-              >
-                <div className="font-semibold text-gray-800">⛰️ 北方之路</div>
-                <div className="text-sm text-gray-600 mt-1">Irún → Santiago (24天精简版)</div>
-              </button>
-              
-              <button
-                onClick={() => {
-                  setDays([
+                ]},
+                { name: '🏔️ 原始之路', desc: 'Oviedo → Santiago (14天)', days: [
                     { date: '', location: 'Oviedo' },
                     { date: '', location: 'Grado' },
                     { date: '', location: 'Salas' },
@@ -440,282 +355,355 @@ const CaminoWeatherSystem = () => {
                     { date: '', location: 'Melide' },
                     { date: '', location: 'Arzua' },
                     { date: '', location: 'Santiago de Compostela' }
-                  ]);
-                  setWeatherData(null);
-                }}
-                className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left"
-              >
-                <div className="font-semibold text-gray-800">🏔️ 原始之路</div>
-                <div className="text-sm text-gray-600 mt-1">Oviedo → Santiago (14天)</div>
-              </button>
-            </div>
-          </div>
+                ]}
+            ];
 
-          <div className="bg-gray-50 rounded-xl p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">行程安排（共 {days.length} 天）</h2>
-              <button
-                onClick={autoFillDates}
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
-              >
-                自动填充日期
-              </button>
-            </div>
-            
-            <div className="space-y-3">
-              {days.map((day, index) => (
-                <div key={index} className="flex gap-3 items-start bg-white p-3 rounded-lg">
-                  <span className="text-amber-600 font-semibold w-12 pt-2">D{index + 1}</span>
-                  <input
-                    type="date"
-                    value={day.date}
-                    onChange={(e) => updateDay(index, 'date', e.target.value)}
-                    className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none"
-                  />
-                  <div className="flex-1 relative">
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={day.location}
-                        onChange={(e) => updateDay(index, 'location', e.target.value)}
-                        onFocus={() => setActiveInput(index)}
-                        onBlur={() => setTimeout(() => setActiveInput(null), 200)}
-                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none pr-10"
-                        placeholder="输入城镇名称（如：S 开头的城市）"
-                      />
-                      <Search className="absolute right-3 top-2.5 w-5 h-5 text-gray-400" />
-                    </div>
-                    {activeInput === index && filteredTowns.length > 0 && (
-                      <div className="absolute z-50 w-full mt-1 bg-white border-2 border-amber-300 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
-                        {filteredTowns.map((town, i) => (
-                          <div
-                            key={i}
-                            className="px-4 py-3 hover:bg-amber-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0"
-                            onMouseDown={() => selectTown(index, town)}
-                          >
-                            <MapPin className="w-4 h-4 inline mr-2 text-amber-600" />
-                            <span className="font-medium">{town}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <button
-                    onClick={() => removeDay(index)}
-                    disabled={days.length === 1}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg disabled:opacity-30 transition-colors mt-0.5"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <button
-              onClick={addDay}
-              className="w-full mt-4 py-3 border-2 border-dashed border-gray-300 hover:border-amber-500 rounded-lg text-gray-600 hover:text-amber-600 transition-colors flex items-center justify-center gap-2"
-            >
-              <Plus className="w-5 h-5" />
-              添加一天
-            </button>
-          </div>
-
-          <div className="mt-6 flex gap-3">
-            <button
-              onClick={fetchWeather}
-              disabled={loading || days.filter(d => d.date && d.location).length === 0}
-              className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 disabled:from-gray-300 disabled:to-gray-400 text-white font-semibold py-4 px-6 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                <>
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
-                  正在查询天气...
-                </>
-              ) : (
-                <>
-                  <Cloud className="w-6 h-6" />
-                  查询天气预报
-                </>
-              )}
-            </button>
-            
-            <button
-              onClick={() => setShowHistorical(!showHistorical)}
-              className={'px-6 py-4 rounded-xl transition-all font-semibold ' + (showHistorical ? 'bg-purple-500 text-white' : 'bg-white border-2 border-purple-500 text-purple-500')}
-            >
-              <Info className="w-6 h-6 inline mr-2" />
-              历史数据
-            </button>
-          </div>
-        </div>
-
-        {weatherData && (
-          <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-              <h2 className="text-3xl font-bold text-gray-800">天气预报</h2>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')}
-                  className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors"
-                >
-                  {viewMode === 'cards' ? '📋 表格视图' : '🎴 卡片视图'}
+            return routes.map((route, i) => `
+                <button onclick="loadRoute(${i})" class="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                    <div class="font-semibold text-gray-800">${route.name}</div>
+                    <div class="text-sm text-gray-600 mt-1">${route.desc}</div>
                 </button>
-                <button
-                  onClick={copyToClipboard}
-                  className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-all shadow-lg"
-                >
-                  {copied ? (
-                    <><Check className="w-6 h-6" />已复制</>
-                  ) : (
-                    <><Copy className="w-6 h-6" />复制表格</>
-                  )}
-                </button>
-              </div>
-            </div>
-            
-            {weatherData.some(d => d.alert) && (
-              <div className="mb-6 bg-red-50 border-2 border-red-300 rounded-xl p-4">
-                <div className="flex items-center gap-2 text-red-800 font-semibold mb-2">
-                  <AlertTriangle className="w-6 h-6" />
-                  极端天气预警
+            `).join('');
+        };
+
+        const renderDayInput = (day, index) => `
+            <div class="flex gap-3 items-start bg-white p-3 rounded-lg">
+                <span class="text-amber-600 font-semibold w-12 pt-2">D${index + 1}</span>
+                <input type="date" value="${day.date}" onchange="updateDay(${index}, 'date', this.value)" class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                <div class="flex-1 relative">
+                    <input type="text" value="${day.location}" onfocus="setActiveInput(${index})" onblur="clearActiveInput()" oninput="updateDay(${index}, 'location', this.value)" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:outline-none pr-10" placeholder="输入城镇名称（如：S 开头的城市）">
+                    <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    ${state.activeInput === index && getFilteredTowns().length > 0 ? `
+                        <div class="absolute z-50 w-full mt-1 bg-white border-2 border-amber-300 rounded-lg shadow-2xl max-h-64 overflow-y-auto">
+                            ${getFilteredTowns().map(town => `
+                                <div onmousedown="selectTown(${index}, '${town}')" class="px-4 py-3 hover:bg-amber-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0">
+                                    <svg class="w-4 h-4 inline mr-2 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <span class="font-medium">${town}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
                 </div>
-                {weatherData.filter(d => d.alert).map((d, i) => (
-                  <div key={i} className="text-red-700 ml-8">
-                    • {d.date} {d.location}: {d.alert}
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            {viewMode === 'cards' ? (
-              <div className="space-y-4">
-                {weatherData.map((day, index) => {
-                  const weekDay = ['日', '一', '二', '三', '四', '五', '六'][new Date(day.date).getDay()];
-                  const isRainy = day.rainChance > 60;
-                  const isCold = day.nightTemp < 5;
-                  
-                  return (
-                    <div 
-                      key={index} 
-                      className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border-2 border-gray-100 hover:border-amber-300"
-                    >
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        {/* 左侧：日期和地点 */}
-                        <div className="flex-shrink-0">
-                          <div className="flex items-center gap-3 mb-2">
-                            <div className="bg-amber-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg">
-                              D{index + 1}
+                <button onclick="removeDay(${index})" ${state.days.length === 1 ? 'disabled' : ''} class="p-2 text-red-500 hover:bg-red-50 rounded-lg disabled:opacity-30 transition-colors mt-0.5">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </button>
+            </div>
+        `;
+
+        const renderWeatherResults = () => {
+            const tempUnit = getTempUnit();
+            const alerts = state.weatherData.filter(d => d.alert);
+
+            if (state.viewMode === 'cards') {
+                return `
+                    <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-10">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                            <h2 class="text-3xl font-bold text-gray-800">天气预报</h2>
+                            <div class="flex gap-3">
+                                <button onclick="toggleViewMode()" class="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors">📋 表格视图</button>
+                                <button onclick="copyToClipboard()" class="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-all shadow-lg">
+                                    ${state.copied ? '✓ 已复制' : '📋 复制表格'}
+                                </button>
                             </div>
-                            <div>
-                              <div className="text-2xl font-bold text-gray-800">{day.location}</div>
-                              <div className="text-sm text-gray-600">{day.date.substring(5)} 星期{weekDay}</div>
-                            </div>
-                          </div>
                         </div>
                         
-                        {/* 中间：天气状况 */}
-                        <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
-                          <div className="bg-orange-50 rounded-xl p-3 text-center">
-                            <div className="text-3xl mb-1">{day.condition.includes('雨') ? '🌧️' : day.condition.includes('晴') ? '☀️' : day.condition.includes('风') ? '💨' : '☁️'}</div>
-                            <div className="text-sm text-gray-600">天气</div>
-                            <div className="font-semibold text-gray-800">{day.condition}</div>
-                          </div>
-                          
-                          <div className="bg-red-50 rounded-xl p-3 text-center">
-                            <div className="text-3xl mb-1">🌡️</div>
-                            <div className="text-sm text-gray-600">日间温度</div>
-                            <div className="font-bold text-xl text-red-600">{day.dayTemp}{tempUnit}</div>
-                            <div className="text-xs text-gray-500">体感 {day.dayFeels}{tempUnit}</div>
-                          </div>
-                          
-                          <div className="bg-blue-50 rounded-xl p-3 text-center">
-                            <div className="text-3xl mb-1">🌙</div>
-                            <div className="text-sm text-gray-600">夜间温度</div>
-                            <div className="font-bold text-xl text-blue-600">{day.nightTemp}{tempUnit}</div>
-                            <div className="text-xs text-gray-500">体感 {day.nightFeels}{tempUnit}</div>
-                          </div>
-                          
-                          <div className="bg-cyan-50 rounded-xl p-3 text-center">
-                            <div className="text-3xl mb-1">💧</div>
-                            <div className="text-sm text-gray-600">降雨概率</div>
-                            <div className="font-bold text-xl text-cyan-600">{day.rainChance}%</div>
-                          </div>
+                        ${alerts.length > 0 ? `
+                            <div class="mb-6 bg-red-50 border-2 border-red-300 rounded-xl p-4">
+                                <div class="flex items-center gap-2 text-red-800 font-semibold mb-2">⚠️ 极端天气预警</div>
+                                ${alerts.map(d => `<div class="text-red-700 ml-8">• ${d.date} ${d.location}: ${d.alert}</div>`).join('')}
+                            </div>
+                        ` : ''}
+                        
+                        <div class="space-y-4">
+                            ${state.weatherData.map((day, index) => {
+                                const weekDay = ['日', '一', '二', '三', '四', '五', '六'][new Date(day.date).getDay()];
+                                const isRainy = day.rainChance > 60;
+                                const isCold = day.nightTemp < 5;
+                                const weatherIcon = day.condition.includes('雨') ? '🌧️' : day.condition.includes('晴') ? '☀️' : day.condition.includes('风') ? '💨' : '☁️';
+                                
+                                return `
+                                    <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg hover:shadow-xl transition-all p-6 border-2 border-gray-100 hover:border-amber-300">
+                                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                            <div class="flex-shrink-0">
+                                                <div class="flex items-center gap-3 mb-2">
+                                                    <div class="bg-amber-500 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg">D${index + 1}</div>
+                                                    <div>
+                                                        <div class="text-2xl font-bold text-gray-800">${day.location}</div>
+                                                        <div class="text-sm text-gray-600">${day.date.substring(5)} 星期${weekDay}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                <div class="bg-orange-50 rounded-xl p-3 text-center">
+                                                    <div class="text-3xl mb-1">${weatherIcon}</div>
+                                                    <div class="text-sm text-gray-600">天气</div>
+                                                    <div class="font-semibold text-gray-800">${day.condition}</div>
+                                                </div>
+                                                
+                                                <div class="bg-red-50 rounded-xl p-3 text-center">
+                                                    <div class="text-3xl mb-1">🌡️</div>
+                                                    <div class="text-sm text-gray-600">日间温度</div>
+                                                    <div class="font-bold text-xl text-red-600">${day.dayTemp}${tempUnit}</div>
+                                                    <div class="text-xs text-gray-500">体感 ${day.dayFeels}${tempUnit}</div>
+                                                </div>
+                                                
+                                                <div class="bg-blue-50 rounded-xl p-3 text-center">
+                                                    <div class="text-3xl mb-1">🌙</div>
+                                                    <div class="text-sm text-gray-600">夜间温度</div>
+                                                    <div class="font-bold text-xl text-blue-600">${day.nightTemp}${tempUnit}</div>
+                                                    <div class="text-xs text-gray-500">体感 ${day.nightFeels}${tempUnit}</div>
+                                                </div>
+                                                
+                                                <div class="bg-cyan-50 rounded-xl p-3 text-center">
+                                                    <div class="text-3xl mb-1">💧</div>
+                                                    <div class="text-sm text-gray-600">降雨概率</div>
+                                                    <div class="font-bold text-xl text-cyan-600">${day.rainChance}%</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="flex-shrink-0 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 text-center">
+                                                <div class="text-sm text-gray-600 mb-2">日出日落</div>
+                                                <div class="flex items-center gap-2 mb-1">
+                                                    <span class="text-xl">🌅</span>
+                                                    <span class="font-semibold">${day.sunrise}</span>
+                                                </div>
+                                                <div class="flex items-center gap-2">
+                                                    <span class="text-xl">🌇</span>
+                                                    <span class="font-semibold">${day.sunset}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mt-4 flex flex-wrap gap-2">
+                                            ${day.alert ? `<span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">⚠️ ${day.alert}</span>` : ''}
+                                            ${isRainy ? '<span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">🌧️ 记得带雨具</span>' : ''}
+                                            ${isCold ? '<span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">🧥 注意保暖</span>' : ''}
+                                            ${state.showHistorical ? `<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">📊 历史平均: ${day.historical.avgDayTemp}${tempUnit}/${day.historical.avgNightTemp}${tempUnit}</span>` : ''}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
                         </div>
                         
-                        {/* 右侧：日出日落 */}
-                        <div className="flex-shrink-0 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-4 text-center">
-                          <div className="text-sm text-gray-600 mb-2">日出日落</div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xl">🌅</span>
-                            <span className="font-semibold">{day.sunrise}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xl">🌇</span>
-                            <span className="font-semibold">{day.sunset}</span>
-                          </div>
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+                                <h3 class="font-semibold text-blue-800 mb-2">💡 使用提示</h3>
+                                <p class="text-sm text-blue-700">切换"卡片视图"查看美观界面，或"表格视图"复制文本。数据来源：AccuWeather + AEMET官方。</p>
+                            </div>
+                            <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                                <h3 class="font-semibold text-amber-800 mb-2">⚠️ 注意事项</h3>
+                                <p class="text-sm text-amber-700">山区天气变化快，遇极端天气预警请调整行程。安全第一！</p>
+                            </div>
                         </div>
-                      </div>
-                      
-                      {/* 预警标签 */}
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {day.alert && (
-                          <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                            <AlertTriangle className="w-4 h-4" />
-                            {day.alert}
-                          </span>
-                        )}
-                        {isRainy && (
-                          <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
-                            🌧️ 记得带雨具
-                          </span>
-                        )}
-                        {isCold && (
-                          <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">
-                            🧥 注意保暖
-                          </span>
-                        )}
-                        {showHistorical && (
-                          <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-                            📊 历史平均: {day.historical.avgDayTemp}{tempUnit}/{day.historical.avgNightTemp}{tempUnit}
-                          </span>
-                        )}
-                      </div>
                     </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <pre className="bg-gray-50 p-6 rounded-xl overflow-x-auto text-sm font-mono border-2 border-gray-200">
-                {generateTable()}
-              </pre>
-            )}
-            
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-                <h3 className="font-semibold text-blue-800 mb-2">💡 使用提示</h3>
-                <p className="text-sm text-blue-700">
-                  切换"卡片视图"查看美观界面，或"表格视图"复制文本。数据来源：AccuWeather + AEMET官方。
-                </p>
-              </div>
-              
-              <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
-                <h3 className="font-semibold text-amber-800 mb-2">⚠️ 注意事项</h3>
-                <p className="text-sm text-amber-700">
-                  山区天气变化快，遇极端天气预警请调整行程。安全第一！
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+                `;
+            } else {
+                return `
+                    <div class="bg-white rounded-3xl shadow-2xl p-6 md:p-10">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                            <h2 class="text-3xl font-bold text-gray-800">天气预报表格</h2>
+                            <div class="flex gap-3">
+                                <button onclick="toggleViewMode()" class="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors">🎴 卡片视图</button>
+                                <button onclick="copyToClipboard()" class="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl transition-all shadow-lg">
+                                    ${state.copied ? '✓ 已复制' : '📋 复制表格'}
+                                </button>
+                            </div>
+                        </div>
+                        
+                        ${alerts.length > 0 ? `
+                            <div class="mb-6 bg-red-50 border-2 border-red-300 rounded-xl p-4">
+                                <div class="flex items-center gap-2 text-red-800 font-semibold mb-2">⚠️ 极端天气预警</div>
+                                ${alerts.map(d => `<div class="text-red-700 ml-8">• ${d.date} ${d.location}: ${d.alert}</div>`).join('')}
+                            </div>
+                        ` : ''}
+                        
+                        <pre class="bg-gray-50 p-6 rounded-xl overflow-x-auto text-sm font-mono border-2 border-gray-200">${generateTable()}</pre>
+                        
+                        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+                                <h3 class="font-semibold text-blue-800 mb-2">💡 使用提示</h3>
+                                <p class="text-sm text-blue-700">切换"卡片视图"查看美观界面，或"表格视图"复制文本。数据来源：AccuWeather + AEMET官方。</p>
+                            </div>
+                            <div class="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                                <h3 class="font-semibold text-amber-800 mb-2">⚠️ 注意事项</h3>
+                                <p class="text-sm text-amber-700">山区天气变化快，遇极端天气预警请调整行程。安全第一！</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        };
 
-        <div className="mt-8 text-center text-gray-600 text-sm">
-          <p>本工具为朝圣之路徒步者提供便捷的天气查询服务</p>
-          <p className="mt-2">数据来源：AccuWeather + AEMET（西班牙气象局）</p>
-          <p className="mt-1">参考：caminoweather.com | 支持8种语言 | 可切换英制/公制单位</p>
-        </div>
-      </div>
-    </div>
-  );
-};
+        // 全局函数
+        window.toggleUnit = () => {
+            state.unit = state.unit === 'metric' ? 'imperial' : 'metric';
+            if (state.weatherData) {
+                state.weatherData = state.weatherData.map(day => ({
+                    ...day,
+                    dayTemp: convertTemp(day.dayTemp),
+                    nightTemp: convertTemp(day.nightTemp),
+                    dayFeels: convertTemp(day.dayFeels),
+                    nightFeels: convertTemp(day.nightFeels)
+                }));
+            }
+            render();
+        };
 
-export default CaminoWeatherSystem;
+        window.loadRoute = (index) => {
+            const routes = [
+                [{ date: '', location: '' }],
+                [
+                    { date: '', location: 'Sarria' },
+                    { date: '', location: 'Portomarín' },
+                    { date: '', location: 'Palas de Rei' },
+                    { date: '', location: 'Arzua' },
+                    { date: '', location: 'O Pedrouzo' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                [
+                    { date: '', location: 'Saint-Jean-Pied-de-Port' },
+                    { date: '', location: 'Roncesvalles' },
+                    { date: '', location: 'Zubiri' },
+                    { date: '', location: 'Pamplona' },
+                    { date: '', location: 'Puente la Reina' },
+                    { date: '', location: 'Estella' },
+                    { date: '', location: 'Logroño' },
+                    { date: '', location: 'Nájera' },
+                    { date: '', location: 'Santo Domingo de la Calzada' },
+                    { date: '', location: 'Belorado' },
+                    { date: '', location: 'San Juan de Ortega' },
+                    { date: '', location: 'Burgos' },
+                    { date: '', location: 'Hornillos del Camino' },
+                    { date: '', location: 'Castrojeriz' },
+                    { date: '', location: 'Frómista' },
+                    { date: '', location: 'Carrión de los Condes' },
+                    { date: '', location: 'Terradillos de los Templarios' },
+                    { date: '', location: 'Mansilla de las Mulas' },
+                    { date: '', location: 'León' },
+                    { date: '', location: 'Astorga' },
+                    { date: '', location: 'Foncebadón' },
+                    { date: '', location: 'Ponferrada' },
+                    { date: '', location: 'Villafranca del Bierzo' },
+                    { date: '', location: 'O Cebreiro' },
+                    { date: '', location: 'Triacastela' },
+                    { date: '', location: 'Sarria' },
+                    { date: '', location: 'Portomarín' },
+                    { date: '', location: 'Palas de Rei' },
+                    { date: '', location: 'Arzua' },
+                    { date: '', location: 'O Pedrouzo' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                [
+                    { date: '', location: 'Porto' },
+                    { date: '', location: 'Barcelos' },
+                    { date: '', location: 'Ponte de Lima' },
+                    { date: '', location: 'Valença' },
+                    { date: '', location: 'Tui' },
+                    { date: '', location: 'Redondela' },
+                    { date: '', location: 'Pontevedra' },
+                    { date: '', location: 'Padrón' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                [
+                    { date: '', location: 'Irún' },
+                    { date: '', location: 'San Sebastián' },
+                    { date: '', location: 'Zarautz' },
+                    { date: '', location: 'Deba' },
+                    { date: '', location: 'Markina-Xemein' },
+                    { date: '', location: 'Bilbao' },
+                    { date: '', location: 'Castro Urdiales' },
+                    { date: '', location: 'Laredo' },
+                    { date: '', location: 'Santander' },
+                    { date: '', location: 'Santillana del Mar' },
+                    { date: '', location: 'Comillas' },
+                    { date: '', location: 'San Vicente de la Barquera' },
+                    { date: '', location: 'Llanes' },
+                    { date: '', location: 'Ribadesella' },
+                    { date: '', location: 'Gijón' },
+                    { date: '', location: 'Avilés' },
+                    { date: '', location: 'Cudillero' },
+                    { date: '', location: 'Luarca' },
+                    { date: '', location: 'Ribadeo' },
+                    { date: '', location: 'Lourenzá' },
+                    { date: '', location: 'Mondoñedo' },
+                    { date: '', location: 'Vilalba' },
+                    { date: '', location: 'Arzua' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                [
+                    { date: '', location: 'Oviedo' },
+                    { date: '', location: 'Grado' },
+                    { date: '', location: 'Salas' },
+                    { date: '', location: 'Tineo' },
+                    { date: '', location: 'Pola de Allande' },
+                    { date: '', location: 'Berducedo' },
+                    { date: '', location: 'Grandas de Salime' },
+                    { date: '', location: 'A Fonsagrada' },
+                    { date: '', location: 'O Cádavo' },
+                    { date: '', location: 'Lugo' },
+                    { date: '', location: 'San Romao' },
+                    { date: '', location: 'Melide' },
+                    { date: '', location: 'Arzua' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ]
+            ];
+            state.days = routes[index].map(d => ({...d}));
+            state.weatherData = null;
+            render();
+        };
+
+        window.updateDay = (index, field, value) => {
+            state.days[index][field] = value;
+            if (field === 'location') {
+                state.searchQuery = value;
+            }
+            render();
+        };
+
+        window.setActiveInput = (index) => {
+            state.activeInput = index;
+            render();
+        };
+
+        window.clearActiveInput = () => {
+            setTimeout(() => {
+                state.activeInput = null;
+                render();
+            }, 200);
+        };
+
+        window.selectTown = (index, town) => {
+            state.days[index].location = town;
+            state.searchQuery = '';
+            state.activeInput = null;
+            render();
+        };
+
+        window.addDay = () => {
+            state.days.push({ date: '', location: '' });
+            render();
+        };
+
+        window.removeDay = (index) => {
+            if (state.days.length > 1) {
+                state.days.splice(index, 1);
+                render();
+            }
+        };
+
+        window.toggleHistorical = () => {
+            state.showHistorical = !state.showHistorical;
+            render();
+        };
+
+        window.toggleViewMode = () => {
+            state.viewMode = state.viewMode === 'cards' ? 'table' : 'cards';
+            render();
+        };
+
+        // 初始化
+        render();
+    </script>
+</body>
+</html>
