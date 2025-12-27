@@ -233,6 +233,16 @@
                 dataInfo0to15: '0-15天内出发：显示AEMET实时天气预报',
                 dataInfo15to365: '15天-1年内出发：显示基于Open-Meteo过去10年（2014-2024）历史数据的平均值预测（仅供参考）仅显示温度，降雨，不显示天气',
                 dataInfoOver1Year: '超过1年：建议在出发前1年内查询天气信息',
+                routeFrances115: '🇫🇷 法国之路 115公里',
+                routeFrancesFull: '🇫🇷 法国之路全程',
+                routePortugueseLisbonCentral: '🇵🇹 葡萄牙之路 - 中央线（里斯本）',
+                routePortuguesePortoCentral: '🇵🇹 葡萄牙之路 - 中央线（波尔图）',
+                routePortugueseCoastal: '🇵🇹 葡萄牙之路 - 海岸线',
+                routeNorthern: '⛰️ 北方之路',
+                routePrimitivo: '🏔️ 原始之路',
+                routeSpiritual: '🌊 灵性之路',
+                routePrimitivo: '🏔️ 原始之路',
+                routeSpiritual: '🌊 灵性之路',
                 dataInformation: '数据说明',
                 routeFrances115: '프랑스 길 115km',
                 routeFrancesFull: '프랑스 길 전체 (33단계)',
@@ -1775,17 +1785,26 @@
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrancesFull')}</div>
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago (34{t('days')})</div>
                                 </button>
-                                <button onClick={() => loadRoute('portugueseLisbon')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                <button onClick={() => loadRoute('portugueseLisbonCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbon')}</div>
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (13{t('days')})</div>
                                 </button>
-                                <button onClick={() => loadRoute('portuguesePorto')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                <button onClick={() => loadRoute('portuguesePortoCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePorto')}</div>
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (10{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routeNorthern')}</div>
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (24{t('days')})</div>
+                                </button>
+                                <button onClick={() => loadRoute('portugueseCoastal')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800">{t.routePortugueseCoastal || '🇵🇹 葡萄牙之路 - 海岸线'}</div>
+                                </button>
+                                <button onClick={() => loadRoute('primitivo')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800">{t.routePrimitivo || '🏔️ 原始之路'}</div>
+                                </button>
+                                <button onClick={() => loadRoute('spiritual')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800">{t.routeSpiritual || '🌊 灵性之路'}</div>
                                 </button>
                             </div>
                         </div>
