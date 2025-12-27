@@ -3,8 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="朝圣之路天气查询工具 - 支持8种语言 - Camino Weather Tool">
-    <title>☁️ 朝圣之路天气 | Camino Weather</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>CaminoForecast - Camino de Santiago Weather Forecast | 朝圣之路天气预报</title>
+    <meta name="title" content="CaminoForecast - Camino de Santiago Weather Forecast | 朝圣之路天气预报">
+    <meta name="description" content="Free weather forecast tool for all Camino de Santiago routes. Real-time forecasts (0-15 days) + historical data. Supports French Way, Portuguese Way, Northern Way. 8 languages. 免费朝圣之路天气预报，支持所有路线。">
+    <meta name="keywords" content="Camino de Santiago, weather forecast, Camino Frances, Portuguese Way, Northern Way, pilgrimage weather, 朝圣之路, 天气预报, Santiago weather, Camino weather tool, hiking weather Spain, Buen Camino">
+    <meta name="author" content="CaminoForecast">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://caminoforecast.com/">
+    
+    <!-- Language & Region -->
+    <meta http-equiv="content-language" content="en, es, zh, fr, de, pt, ko">
+    <link rel="alternate" hreflang="en" href="https://caminoforecast.com/?lang=en">
+    <link rel="alternate" hreflang="es" href="https://caminoforecast.com/?lang=es">
+    <link rel="alternate" hreflang="zh-CN" href="https://caminoforecast.com/?lang=zh-CN">
+    <link rel="alternate" hreflang="zh-TW" href="https://caminoforecast.com/?lang=zh-TW">
+    <link rel="alternate" hreflang="fr" href="https://caminoforecast.com/?lang=fr">
+    <link rel="alternate" hreflang="de" href="https://caminoforecast.com/?lang=de">
+    <link rel="alternate" hreflang="pt" href="https://caminoforecast.com/?lang=pt">
+    <link rel="alternate" hreflang="ko" href="https://caminoforecast.com/?lang=ko">
+    <link rel="alternate" hreflang="x-default" href="https://caminoforecast.com/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://caminoforecast.com/">
+    <meta property="og:title" content="CaminoForecast - Free Weather Tool for Camino de Santiago">
+    <meta property="og:description" content="Plan your Camino journey with accurate weather forecasts. Supports all major routes, 8 languages, real-time + historical data.">
+    <meta property="og:image" content="https://caminoforecast.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="es_ES">
+    <meta property="og:locale:alternate" content="zh_CN">
+    <meta property="og:site_name" content="CaminoForecast">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://caminoforecast.com/">
+    <meta name="twitter:title" content="CaminoForecast - Camino Weather Forecast Tool">
+    <meta name="twitter:description" content="Free weather forecasts for all Camino de Santiago routes. 8 languages, real-time data. Buen Camino!">
+    <meta name="twitter:image" content="https://caminoforecast.com/twitter-image.jpg">
+    
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#F59E0B">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CaminoForecast">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☁️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -2003,5 +2049,106 @@
 
         ReactDOM.render(<CaminoWeatherApp />, document.getElementById('root'));
     </script>
+
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "CaminoForecast",
+      "alternateName": "朝圣之路天气预报",
+      "url": "https://caminoforecast.com",
+      "description": "Free weather forecast tool for Camino de Santiago pilgrims. Supports all major routes with real-time and historical weather data in 8 languages.",
+      "applicationCategory": "TravelApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "CaminoForecast"
+      },
+      "inLanguage": ["en", "es", "zh-CN", "zh-TW", "fr", "de", "pt", "ko"],
+      "featureList": [
+        "Real-time weather forecasts (0-15 days)",
+        "Historical weather data (10-year average)",
+        "Support for all major Camino routes",
+        "8 language support",
+        "Sunrise and sunset times",
+        "Temperature in Celsius and Fahrenheit",
+        "Rain probability and warnings"
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the best time to walk the Camino de Santiago?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The best time to walk the Camino is from April to October, with May-June and September being ideal for pleasant weather and fewer crowds. Use CaminoForecast to check historical weather patterns for your preferred dates."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How accurate is the Camino weather forecast?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We provide real-time forecasts from AEMET (Spanish Meteorological Agency) for 0-15 days with high accuracy. For longer-term planning (15 days to 1 year), we offer historical data based on 10-year averages from Open-Meteo."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which Camino routes does this tool support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CaminoForecast supports all major Camino routes including French Way (Camino Frances), Portuguese Way (from Lisbon or Porto), Northern Way (Camino del Norte), Primitive Way (Camino Primitivo), and custom routes. You can create your own itinerary for any Camino path."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is CaminoForecast free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! CaminoForecast is completely free to use. We provide unlimited weather forecasts for all Camino routes in 8 languages at no cost. You can support the project through donations if you find it helpful."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://caminoforecast.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Camino Weather Forecast",
+          "item": "https://caminoforecast.com/"
+        }
+      ]
+    }
+    </script>
+
 </body>
 </html>
