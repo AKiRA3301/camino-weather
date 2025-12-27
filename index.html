@@ -131,13 +131,7 @@
             'Caldas de Reis', 'Irún', 'San Sebastián', 'Zarautz', 'Deba', 'Gernika', 'Lezama',
             'Portugalete', 'Castro Urdiales', 'Laredo', 'Santander', 'Santillana del Mar', 'Comillas',
             'Llanes', 'Ribadesella', 'Gijón', 'Avilés', 'Luarca', 'Ribadeo', 'Mondoñedo', 'Vilalba',
-            'Baamonde', 'Sobrado dos Monxes', 'Alvaiázere', 'Alvorge', 'Cernache', 'Mealhada',
-            'Albergaria-a-Velha', 'São João da Madeira', 'O Porriño', 'Matosinhos', 'Vila do Conde',
-            'Póvoa de Varzim', 'Esposende', 'Viana do Castelo', 'Caminha', 'A Guarda', 'Baiona',
-            'Vigo', 'Güemes', 'Colombres', 'Sebrayo', 'Muros de Nalón', 'Soto de Luiña', 'Cadavedo',
-            'La Caridad', 'Lourenzá', 'Gontán', 'Markina-Xemein', 'Grado', 'Salas', 'Tineo',
-            'Borres', 'Berducedo', 'Grandas de Salime', 'A Fonsagrada', 'O Cádavo', 'Ferreira',
-            'Pontevedra', 'Combarro', 'Armenteira', 'Vilanova de Arousa', 'Pontecesures'
+            'Baamonde', 'Sobrado dos Monxes'
         ].sort();
 
         const weatherTranslations = {
@@ -1225,265 +1219,201 @@
             };
 
             // 预设路线
-           const presetRoutes = {
-            custom: { days: [{ date: '', location: '' }] },
-            
-            // 法国之路 115km (5阶段，6个城市)
-            frances115: {
-                days: [
-                    { date: '', location: 'Sarria' },
-                    { date: '', location: 'Portomarín' },
-                    { date: '', location: 'Palas de Rei' },
-                    { date: '', location: 'Arzúa' },
-                    { date: '', location: 'O Pedrouzo' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            },
-            
-            // 法国之路全程 (33阶段，34个城市)
-            francesFull: {
-                days: [
-                    { date: '', location: 'Saint-Jean-Pied-de-Port' },
-                    { date: '', location: 'Roncesvalles' },
-                    { date: '', location: 'Zubiri' },
-                    { date: '', location: 'Pamplona' },
-                    { date: '', location: 'Puente la Reina' },
-                    { date: '', location: 'Estella' },
-                    { date: '', location: 'Los Arcos' },
-                    { date: '', location: 'Logroño' },
-                    { date: '', location: 'Nájera' },
-                    { date: '', location: 'Santo Domingo de la Calzada' },
-                    { date: '', location: 'Belorado' },
-                    { date: '', location: 'San Juan de Ortega' },
-                    { date: '', location: 'Burgos' },
-                    { date: '', location: 'Hornillos del Camino' },
-                    { date: '', location: 'Castrojeriz' },
-                    { date: '', location: 'Frómista' },
-                    { date: '', location: 'Carrión de los Condes' },
-                    { date: '', location: 'Terradillos de los Templarios' },
-                    { date: '', location: 'Bercianos del Real Camino' },
-                    { date: '', location: 'Mansilla de las Mulas' },
-                    { date: '', location: 'León' },
-                    { date: '', location: 'San Martín del Camino' },
-                    { date: '', location: 'Astorga' },
-                    { date: '', location: 'Foncebadón' },
-                    { date: '', location: 'Ponferrada' },
-                    { date: '', location: 'Villafranca del Bierzo' },
-                    { date: '', location: 'O Cebreiro' },
-                    { date: '', location: 'Triacastela' },
-                    { date: '', location: 'Sarria' },
-                    { date: '', location: 'Portomarín' },
-                    { date: '', location: 'Palas de Rei' },
-                    { date: '', location: 'Arzúa' },
-                    { date: '', location: 'O Pedrouzo' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            },
-            
-            // 葡萄牙之路（里斯本出发）(26阶段，27个城市)
-            portugueseLisbon: {
-                days: [
-                    { date: '', location: 'Lisboa' },
-                    { date: '', location: 'Vila Franca de Xira' },
-                    { date: '', location: 'Azambuja' },
-                    { date: '', location: 'Santarém' },
-                    { date: '', location: 'Golegã' },
-                    { date: '', location: 'Tomar' },
-                    { date: '', location: 'Alvaiázere' },
-                    { date: '', location: 'Alvorge' },
-                    { date: '', location: 'Cernache' },
-                    { date: '', location: 'Coimbra' },
-                    { date: '', location: 'Mealhada' },
-                    { date: '', location: 'Águeda' },
-                    { date: '', location: 'Albergaria-a-Velha' },
-                    { date: '', location: 'São João da Madeira' },
-                    { date: '', location: 'Grijó' },
-                    { date: '', location: 'Porto' },
-                    { date: '', location: 'Vilarinho' },
-                    { date: '', location: 'Barcelos' },
-                    { date: '', location: 'Ponte de Lima' },
-                    { date: '', location: 'Rubiães' },
-                    { date: '', location: 'Tui' },
-                    { date: '', location: 'O Porriño' },
-                    { date: '', location: 'Redondela' },
-                    { date: '', location: 'Pontevedra' },
-                    { date: '', location: 'Caldas de Reis' },
-                    { date: '', location: 'Padrón' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            },
-            
-            // 葡萄牙之路（波尔图出发）(11阶段，12个城市)
-            portuguesePorto: {
-                days: [
-                    { date: '', location: 'Porto' },
-                    { date: '', location: 'Vilarinho' },
-                    { date: '', location: 'Barcelos' },
-                    { date: '', location: 'Ponte de Lima' },
-                    { date: '', location: 'Rubiães' },
-                    { date: '', location: 'Tui' },
-                    { date: '', location: 'O Porriño' },
-                    { date: '', location: 'Redondela' },
-                    { date: '', location: 'Pontevedra' },
-                    { date: '', location: 'Caldas de Reis' },
-                    { date: '', location: 'Padrón' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            },
-            
-            // 葡萄牙海岸线之路 (14阶段，15个城市)
-            portugueseCoastal: {
-                days: [
-                    { date: '', location: 'Porto' },
-                    { date: '', location: 'Matosinhos' },
-                    { date: '', location: 'Vila do Conde' },
-                    { date: '', location: 'Póvoa de Varzim' },
-                    { date: '', location: 'Esposende' },
-                    { date: '', location: 'Viana do Castelo' },
-                    { date: '', location: 'Caminha' },
-                    { date: '', location: 'A Guarda' },
-                    { date: '', location: 'Baiona' },
-                    { date: '', location: 'Vigo' },
-                    { date: '', location: 'Redondela' },
-                    { date: '', location: 'Pontevedra' },
-                    { date: '', location: 'Caldas de Reis' },
-                    { date: '', location: 'Padrón' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            },
-            
-            // 北方之路 (33阶段，34个城市)
-            northern: {
-                days: [
-                    { date: '', location: 'Irún' },
-                    { date: '', location: 'San Sebastián' },
-                    { date: '', location: 'Zarautz' },
-                    { date: '', location: 'Deba' },
-                    { date: '', location: 'Markina-Xemein' },
-                    { date: '', location: 'Gernika' },
-                    { date: '', location: 'Lezama' },
-                    { date: '', location: 'Bilbao' },
-                    { date: '', location: 'Portugalete' },
-                    { date: '', location: 'Castro Urdiales' },
-                    { date: '', location: 'Laredo' },
-                    { date: '', location: 'Güemes' },
-                    { date: '', location: 'Santander' },
-                    { date: '', location: 'Santillana del Mar' },
-                    { date: '', location: 'Comillas' },
-                    { date: '', location: 'Colombres' },
-                    { date: '', location: 'Llanes' },
-                    { date: '', location: 'Ribadesella' },
-                    { date: '', location: 'Sebrayo' },
-                    { date: '', location: 'Gijón' },
-                    { date: '', location: 'Avilés' },
-                    { date: '', location: 'Muros de Nalón' },
-                    { date: '', location: 'Soto de Luiña' },
-                    { date: '', location: 'Cadavedo' },
-                    { date: '', location: 'Luarca' },
-                    { date: '', location: 'La Caridad' },
-                    { date: '', location: 'Ribadeo' },
-                    { date: '', location: 'Lourenzá' },
-                    { date: '', location: 'Gontán' },
-                    { date: '', location: 'Vilalba' },
-                    { date: '', location: 'Baamonde' },
-                    { date: '', location: 'Sobrado dos Monxes' },
-                    { date: '', location: 'Arzúa' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            },
-            
-            // 原始之路 (14阶段，15个城市)
-            primitive: {
-                days: [
-                    { date: '', location: 'Oviedo' },
-                    { date: '', location: 'Grado' },
-                    { date: '', location: 'Salas' },
-                    { date: '', location: 'Tineo' },
-                    { date: '', location: 'Borres' },
-                    { date: '', location: 'Berducedo' },
-                    { date: '', location: 'Grandas de Salime' },
-                    { date: '', location: 'A Fonsagrada' },
-                    { date: '', location: 'O Cádavo' },
-                    { date: '', location: 'Lugo' },
-                    { date: '', location: 'Ferreira' },
-                    { date: '', location: 'Melide' },
-                    { date: '', location: 'Arzúa' },
-                    { date: '', location: 'O Pedrouzo' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            },
-            
-            // 灵性之路 (6阶段，7个城市)
-            spiritual: {
-                days: [
-                    { date: '', location: 'Pontevedra' },
-                    { date: '', location: 'Combarro' },
-                    { date: '', location: 'Armenteira' },
-                    { date: '', location: 'Vilanova de Arousa' },
-                    { date: '', location: 'Pontecesures' },
-                    { date: '', location: 'Padrón' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ]
-            }
-        };
+            const presetRoutes = {
+                custom: { days: [{ date: '', location: '' }] },
+                frances115: {
+                    days: [
+                        { date: '', location: 'Sarria' },
+                        { date: '', location: 'Portomarín' },
+                        { date: '', location: 'Palas de Rei' },
+                        { date: '', location: 'Arzúa' },
+                        { date: '', location: 'O Pedrouzo' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                francesFull: {
+                    days: [
+                        { date: '', location: 'Saint-Jean-Pied-de-Port' },
+                        { date: '', location: 'Roncesvalles' },
+                        { date: '', location: 'Zubiri' },
+                        { date: '', location: 'Pamplona' },
+                        { date: '', location: 'Puente la Reina' },
+                        { date: '', location: 'Estella' },
+                        { date: '', location: 'Los Arcos' },
+                        { date: '', location: 'Logroño' },
+                        { date: '', location: 'Nájera' },
+                        { date: '', location: 'Santo Domingo de la Calzada' },
+                        { date: '', location: 'Belorado' },
+                        { date: '', location: 'San Juan de Ortega' },
+                        { date: '', location: 'Burgos' },
+                        { date: '', location: 'Hornillos del Camino' },
+                        { date: '', location: 'Castrojeriz' },
+                        { date: '', location: 'Frómista' },
+                        { date: '', location: 'Carrión de los Condes' },
+                        { date: '', location: 'Terradillos de los Templarios' },
+                        { date: '', location: 'Bercianos del Real Camino' },
+                        { date: '', location: 'Mansilla de las Mulas' },
+                        { date: '', location: 'León' },
+                        { date: '', location: 'San Martín del Camino' },
+                        { date: '', location: 'Astorga' },
+                        { date: '', location: 'Foncebadón' },
+                        { date: '', location: 'Ponferrada' },
+                        { date: '', location: 'Villafranca del Bierzo' },
+                        { date: '', location: 'O Cebreiro' },
+                        { date: '', location: 'Triacastela' },
+                        { date: '', location: 'Sarria' },
+                        { date: '', location: 'Portomarín' },
+                        { date: '', location: 'Palas de Rei' },
+                        { date: '', location: 'Arzúa' },
+                        { date: '', location: 'O Pedrouzo' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                portugueseLisbonCentral: {
+                    days: [
+                        { date: '', location: 'Lisboa' },
+                        { date: '', location: 'Vila Franca de Xira' },
+                        { date: '', location: 'Azambuja' },
+                        { date: '', location: 'Santarém' },
+                        { date: '', location: 'Golegã' },
+                        { date: '', location: 'Tomar' },
+                        { date: '', location: 'Alvaiázere' },
+                        { date: '', location: 'Alvorge' },
+                        { date: '', location: 'Cernache' },
+                        { date: '', location: 'Coimbra' },
+                        { date: '', location: 'Mealhada' },
+                        { date: '', location: 'Águeda' },
+                        { date: '', location: 'Albergaria-a-Velha' },
+                        { date: '', location: 'São João da Madeira' },
+                        { date: '', location: 'Grijó' },
+                        { date: '', location: 'Porto' },
+                        { date: '', location: 'Vilarinho' },
+                        { date: '', location: 'Barcelos' },
+                        { date: '', location: 'Ponte de Lima' },
+                        { date: '', location: 'Rubiães' },
+                        { date: '', location: 'Tui' },
+                        { date: '', location: 'O Porriño' },
+                        { date: '', location: 'Redondela' },
+                        { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Caldas de Reis' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                portuguesePortoCentral: {
+                    days: [
+                        { date: '', location: 'Porto' },
+                        { date: '', location: 'Vilarinho' },
+                        { date: '', location: 'Barcelos' },
+                        { date: '', location: 'Ponte de Lima' },
+                        { date: '', location: 'Rubiães' },
+                        { date: '', location: 'Tui' },
+                        { date: '', location: 'O Porriño' },
+                        { date: '', location: 'Redondela' },
+                        { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Caldas de Reis' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                portugueseCoastal: {
+                    days: [
+                        { date: '', location: 'Porto' },
+                        { date: '', location: 'Matosinhos' },
+                        { date: '', location: 'Vila do Conde' },
+                        { date: '', location: 'Póvoa de Varzim' },
+                        { date: '', location: 'Esposende' },
+                        { date: '', location: 'Viana do Castelo' },
+                        { date: '', location: 'Caminha' },
+                        { date: '', location: 'A Guarda' },
+                        { date: '', location: 'Baiona' },
+                        { date: '', location: 'Vigo' },
+                        { date: '', location: 'Redondela' },
+                        { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Caldas de Reis' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                northern: {
+                    days: [
+                        { date: '', location: 'Irún' },
+                        { date: '', location: 'San Sebastián' },
+                        { date: '', location: 'Zarautz' },
+                        { date: '', location: 'Deba' },
+                        { date: '', location: 'Markina-Xemein' },
+                        { date: '', location: 'Gernika' },
+                        { date: '', location: 'Bilbao' },
+                        { date: '', location: 'Portugalete' },
+                        { date: '', location: 'Castro Urdiales' },
+                        { date: '', location: 'Laredo' },
+                        { date: '', location: 'Santander' },
+                        { date: '', location: 'Santillana del Mar' },
+                        { date: '', location: 'Comillas' },
+                        { date: '', location: 'Llanes' },
+                        { date: '', location: 'Ribadesella' },
+                        { date: '', location: 'Gijón' },
+                        { date: '', location: 'Avilés' },
+                        { date: '', location: 'Luarca' },
+                        { date: '', location: 'Ribadeo' },
+                        { date: '', location: 'Mondoñedo' },
+                        { date: '', location: 'Vilalba' },
+                        { date: '', location: 'Baamonde' },
+                        { date: '', location: 'Sobrado dos Monxes' },
+                        { date: '', location: 'Arzúa' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                primitivo: {
+                    days: [
+                        { date: '', location: 'Oviedo' },
+                        { date: '', location: 'Grado' },
+                        { date: '', location: 'Salas' },
+                        { date: '', location: 'Tineo' },
+                        { date: '', location: 'Borres' },
+                        { date: '', location: 'Berducedo' },
+                        { date: '', location: 'Grandas de Salime' },
+                        { date: '', location: 'A Fonsagrada' },
+                        { date: '', location: 'O Cádavo' },
+                        { date: '', location: 'Lugo' },
+                        { date: '', location: 'Ferreira' },
+                        { date: '', location: 'Melide' },
+                        { date: '', location: 'Arzúa' },
+                        { date: '', location: 'O Pedrouzo' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                spiritual: {
+                    days: [
+                        { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Combarro' },
+                        { date: '', location: 'Armenteira' },
+                        { date: '', location: 'Vilanova de Arousa' },
+                        { date: '', location: 'Pontecesures' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                }
+            };
 
-        // 在JSX渲染的路线选择按钮部分 - 修改路线显示
-        // 路线选择按钮 JSX部分（在 return 语句中）：
-        
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 md:p-6 mb-6">
-            <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-4">{t('selectRoute')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <button onClick={() => loadRoute('custom')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">{t('customRoute')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">{t('customRouteDesc')}</div>
-                </button>
-                
-                <button onClick={() => loadRoute('frances115')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrances115')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (6{t('days')})</div>
-                </button>
-                
-                <button onClick={() => loadRoute('francesFull')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrancesFull')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago (34{t('days')})</div>
-                </button>
-                
-                <button onClick={() => loadRoute('portugueseLisbon')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbon')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (27{t('days')})</div>
-                </button>
-                
-                <button onClick={() => loadRoute('portuguesePorto')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePorto')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (12{t('days')})</div>
-                </button>
-                
-                <button onClick={() => loadRoute('portugueseCoastal')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseCoastal')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (15{t('days')})</div>
-                </button>
-                
-                <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routeNorthern')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (34{t('days')})</div>
-                </button>
-                
-                <button onClick={() => loadRoute('primitive')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">🏔️ {t('routePrimitive')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">Oviedo → Santiago (15{t('days')})</div>
-                </button>
-                
-                <button onClick={() => loadRoute('spiritual')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛵ {t('routeSpiritual')}</div>
-                    <div className="text-xs md:text-sm text-gray-600 mt-1">Pontevedra → Santiago (7{t('days')})</div>
-                </button>
-            </div>
-        </div>
+            const loadRoute = (routeKey) => {
+                setDays([...presetRoutes[routeKey].days]);
+                setWeatherData(null);
+                setError(null);
+            };
 
-        // ... 其余代码保持不变
-    </script>
-</body>
-</html>
+            const autoFillDates = () => {
+                let startIndex = days.findIndex(d => d.date);
+                let startDate = startIndex >= 0 ? new Date(days[startIndex].date) : new Date();
+                if (startIndex === -1) startIndex = 0;
+                
+                setDays(days.map((day, index) => {
+                    const date = new Date(startDate);
+                    date.setDate(startDate.getDate() + (index - startIndex));
+                    return { ...day, date: date.toISOString().split('T')[0] };
+                }));
+            };
+
             const fetchWeather = async () => {
                 const validDays = days.filter(d => d.date && d.location);
                 if (validDays.length === 0) {
