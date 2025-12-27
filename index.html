@@ -3,54 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Primary Meta Tags -->
-    <title>CaminoForecast - Camino de Santiago Weather Forecast | 朝圣之路天气预报</title>
-    <meta name="title" content="CaminoForecast - Camino de Santiago Weather Forecast | 朝圣之路天气预报">
-    <meta name="description" content="Free weather forecast tool for all Camino de Santiago routes. Real-time forecasts (0-15 days) + historical data. Supports French Way, Portuguese Way, Northern Way. 8 languages. 免费朝圣之路天气预报，支持所有路线。">
-    <meta name="keywords" content="Camino de Santiago, weather forecast, Camino Frances, Portuguese Way, Northern Way, pilgrimage weather, 朝圣之路, 天气预报, Santiago weather, Camino weather tool, hiking weather Spain, Buen Camino">
-    <meta name="author" content="CaminoForecast">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://caminoforecast.com/">
-    
-    <!-- Language & Region -->
-    <meta http-equiv="content-language" content="en, es, zh, fr, de, pt, ko">
-    <link rel="alternate" hreflang="en" href="https://caminoforecast.com/?lang=en">
-    <link rel="alternate" hreflang="es" href="https://caminoforecast.com/?lang=es">
-    <link rel="alternate" hreflang="zh-CN" href="https://caminoforecast.com/?lang=zh-CN">
-    <link rel="alternate" hreflang="zh-TW" href="https://caminoforecast.com/?lang=zh-TW">
-    <link rel="alternate" hreflang="fr" href="https://caminoforecast.com/?lang=fr">
-    <link rel="alternate" hreflang="de" href="https://caminoforecast.com/?lang=de">
-    <link rel="alternate" hreflang="pt" href="https://caminoforecast.com/?lang=pt">
-    <link rel="alternate" hreflang="ko" href="https://caminoforecast.com/?lang=ko">
-    <link rel="alternate" hreflang="x-default" href="https://caminoforecast.com/">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://caminoforecast.com/">
-    <meta property="og:title" content="CaminoForecast - Free Weather Tool for Camino de Santiago">
-    <meta property="og:description" content="Plan your Camino journey with accurate weather forecasts. Supports all major routes, 8 languages, real-time + historical data.">
-    <meta property="og:image" content="https://caminoforecast.com/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="es_ES">
-    <meta property="og:locale:alternate" content="zh_CN">
-    <meta property="og:site_name" content="CaminoForecast">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://caminoforecast.com/">
-    <meta name="twitter:title" content="CaminoForecast - Camino Weather Forecast Tool">
-    <meta name="twitter:description" content="Free weather forecasts for all Camino de Santiago routes. 8 languages, real-time data. Buen Camino!">
-    <meta name="twitter:image" content="https://caminoforecast.com/twitter-image.jpg">
-    
-    <!-- Additional SEO -->
-    <meta name="theme-color" content="#F59E0B">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="CaminoForecast">
+    <meta name="description" content="朝圣之路天气查询工具 - 支持8种语言 - Camino Weather Tool">
+    <title>☁️ 朝圣之路天气 | Camino Weather</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☁️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -236,10 +190,20 @@
                 dataInformation: '数据说明',
                 routeFrances115: '法国之路 115公里',
                 routeFrancesFull: '法国之路全程（33阶段）',
-                routePortugueseLisbon: '葡萄牙之路（里斯本出发）',
-                routePortuguesePorto: '葡萄牙之路（波尔图出发）',
+                routePortugueseLisbonCentral: '葡萄牙之路（里斯本出发）',
+                routePortuguesePortoCentral: '葡萄牙之路（波尔图出发）',
                 routeNorthern: '北方之路（36阶段）',
-                routePrimitive: '原始之路',
+                routePortugueseLisbonCentral: '葡萄牙之路（里斯本出发）',
+                routePortuguesePortoCentral: '葡萄牙之路（波尔图出发）',
+                routePortugueseCoastal: '葡萄牙之路（海岸线）',
+                routePrimitivo: '原始之路',
+                routeSpiritual: '灵性之路',
+                routePrimitivo: '原始之路',
+                routePortugueseLisbonCentral: 'Camino Portugués (desde Lisboa)',
+                routePortuguesePortoCentral: 'Camino Portugués (desde Porto)',
+                routePortugueseCoastal: 'Camino Portugués de la Costa',
+                routePrimitivo: 'Camino Primitivo',
+                routeSpiritual: 'Variante Espiritual',
                 donationTitle: '这个工具对您的朝圣之旅有帮助吗？',
                 donationSubtitle: '请我喝杯咖啡，支持我持续改进和维护',
                 donationChinaUsers: '🇨🇳 中国用户',
@@ -248,21 +212,7 @@
                 wechat: '微信支付',
                 buyMeCoffee: 'Buy Me a Coffee',
                 scanQRCode: '扫码支持开发者',
-                thankYou: '感谢您的支持！',
-                shareButton: '分享',
-                shareTitle: '分享朝圣之路天气工具',
-                shareMessage: '发现一个超实用的朝圣之路天气预报工具！支持所有路线、8种语言、历史数据参考',
-                shareUrl: 'https://caminoforecast.com',
-                shareTo: '分享到',
-                shareViaEmail: '邮件分享',
-                shareViaWhatsApp: 'WhatsApp',
-                shareViaWechat: '微信',
-                shareViaLine: 'Line',
-                shareViaKakao: 'KakaoTalk',
-                copyLink: '复制链接',
-                linkCopied: '已复制！',
-                shareEmailSubject: '推荐：朝圣之路天气工具',
-                shareEmailBody: '我发现了一个超实用的朝圣之路天气预报工具！\n\n访问：https://caminoforecast.com\n\nBuen Camino! 🥾',
+                thankYou: '感谢您的支持！'
             },
             'en': {
                 title: 'Camino Weather Tool',
@@ -320,10 +270,10 @@
                 dataInformation: 'Data Information',
                 routeFrances115: 'French Way 115km',
                 routeFrancesFull: 'French Way Full (33 stages)',
-                routePortugueseLisbon: 'Portuguese Way (from Lisbon)',
-                routePortuguesePorto: 'Portuguese Way (from Porto)',
+                routePortugueseLisbonCentral: 'Portuguese Way (from Lisbon)',
+                routePortuguesePortoCentral: 'Portuguese Way (from Porto)',
                 routeNorthern: 'Northern Way (36 stages)',
-                routePrimitive: 'Primitive Way',
+                routePrimitivo: 'Primitive Way',
                 donationTitle: 'Enjoying this tool?',
                 donationSubtitle: 'Buy me a coffee to support continued development',
                 donationChinaUsers: '🇨🇳 For users in China',
@@ -332,21 +282,7 @@
                 wechat: 'WeChat Pay',
                 buyMeCoffee: 'Buy Me a Coffee',
                 scanQRCode: 'Scan to Support',
-                thankYou: 'Thank you for your support!',
-                shareButton: 'Share',
-                shareTitle: 'Share Camino Weather Tool',
-                shareMessage: 'Check out this useful Camino weather forecast tool! Supports all routes, 8 languages, and historical data',
-                shareUrl: 'https://caminoforecast.com',
-                shareTo: 'Share via',
-                shareViaEmail: 'Email',
-                shareViaWhatsApp: 'WhatsApp',
-                shareViaWechat: 'WeChat',
-                shareViaLine: 'Line',
-                shareViaKakao: 'KakaoTalk',
-                copyLink: 'Copy Link',
-                linkCopied: 'Copied!',
-                shareEmailSubject: 'Recommended: Camino Weather Tool',
-                shareEmailBody: 'I found a great Camino weather forecast tool!\n\nVisit: https://caminoforecast.com\n\nBuen Camino! 🥾',
+                thankYou: 'Thank you for your support!'
             },
             'es': {
                 title: 'Herramienta del Tiempo del Camino',
@@ -404,10 +340,10 @@
                 dataInformation: 'Información de Datos',
                 routeFrances115: 'Camino Francés 115km',
                 routeFrancesFull: 'Camino Francés Completo (33 etapas)',
-                routePortugueseLisbon: 'Camino Portugués (desde Lisboa)',
-                routePortuguesePorto: 'Camino Portugués (desde Porto)',
+                routePortugueseLisbonCentral: 'Camino Portugués (desde Lisboa)',
+                routePortuguesePortoCentral: 'Camino Portugués (desde Porto)',
                 routeNorthern: 'Camino del Norte (36 etapas)',
-                routePrimitive: 'Camino Primitivo',
+                routePrimitivo: 'Camino Primitivo',
                 donationTitle: '¿Te gusta esta herramienta?',
                 donationSubtitle: 'Invítame un café para apoyar el desarrollo',
                 donationChinaUsers: '🇨🇳 Para usuarios en China',
@@ -416,21 +352,7 @@
                 wechat: 'WeChat Pay',
                 buyMeCoffee: 'Invítame un Café',
                 scanQRCode: 'Escanea para Apoyar',
-                thankYou: '¡Gracias por tu apoyo!',
-                shareButton: 'Compartir',
-                shareTitle: 'Compartir Herramienta del Tiempo',
-                shareMessage: '¡Descubre esta útil herramienta de pronóstico del tiempo del Camino! Soporta todas las rutas, 8 idiomas y datos históricos',
-                shareUrl: 'https://caminoforecast.com',
-                shareTo: 'Compartir vía',
-                shareViaEmail: 'Correo',
-                shareViaWhatsApp: 'WhatsApp',
-                shareViaWechat: 'WeChat',
-                shareViaLine: 'Line',
-                shareViaKakao: 'KakaoTalk',
-                copyLink: 'Copiar Enlace',
-                linkCopied: '¡Copiado!',
-                shareEmailSubject: 'Recomendado: Herramienta del Tiempo del Camino',
-                shareEmailBody: '¡He encontrado una gran herramienta de pronóstico del tiempo del Camino!\n\nVisita: https://caminoforecast.com\n\nBuen Camino! 🥾',
+                thankYou: '¡Gracias por tu apoyo!'
             }
         };
 
@@ -489,27 +411,18 @@
             dataInfo15to365: '15天-1年內出發：顯示基於Open-Meteo過去10年（2014-2024）歷史數據的平均值預測（僅供參考）僅顯示溫度，降雨，不顯示天氣',
             dataInfoOver1Year: '超過1年：建議在出發前1年內查詢天氣信息',
             dataInformation: '數據說明',
-            shareButton: '分享',
-            shareTitle: '分享朝聖之路天氣工具',
-            shareMessage: '發現一個超實用的朝聖之路天氣預報工具！',
-            shareUrl: 'https://caminoforecast.com',
-            shareTo: '分享到',
-            shareViaEmail: '郵件分享',
-            shareViaWhatsApp: 'WhatsApp',
-            shareViaWechat: '微信',
-            shareViaLine: 'Line',
-            shareViaKakao: 'KakaoTalk',
-            copyLink: '複製連結',
-            linkCopied: '已複製！',
-            shareEmailSubject: '推薦：朝聖之路天氣工具',
-            shareEmailBody: '我發現了一個超實用的朝聖之路天氣預報工具！\n\n訪問：https://caminoforecast.com\n\nBuen Camino! 🥾',
             routeFrances115: '法國之路 115公里',
             routeFrancesFull: '法國之路全程（33階段）',
-            routePortugueseLisbon: '葡萄牙之路（里斯本出發）',
-            routePortuguesePorto: '葡萄牙之路（波爾圖出發）',
+            routePortugueseLisbonCentral: '葡萄牙之路（里斯本出發）',
+            routePortuguesePortoCentral: '葡萄牙之路（波爾圖出發）',
             routeNorthern: '北方之路（36階段）',
-            routePrimitive: '原始之路',
-            donationTitle: '這個工具對您的朝聖之旅有幫助嗎？',
+            routePrimitivo: '原始之路',
+            routePortugueseLisbonCentral: '葡萄牙之路（里斯本出發）',
+                routePortuguesePortoCentral: '葡萄牙之路（波爾圖出發）',
+                routePortugueseCoastal: '葡萄牙之路（海岸線）',
+                routePrimitivo: '原始之路',
+                routeSpiritual: '靈性之路',
+                donationTitle: '這個工具對您的朝聖之旅有幫助嗎？',
             donationSubtitle: '請我喝杯咖啡，支持我持續改進和維護',
             donationChinaUsers: '🇨🇳 中國用戶',
             donationInternational: '🌍 國際用戶',
@@ -577,11 +490,16 @@
             dataInformation: 'Informations Données',
             routeFrances115: 'Chemin Français 115km',
             routeFrancesFull: 'Chemin Français Complet (33 étapes)',
-            routePortugueseLisbon: 'Chemin Portugais (depuis Lisbonne)',
-            routePortuguesePorto: 'Chemin Portugais (depuis Porto)',
+            routePortugueseLisbonCentral: 'Chemin Portugais (depuis Lisbonne)',
+            routePortuguesePortoCentral: 'Chemin Portugais (depuis Porto)',
             routeNorthern: 'Chemin du Nord (36 étapes)',
-            routePrimitive: 'Chemin Primitif',
-            donationTitle: 'Vous aimez cet outil?',
+            routePrimitivo: 'Chemin Primitif',
+            routePortugueseLisbonCentral: 'Chemin Portugais (de Lisbonne)',
+                routePortuguesePortoCentral: 'Chemin Portugais (de Porto)',
+                routePortugueseCoastal: 'Chemin Portugais Côtier',
+                routePrimitivo: 'Chemin Primitif',
+                routeSpiritual: 'Variante Spirituelle',
+                donationTitle: 'Vous aimez cet outil?',
             donationSubtitle: 'Offrez-moi un café pour soutenir le développement',
             donationChinaUsers: '🇨🇳 Pour utilisateurs en Chine',
             donationInternational: '🌍 International',
@@ -649,11 +567,16 @@
             dataInformation: 'Dateninformation',
             routeFrances115: 'Französischer Weg 115km',
             routeFrancesFull: 'Französischer Weg Komplett (33 Etappen)',
-            routePortugueseLisbon: 'Portugiesischer Weg (von Lissabon)',
-            routePortuguesePorto: 'Portugiesischer Weg (von Porto)',
+            routePortugueseLisbonCentral: 'Portugiesischer Weg (von Lissabon)',
+            routePortuguesePortoCentral: 'Portugiesischer Weg (von Porto)',
             routeNorthern: 'Nordweg (36 Etappen)',
-            routePrimitive: 'Primitiver Weg',
-            donationTitle: 'Gefällt Ihnen dieses Tool?',
+            routePrimitivo: 'Primitiver Weg',
+            routePortugueseLisbonCentral: 'Portugiesischer Weg (von Lissabon)',
+                routePortuguesePortoCentral: 'Portugiesischer Weg (von Porto)',
+                routePortugueseCoastal: 'Portugiesischer Küstenweg',
+                routePrimitivo: 'Primitiver Weg',
+                routeSpiritual: 'Spirituelle Variante',
+                donationTitle: 'Gefällt Ihnen dieses Tool?',
             donationSubtitle: 'Spendieren Sie mir einen Kaffee zur Unterstützung',
             donationChinaUsers: '🇨🇳 Für Benutzer in China',
             donationInternational: '🌍 International',
@@ -721,11 +644,16 @@
             dataInformation: 'Informação de Dados',
             routeFrances115: 'Caminho Francês 115km',
             routeFrancesFull: 'Caminho Francês Completo (33 etapas)',
-            routePortugueseLisbon: 'Caminho Português (desde Lisboa)',
-            routePortuguesePorto: 'Caminho Português (desde Porto)',
+            routePortugueseLisbonCentral: 'Caminho Português (desde Lisboa)',
+            routePortuguesePortoCentral: 'Caminho Português (desde Porto)',
             routeNorthern: 'Caminho do Norte (36 etapas)',
-            routePrimitive: 'Caminho Primitivo',
-            donationTitle: 'Gosta desta ferramenta?',
+            routePrimitivo: 'Caminho Primitivo',
+            routePortugueseLisbonCentral: 'Caminho Português (de Lisboa)',
+                routePortuguesePortoCentral: 'Caminho Português (do Porto)',
+                routePortugueseCoastal: 'Caminho Português da Costa',
+                routePrimitivo: 'Caminho Primitivo',
+                routeSpiritual: 'Variante Espiritual',
+                donationTitle: 'Gosta desta ferramenta?',
             donationSubtitle: 'Pague-me um café para apoiar o desenvolvimento',
             donationChinaUsers: '🇨🇳 Para usuários na China',
             donationInternational: '🌍 Internacional',
@@ -791,27 +719,20 @@
             dataInfo15to365: '15일 - 1년: Open-Meteo 10년 역사 평균 예측 기반 (2014-2024, 참고용) - 온도, 강수만 표시, 날씨 상태 없음',
             dataInfoOver1Year: '1년 초과: 1년 이내 조회하세요',
             dataInformation: '데이터 정보',
-                shareButton: '공유',
-                shareTitle: 'Share Camino Weather Tool',
-                shareMessage: 'Check out this useful Camino weather forecast tool!',
-                shareUrl: 'https://caminoforecast.com',
-                shareTo: 'Share via',
-                shareViaEmail: 'Email',
-                shareViaWhatsApp: 'WhatsApp',
-                shareViaWechat: 'WeChat',
-                shareViaLine: 'Line',
-                shareViaKakao: 'KakaoTalk',
-                copyLink: 'Copy Link',
-                linkCopied: 'Copied!',
-                shareEmailSubject: 'Recommended: Camino Weather Tool',
-                shareEmailBody: 'Check out this great Camino weather tool!\n\nVisit: https://caminoforecast.com\n\nBuen Camino! 🥾',
             routeFrances115: '프랑스 길 115km',
             routeFrancesFull: '프랑스 길 전체 (33단계)',
-            routePortugueseLisbon: '포르투갈 길 (리스본 출발)',
-            routePortuguesePorto: '포르투갈 길 (포르투 출발)',
+            routePortugueseLisbonCentral: '포르투갈 길 (리스본 출발)',
+            routePortuguesePortoCentral: '포르투갈 길 (포르투 출발)',
             routeNorthern: '북쪽 길 (36단계)',
-            routePrimitive: '원시 길',
-            donationTitle: '이 도구가 도움이 되셨나요?',
+            routePrimitivo: '원시 길',
+                routePortugueseCoastal: '포르투갈 해안 길',
+                routeSpiritual: '영성 변형',
+            routePortugueseLisbonCentral: '포르투갈 길 (리스본 출발)',
+                routePortuguesePortoCentral: '포르투갈 길 (포르투 출발)',
+                routePortugueseCoastal: '포르투갈 해안 길',
+                routePrimitivo: '원시 길',
+                routeSpiritual: '영성 변형',
+                donationTitle: '이 도구가 도움이 되셨나요?',
             donationSubtitle: '커피 한 잔으로 개발을 지원해주세요',
             donationChinaUsers: '🇨🇳 중국 사용자',
             donationInternational: '🌍 국제',
@@ -842,139 +763,6 @@
         };
 
         // 二维码打赏模态窗
-
-        // 分享模态框组件
-        const ShareModal = ({ isOpen, onClose, t, language }) => {
-            const [copied, setCopied] = React.useState(false);
-            
-            if (!isOpen) return null;
-
-            const shareUrl = 'https://caminoforecast.com';
-            const shareText = t('shareMessage');
-            const shareTitle = t('shareTitle');
-
-            // 复制链接
-            const copyToClipboard = () => {
-                navigator.clipboard.writeText(shareUrl);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
-            };
-
-            // 邮件分享
-            const shareViaEmail = () => {
-                const subject = encodeURIComponent(t('shareEmailSubject'));
-                const body = encodeURIComponent(t('shareEmailBody'));
-                window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
-            };
-
-            // WhatsApp分享
-            const shareViaWhatsApp = () => {
-                const text = encodeURIComponent(`${shareText}\n\n${shareUrl}`);
-                window.open(`https://wa.me/?text=${text}`, '_blank');
-            };
-
-            // 微信分享（生成二维码）
-            const shareViaWechat = () => {
-                alert(t('shareViaWechat') + '\n\n' + 
-                      (language.startsWith('zh') ? 
-                       '请使用微信扫一扫功能扫描此页面的二维码，或手动复制链接分享：\n\n' + shareUrl :
-                       'Please use WeChat QR code scanner or copy the link manually:\n\n' + shareUrl));
-            };
-
-            // Line分享（日本）
-            const shareViaLine = () => {
-                const text = encodeURIComponent(shareText);
-                const url = encodeURIComponent(shareUrl);
-                window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`, '_blank');
-            };
-
-            // KakaoTalk分享（韩国）
-            const shareViaKakao = () => {
-                // KakaoTalk分享通常需要SDK，这里使用简化的URL方式
-                alert(t('shareViaKakao') + '\n\n' + 
-                      (language === 'ko' ? 
-                       '다음 링크를 복사하여 카카오톡에서 공유하세요:\n\n' + shareUrl :
-                       'Please copy this link and share via KakaoTalk:\n\n' + shareUrl));
-                copyToClipboard();
-            };
-
-            return (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay" onClick={onClose}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-xl font-bold text-gray-800">📤 {shareTitle}</h3>
-                            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">×</button>
-                        </div>
-
-                        <div className="space-y-3">
-                            {/* 复制链接 */}
-                            <button
-                                onClick={copyToClipboard}
-                                className="w-full flex items-center justify-between gap-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-md"
-                            >
-                                <div className="flex items-center gap-3">
-                                    <span className="text-2xl">🔗</span>
-                                    <span>{copied ? t('linkCopied') : t('copyLink')}</span>
-                                </div>
-                                {copied && <span className="text-sm">✓</span>}
-                            </button>
-
-                            {/* WhatsApp */}
-                            <button
-                                onClick={shareViaWhatsApp}
-                                className="w-full flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold py-3 px-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-md"
-                            >
-                                <span className="text-2xl">💬</span>
-                                <span>{t('shareViaWhatsApp')}</span>
-                            </button>
-
-                            {/* 邮件 */}
-                            <button
-                                onClick={shareViaEmail}
-                                className="w-full flex items-center gap-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold py-3 px-4 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all shadow-md"
-                            >
-                                <span className="text-2xl">📧</span>
-                                <span>{t('shareViaEmail')}</span>
-                            </button>
-
-                            {/* 微信 (中文用户) */}
-                            {(language === 'zh-CN' || language === 'zh-TW') && (
-                                <button
-                                    onClick={shareViaWechat}
-                                    className="w-full flex items-center gap-3 bg-gradient-to-r from-green-400 to-green-500 text-white font-semibold py-3 px-4 rounded-xl hover:from-green-500 hover:to-green-600 transition-all shadow-md"
-                                >
-                                    <span className="text-2xl">💚</span>
-                                    <span>{t('shareViaWechat')}</span>
-                                </button>
-                            )}
-
-                            {/* Line (日文/英文用户) */}
-                            <button
-                                onClick={shareViaLine}
-                                className="w-full flex items-center gap-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-3 px-4 rounded-xl hover:from-green-700 hover:to-green-800 transition-all shadow-md"
-                            >
-                                <span className="text-2xl">💚</span>
-                                <span>{t('shareViaLine')}</span>
-                            </button>
-
-                            {/* KakaoTalk (韩文/英文用户) */}
-                            <button
-                                onClick={shareViaKakao}
-                                className="w-full flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 font-semibold py-3 px-4 rounded-xl hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-md"
-                            >
-                                <span className="text-2xl">💬</span>
-                                <span>{t('shareViaKakao')}</span>
-                            </button>
-                        </div>
-
-                        <div className="mt-6 text-center">
-                            <p className="text-sm text-gray-500">{shareUrl}</p>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
         const QRCodeModal = ({ isOpen, onClose, type, t }) => {
             if (!isOpen) return null;
             
@@ -1110,7 +898,6 @@
             const [days, setDays] = useState([{ date: '', location: '' }]);
             const [weatherData, setWeatherData] = useState(null);
             const [qrModalOpen, setQrModalOpen] = useState(false);
-            const [shareModalOpen, setShareModalOpen] = useState(false);
             const [qrModalType, setQrModalType] = useState('');
             const [showDonation, setShowDonation] = useState(true); // 始终显示打赏区域
             const [loading, setLoading] = useState(false);
@@ -1343,20 +1130,29 @@
                         { date: '', location: 'Deba' },
                         { date: '', location: 'Markina-Xemein' },
                         { date: '', location: 'Gernika' },
+                        { date: '', location: 'Lezama' },
                         { date: '', location: 'Bilbao' },
                         { date: '', location: 'Portugalete' },
                         { date: '', location: 'Castro Urdiales' },
                         { date: '', location: 'Laredo' },
+                        { date: '', location: 'Güemes' },
                         { date: '', location: 'Santander' },
                         { date: '', location: 'Santillana del Mar' },
                         { date: '', location: 'Comillas' },
+                        { date: '', location: 'Colombres' },
                         { date: '', location: 'Llanes' },
                         { date: '', location: 'Ribadesella' },
+                        { date: '', location: 'Sebrayo' },
                         { date: '', location: 'Gijón' },
                         { date: '', location: 'Avilés' },
+                        { date: '', location: 'Muros de Nalón' },
+                        { date: '', location: 'Soto de Luiña' },
+                        { date: '', location: 'Cadavedo' },
                         { date: '', location: 'Luarca' },
+                        { date: '', location: 'La Caridad' },
                         { date: '', location: 'Ribadeo' },
-                        { date: '', location: 'Mondoñedo' },
+                        { date: '', location: 'Lourenzá' },
+                        { date: '', location: 'Gontán' },
                         { date: '', location: 'Vilalba' },
                         { date: '', location: 'Baamonde' },
                         { date: '', location: 'Sobrado dos Monxes' },
@@ -1742,12 +1538,6 @@
                                 <button onClick={() => setUnit(unit === 'metric' ? 'imperial' : 'metric')} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm md:text-base">
                                     {tempUnit}
                                 </button>
-                                <button 
-                                    onClick={() => setShareModalOpen(true)}
-                                    className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition shadow-md hover:shadow-lg text-sm md:text-base font-semibold"
-                                >
-                                    📤 {t('shareButton')}
-                                </button>
                             </div>
                         </div>
 
@@ -1769,23 +1559,35 @@
                                 </button>
                                 <button onClick={() => loadRoute('frances115')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrances115')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (6{t('days')})</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (5{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('francesFull')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrancesFull')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago (34{t('days')})</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago (33{t('days')})</div>
                                 </button>
-                                <button onClick={() => loadRoute('portugueseLisbon')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbon')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (13{t('days')})</div>
+                                <button onClick={() => loadRoute('portugueseLisbonCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbonCentral')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (26{t('days')})</div>
                                 </button>
-                                <button onClick={() => loadRoute('portuguesePorto')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePorto')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (10{t('days')})</div>
+                                <button onClick={() => loadRoute('portuguesePortoCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePortoCentral')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (11{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routeNorthern')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (24{t('days')})</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (33{t('days')})</div>
+                                </button>
+                                <button onClick={() => loadRoute('portugueseCoastal')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseCoastal')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago</div>
+                                </button>
+                                <button onClick={() => loadRoute('primitivo')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routePrimitivo')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Oviedo → Santiago (14{t('days')})</div>
+                                </button>
+                                <button onClick={() => loadRoute('spiritual')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🌊 {t('routeSpiritual')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Pontevedra → Santiago (6{t('days')})</div>
                                 </button>
                             </div>
                         </div>
@@ -2087,15 +1889,6 @@
                         t={t}
                     />
 
-                    {/* 分享模态窗 */}
-                    <ShareModal 
-                        isOpen={shareModalOpen} 
-                        onClose={() => setShareModalOpen(false)} 
-                        t={t}
-                        language={language}
-                    />
-
-
                     <div className="mt-8 text-center text-gray-600 text-xs md:text-sm">
                         <p>{t('footerText')}</p>
                         <p className="mt-2">{t('dataSource')}</p>
@@ -2106,106 +1899,5 @@
 
         ReactDOM.render(<CaminoWeatherApp />, document.getElementById('root'));
     </script>
-
-    <!-- Structured Data / Schema.org -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "CaminoForecast",
-      "alternateName": "朝圣之路天气预报",
-      "url": "https://caminoforecast.com",
-      "description": "Free weather forecast tool for Camino de Santiago pilgrims. Supports all major routes with real-time and historical weather data in 8 languages.",
-      "applicationCategory": "TravelApplication",
-      "operatingSystem": "Any",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "150"
-      },
-      "author": {
-        "@type": "Organization",
-        "name": "CaminoForecast"
-      },
-      "inLanguage": ["en", "es", "zh-CN", "zh-TW", "fr", "de", "pt", "ko"],
-      "featureList": [
-        "Real-time weather forecasts (0-15 days)",
-        "Historical weather data (10-year average)",
-        "Support for all major Camino routes",
-        "8 language support",
-        "Sunrise and sunset times",
-        "Temperature in Celsius and Fahrenheit",
-        "Rain probability and warnings"
-      ]
-    }
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What is the best time to walk the Camino de Santiago?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The best time to walk the Camino is from April to October, with May-June and September being ideal for pleasant weather and fewer crowds. Use CaminoForecast to check historical weather patterns for your preferred dates."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How accurate is the Camino weather forecast?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We provide real-time forecasts from AEMET (Spanish Meteorological Agency) for 0-15 days with high accuracy. For longer-term planning (15 days to 1 year), we offer historical data based on 10-year averages from Open-Meteo."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Which Camino routes does this tool support?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "CaminoForecast supports all major Camino routes including French Way (Camino Frances), Portuguese Way (from Lisbon or Porto), Northern Way (Camino del Norte), Primitive Way (Camino Primitivo), and custom routes. You can create your own itinerary for any Camino path."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is CaminoForecast free to use?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes! CaminoForecast is completely free to use. We provide unlimited weather forecasts for all Camino routes in 8 languages at no cost. You can support the project through donations if you find it helpful."
-          }
-        }
-      ]
-    }
-    </script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://caminoforecast.com/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Camino Weather Forecast",
-          "item": "https://caminoforecast.com/"
-        }
-      ]
-    }
-    </script>
-
 </body>
 </html>
