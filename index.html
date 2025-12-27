@@ -10,19 +10,16 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
         body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif; }
         
-        /* 历史数据卡片特殊样式 */
         .historical-card {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border: 2px dashed #f59e0b !important;
         }
         
-        /* 实时数据卡片样式 */
         .realtime-card {
             background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
             border: 2px solid #e5e7eb;
         }
         
-        /* 加载动画 */
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
@@ -31,13 +28,11 @@
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
         
-        /* 弹窗遮罩 */
         .modal-overlay {
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
         }
         
-        /* 城市自动补全下拉框 */
         .autocomplete-dropdown {
             position: absolute;
             z-index: 1000;
@@ -73,115 +68,46 @@
     <script type="text/babel">
         const { useState, useRef, useEffect } = React;
 
-        // AEMET API配置
         const AEMET_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6ZXl1bjMzMDFAZ21haWwuY29tIiwianRpIjoiODRiNDc5MWEtYzg1Mi00NzNkLTk0MGQtOWFjZmZjZjYwYmE3IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NjY3OTM3MTYsInVzZXJJZCI6Ijg0YjQ3OTFhLWM4NTItNDczZC05NDBkLTlhY2ZmY2Y2MGJhNyIsInJvbGUiOiIifQ.LeyjcmqkmvcW4leoagn8Ev25wQAHPerCfSm-4fmwTLA';
 
-        // 朝圣之路城市列表（用于自动补全）
         const CAMINO_CITIES = [
-            'Santiago de Compostela',
-            'Sarria',
-            'Portomarín',
-            'Palas de Rei',
-            'Arzúa',
-            'O Pedrouzo',
-            'León',
-            'Astorga',
-            'Ponferrada',
-            'O Cebreiro',
-            'Triacastela',
-            'Villafranca del Bierzo',
-            'Burgos',
-            'Pamplona',
-            'Logroño',
-            'Estella',
-            'Santo Domingo de la Calzada',
-            'Nájera',
-            'Belorado',
-            'Frómista',
-            'Carrión de los Condes',
-            'Sahagún',
-            'Mansilla de las Mulas',
-            'Porto',
-            'Tui',
-            'Pontevedra',
-            'Padrón',
-            'Bilbao',
-            'Oviedo',
-            'Lugo',
-            'Foncebadón',
-            'Roncesvalles',
-            'Saint-Jean-Pied-de-Port',
-            'Zubiri',
-            'Puente la Reina',
-            'San Juan de Ortega',
-            'Hornillos del Camino',
-            'Castrojeriz',
-            'Terradillos de los Templarios',
-            'Melide',
-            'Ribadiso',
-            'Pedrouzo',
-            'Lavacolla'
+            'Santiago de Compostela', 'Sarria', 'Portomarín', 'Palas de Rei', 'Arzúa', 'O Pedrouzo',
+            'León', 'Astorga', 'Ponferrada', 'O Cebreiro', 'Triacastela', 'Villafranca del Bierzo',
+            'Burgos', 'Pamplona', 'Logroño', 'Estella', 'Santo Domingo de la Calzada', 'Nájera',
+            'Belorado', 'Frómista', 'Carrión de los Condes', 'Sahagún', 'Mansilla de las Mulas',
+            'Porto', 'Tui', 'Pontevedra', 'Padrón', 'Bilbao', 'Oviedo', 'Lugo', 'Foncebadón',
+            'Roncesvalles', 'Saint-Jean-Pied-de-Port', 'Zubiri', 'Puente la Reina', 'San Juan de Ortega',
+            'Hornillos del Camino', 'Castrojeriz', 'Terradillos de los Templarios', 'Melide',
+            'Los Arcos', 'Bercianos del Real Camino', 'San Martín del Camino', 'Villar de Mazarife',
+            'Lisboa', 'Vila Franca de Xira', 'Azambuja', 'Santarém', 'Golegã', 'Tomar', 'Coimbra',
+            'Águeda', 'Grijó', 'Vilarinho', 'Barcelos', 'Ponte de Lima', 'Rubiães', 'Redondela',
+            'Caldas de Reis', 'Irún', 'San Sebastián', 'Zarautz', 'Deba', 'Gernika', 'Lezama',
+            'Portugalete', 'Castro Urdiales', 'Laredo', 'Santander', 'Santillana del Mar', 'Comillas',
+            'Llanes', 'Ribadesella', 'Gijón', 'Avilés', 'Luarca', 'Ribadeo', 'Mondoñedo', 'Vilalba',
+            'Baamonde', 'Sobrado dos Monxes'
         ].sort();
 
-        // 天气状况翻译（西班牙语到中文及其他语言）
         const weatherTranslations = {
             'zh-CN': {
-                'Despejado': '晴天',
-                'Poco nuboso': '少云',
-                'Parcialmente nuboso': '多云',
-                'Nuboso': '阴天',
-                'Muy nuboso': '密云',
-                'Cubierto': '全阴',
-                'Niebla': '雾',
-                'Bruma': '薄雾',
-                'Lluvia ligera': '小雨',
-                'Lluvia': '中雨',
-                'Lluvia fuerte': '大雨',
-                'Chubascos': '阵雨',
-                'Tormentas': '雷暴',
-                'Nieve': '雪',
-                'Granizo': '冰雹',
-                'N/A': 'N/A'
+                'Despejado': '晴天', 'Poco nuboso': '少云', 'Parcialmente nuboso': '多云',
+                'Nuboso': '阴天', 'Muy nuboso': '密云', 'Cubierto': '全阴', 'Niebla': '雾',
+                'Bruma': '薄雾', 'Lluvia ligera': '小雨', 'Lluvia': '中雨', 'Lluvia fuerte': '大雨',
+                'Chubascos': '阵雨', 'Tormentas': '雷暴', 'Nieve': '雪', 'Granizo': '冰雹', 'N/A': 'N/A'
             },
             'en': {
-                'Despejado': 'Clear',
-                'Poco nuboso': 'Mostly Clear',
-                'Parcialmente nuboso': 'Partly Cloudy',
-                'Nuboso': 'Cloudy',
-                'Muy nuboso': 'Mostly Cloudy',
-                'Cubierto': 'Overcast',
-                'Niebla': 'Fog',
-                'Bruma': 'Mist',
-                'Lluvia ligera': 'Light Rain',
-                'Lluvia': 'Rain',
-                'Lluvia fuerte': 'Heavy Rain',
-                'Chubascos': 'Showers',
-                'Tormentas': 'Thunderstorm',
-                'Nieve': 'Snow',
-                'Granizo': 'Hail',
-                'N/A': 'N/A'
+                'Despejado': 'Clear', 'Poco nuboso': 'Mostly Clear', 'Parcialmente nuboso': 'Partly Cloudy',
+                'Nuboso': 'Cloudy', 'Muy nuboso': 'Mostly Cloudy', 'Cubierto': 'Overcast', 'Niebla': 'Fog',
+                'Bruma': 'Mist', 'Lluvia ligera': 'Light Rain', 'Lluvia': 'Rain', 'Lluvia fuerte': 'Heavy Rain',
+                'Chubascos': 'Showers', 'Tormentas': 'Thunderstorm', 'Nieve': 'Snow', 'Granizo': 'Hail', 'N/A': 'N/A'
             },
             'es': {
-                'Despejado': 'Despejado',
-                'Poco nuboso': 'Poco nuboso',
-                'Parcialmente nuboso': 'Parcialmente nuboso',
-                'Nuboso': 'Nuboso',
-                'Muy nuboso': 'Muy nuboso',
-                'Cubierto': 'Cubierto',
-                'Niebla': 'Niebla',
-                'Bruma': 'Bruma',
-                'Lluvia ligera': 'Lluvia ligera',
-                'Lluvia': 'Lluvia',
-                'Lluvia fuerte': 'Lluvia fuerte',
-                'Chubascos': 'Chubascos',
-                'Tormentas': 'Tormentas',
-                'Nieve': 'Nieve',
-                'Granizo': 'Granizo',
-                'N/A': 'N/A'
+                'Despejado': 'Despejado', 'Poco nuboso': 'Poco nuboso', 'Parcialmente nuboso': 'Parcialmente nuboso',
+                'Nuboso': 'Nuboso', 'Muy nuboso': 'Muy nuboso', 'Cubierto': 'Cubierto', 'Niebla': 'Niebla',
+                'Bruma': 'Bruma', 'Lluvia ligera': 'Lluvia ligera', 'Lluvia': 'Lluvia', 'Lluvia fuerte': 'Lluvia fuerte',
+                'Chubascos': 'Chubascos', 'Tormentas': 'Tormentas', 'Nieve': 'Nieve', 'Granizo': 'Granizo', 'N/A': 'N/A'
             }
         };
 
-        // 天气图标映射
         const getWeatherIcon = (condition) => {
             const conditionLower = condition.toLowerCase();
             if (conditionLower.includes('despejado') || conditionLower.includes('clear')) return '☀️';
@@ -200,14 +126,12 @@
             return '☁️';
         };
 
-        // 翻译天气状况
         const translateWeather = (condition, language) => {
             const langCode = language.startsWith('zh') ? 'zh-CN' : (language === 'es' ? 'es' : 'en');
             const translations = weatherTranslations[langCode];
             return translations[condition] || condition;
         };
 
-        // 多语言翻译字典
         const translations = {
             'zh-CN': {
                 title: '朝圣之路天气查询',
@@ -259,7 +183,15 @@
                 keepWarm: '🧥 注意保暖',
                 dataInfo0to15: '0-15天内出发：显示AEMET实时天气预报',
                 dataInfo15to365: '15天-1年内出发：显示历史平均数据预测（仅供参考）',
-                dataInfoOver1Year: '超过1年：建议在出发前1年内查询天气信息'
+                dataInfoOver1Year: '超过1年：建议在出发前1年内查询天气信息',
+                dataInformation: '数据说明',
+                // 路线名称
+                routeFrances115: '法国之路 115公里',
+                routeFrancesFull: '法国之路全程（33阶段）',
+                routePortugueseLisbon: '葡萄牙之路（里斯本出发）',
+                routePortuguesePorto: '葡萄牙之路（波尔图出发）',
+                routeNorthern: '北方之路（36阶段）',
+                routePrimitive: '原始之路'
             },
             'en': {
                 title: 'Camino Weather Tool',
@@ -311,7 +243,14 @@
                 keepWarm: '🧥 Keep warm',
                 dataInfo0to15: 'Within 15 days: Real-time AEMET forecast',
                 dataInfo15to365: '15 days - 1 year: Historical prediction (reference only)',
-                dataInfoOver1Year: 'Beyond 1 year: Check within 1 year of departure'
+                dataInfoOver1Year: 'Beyond 1 year: Check within 1 year of departure',
+                dataInformation: 'Data Information',
+                routeFrances115: 'French Way 115km',
+                routeFrancesFull: 'French Way Full (33 stages)',
+                routePortugueseLisbon: 'Portuguese Way (from Lisbon)',
+                routePortuguesePorto: 'Portuguese Way (from Porto)',
+                routeNorthern: 'Northern Way (36 stages)',
+                routePrimitive: 'Primitive Way'
             },
             'es': {
                 title: 'Herramienta del Tiempo del Camino',
@@ -363,40 +302,260 @@
                 keepWarm: '🧥 Abrígate',
                 dataInfo0to15: 'Dentro de 15 días: Pronóstico AEMET en tiempo real',
                 dataInfo15to365: '15 días - 1 año: Predicción histórica (referencia)',
-                dataInfoOver1Year: 'Más de 1 año: Consulte dentro de 1 año antes'
+                dataInfoOver1Year: 'Más de 1 año: Consulte dentro de 1 año antes',
+                dataInformation: 'Información de Datos',
+                routeFrances115: 'Camino Francés 115km',
+                routeFrancesFull: 'Camino Francés Completo (33 etapas)',
+                routePortugueseLisbon: 'Camino Portugués (desde Lisboa)',
+                routePortuguesePorto: 'Camino Portugués (desde Porto)',
+                routeNorthern: 'Camino del Norte (36 etapas)',
+                routePrimitive: 'Camino Primitivo'
+            },
+            'fr': {
+                title: 'Outil Météo du Chemin',
+                subtitle: 'Prévisions météo précises pour tous les pèlerins',
+                selectRoute: 'Sélectionner Route',
+                customRoute: '✨ Route Personnalisée',
+                customRouteDesc: 'Créez votre propre route',
+                itinerary: 'Itinéraire',
+                days: 'jours',
+                total: 'Total',
+                autoFillDates: 'Remplir Dates',
+                addDay: 'Ajouter Jour',
+                locationPlaceholder: 'Tapez nom de ville',
+                queryWeather: 'Consulter Météo',
+                querying: 'Consultation...',
+                weatherForecast: 'Prévisions Météo',
+                cardView: '📋 Vue Tableau',
+                tableView: '🎴 Vue Cartes',
+                copyTable: 'Copier Tableau',
+                copied: 'Copié',
+                weather: 'Météo',
+                dayTemp: 'Temp. Jour',
+                nightTemp: 'Temp. Nuit',
+                feelsLike: 'Ressenti',
+                rainProb: 'Prob. Pluie',
+                sunrise: 'Lever',
+                sunset: 'Coucher',
+                usageTip: '💡 Astuce',
+                usageTipText: 'Changez en "Vue Cartes" pour meilleur affichage.',
+                notice: '⚠️ Avertissement',
+                noticeText: 'La météo en montagne change rapidement. Sécurité d\'abord!',
+                footerText: 'Outil météo pour pèlerins du Camino',
+                dataSource: 'Source: AEMET (Agence météo espagnole)',
+                weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                dateTooFarTitle: 'Date Hors Limite',
+                dateTooFarMessage: 'Date sélectionnée à plus d\'1 an. Consultez dans l\'année précédant départ.',
+                understand: 'Compris',
+                historicalDataWarning: 'Avis: Dates dépassent prévisions. Données historiques pour référence.',
+                historicalDataBadge: 'Prédiction Historique',
+                realTimeForecast: 'Prévision Temps Réel',
+                dataSourceLabel: 'Source',
+                historicalAvgSource: 'Basé sur historique',
+                realtimeSource: 'Prévision AEMET temps réel',
+                errorFetchingWeather: 'Erreur données météo',
+                retryQuery: 'Réessayer',
+                noRainData: 'Pas données pluie',
+                stormWarning: '⚠️ Alerte Tempête',
+                bringUmbrella: '🌧️ Prenez parapluie',
+                keepWarm: '🧥 Restez au chaud',
+                dataInfo0to15: 'Dans 15 jours: Prévisions AEMET temps réel',
+                dataInfo15to365: '15 jours - 1 an: Prédiction historique (référence)',
+                dataInfoOver1Year: 'Plus d\'1 an: Consultez dans l\'année',
+                dataInformation: 'Informations Données',
+                routeFrances115: 'Chemin Français 115km',
+                routeFrancesFull: 'Chemin Français Complet (33 étapes)',
+                routePortugueseLisbon: 'Chemin Portugais (depuis Lisbonne)',
+                routePortuguesePorto: 'Chemin Portugais (depuis Porto)',
+                routeNorthern: 'Chemin du Nord (36 étapes)',
+                routePrimitive: 'Chemin Primitif'
+            },
+            'de': {
+                title: 'Camino Wetter-Tool',
+                subtitle: 'Genaue Wettervorhersagen für alle Pilger',
+                selectRoute: 'Route Wählen',
+                customRoute: '✨ Benutzerdefinierte Route',
+                customRouteDesc: 'Eigene Route erstellen',
+                itinerary: 'Reiseplan',
+                days: 'Tage',
+                total: 'Gesamt',
+                autoFillDates: 'Daten Ausfüllen',
+                addDay: 'Tag Hinzufügen',
+                locationPlaceholder: 'Stadtname eingeben',
+                queryWeather: 'Wetter Abfragen',
+                querying: 'Abfrage...',
+                weatherForecast: 'Wettervorhersage',
+                cardView: '📋 Tabellenansicht',
+                tableView: '🎴 Kartenansicht',
+                copyTable: 'Tabelle Kopieren',
+                copied: 'Kopiert',
+                weather: 'Wetter',
+                dayTemp: 'Tagestemperatur',
+                nightTemp: 'Nachttemperatur',
+                feelsLike: 'Gefühlt',
+                rainProb: 'Regenwahrsch.',
+                sunrise: 'Sonnenaufgang',
+                sunset: 'Sonnenuntergang',
+                usageTip: '💡 Tipp',
+                usageTipText: 'Wechseln zu "Kartenansicht" für bessere Anzeige.',
+                notice: '⚠️ Hinweis',
+                noticeText: 'Bergwetter ändert sich schnell. Sicherheit zuerst!',
+                footerText: 'Wetter-Tool für Camino-Pilger',
+                dataSource: 'Datenquelle: AEMET (Spanischer Wetterdienst)',
+                weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+                dateTooFarTitle: 'Datum Außerhalb',
+                dateTooFarMessage: 'Datum über 1 Jahr. Bitte innerhalb 1 Jahr vor Abreise prüfen.',
+                understand: 'Verstanden',
+                historicalDataWarning: 'Hinweis: Daten überschreiten Vorhersage. Historische Daten zur Referenz.',
+                historicalDataBadge: 'Historische Vorhersage',
+                realTimeForecast: 'Echtzeit-Vorhersage',
+                dataSourceLabel: 'Quelle',
+                historicalAvgSource: 'Basierend auf Historie',
+                realtimeSource: 'AEMET Echtzeit-Vorhersage',
+                errorFetchingWeather: 'Wetterdaten-Fehler',
+                retryQuery: 'Wiederholen',
+                noRainData: 'Keine Regendaten',
+                stormWarning: '⚠️ Sturmwarnung',
+                bringUmbrella: '🌧️ Regenschirm mitbringen',
+                keepWarm: '🧥 Warm bleiben',
+                dataInfo0to15: 'Innerhalb 15 Tage: AEMET Echtzeit-Vorhersage',
+                dataInfo15to365: '15 Tage - 1 Jahr: Historische Vorhersage (Referenz)',
+                dataInfoOver1Year: 'Über 1 Jahr: Innerhalb 1 Jahr prüfen',
+                dataInformation: 'Dateninformation',
+                routeFrances115: 'Französischer Weg 115km',
+                routeFrancesFull: 'Französischer Weg Komplett (33 Etappen)',
+                routePortugueseLisbon: 'Portugiesischer Weg (von Lissabon)',
+                routePortuguesePorto: 'Portugiesischer Weg (von Porto)',
+                routeNorthern: 'Nordweg (36 Etappen)',
+                routePrimitive: 'Primitiver Weg'
+            },
+            'pt': {
+                title: 'Ferramenta Meteorológica do Caminho',
+                subtitle: 'Previsões meteorológicas precisas para todos os peregrinos',
+                selectRoute: 'Selecionar Rota',
+                customRoute: '✨ Rota Personalizada',
+                customRouteDesc: 'Criar sua própria rota',
+                itinerary: 'Itinerário',
+                days: 'dias',
+                total: 'Total',
+                autoFillDates: 'Preencher Datas',
+                addDay: 'Adicionar Dia',
+                locationPlaceholder: 'Digite nome da cidade',
+                queryWeather: 'Consultar Tempo',
+                querying: 'Consultando...',
+                weatherForecast: 'Previsão do Tempo',
+                cardView: '📋 Vista Tabela',
+                tableView: '🎴 Vista Cartões',
+                copyTable: 'Copiar Tabela',
+                copied: 'Copiado',
+                weather: 'Tempo',
+                dayTemp: 'Temp. Dia',
+                nightTemp: 'Temp. Noite',
+                feelsLike: 'Sensação',
+                rainProb: 'Prob. Chuva',
+                sunrise: 'Nascer do Sol',
+                sunset: 'Pôr do Sol',
+                usageTip: '💡 Dica',
+                usageTipText: 'Mude para "Vista Cartões" para melhor visualização.',
+                notice: '⚠️ Aviso',
+                noticeText: 'Tempo na montanha muda rápido. Segurança primeiro!',
+                footerText: 'Ferramenta meteorológica para peregrinos',
+                dataSource: 'Fonte: AEMET (Agência Meteorológica Espanhola)',
+                weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dateTooFarTitle: 'Data Fora do Limite',
+                dateTooFarMessage: 'Data selecionada a mais de 1 ano. Consulte dentro de 1 ano da partida.',
+                understand: 'Entendi',
+                historicalDataWarning: 'Aviso: Datas excedem previsão. Dados históricos para referência.',
+                historicalDataBadge: 'Previsão Histórica',
+                realTimeForecast: 'Previsão Tempo Real',
+                dataSourceLabel: 'Fonte',
+                historicalAvgSource: 'Baseado em histórico',
+                realtimeSource: 'Previsão AEMET tempo real',
+                errorFetchingWeather: 'Erro ao obter dados',
+                retryQuery: 'Tentar Novamente',
+                noRainData: 'Sem dados de chuva',
+                stormWarning: '⚠️ Alerta Tempestade',
+                bringUmbrella: '🌧️ Leve guarda-chuva',
+                keepWarm: '🧥 Mantenha-se aquecido',
+                dataInfo0to15: 'Dentro de 15 dias: Previsão AEMET tempo real',
+                dataInfo15to365: '15 dias - 1 ano: Previsão histórica (referência)',
+                dataInfoOver1Year: 'Mais de 1 ano: Consulte dentro de 1 ano',
+                dataInformation: 'Informação de Dados',
+                routeFrances115: 'Caminho Francês 115km',
+                routeFrancesFull: 'Caminho Francês Completo (33 etapas)',
+                routePortugueseLisbon: 'Caminho Português (desde Lisboa)',
+                routePortuguesePorto: 'Caminho Português (desde Porto)',
+                routeNorthern: 'Caminho do Norte (36 etapas)',
+                routePrimitive: 'Caminho Primitivo'
+            },
+            'ko': {
+                title: '산티아고 순례길 날씨 도구',
+                subtitle: '모든 순례자를 위한 정확한 날씨 예보',
+                selectRoute: '경로 선택',
+                customRoute: '✨ 맞춤 경로',
+                customRouteDesc: '나만의 경로 만들기',
+                itinerary: '일정',
+                days: '일',
+                total: '총',
+                autoFillDates: '날짜 자동 입력',
+                addDay: '일정 추가',
+                locationPlaceholder: '도시 이름 입력',
+                queryWeather: '날씨 조회',
+                querying: '조회 중...',
+                weatherForecast: '날씨 예보',
+                cardView: '📋 표 보기',
+                tableView: '🎴 카드 보기',
+                copyTable: '표 복사',
+                copied: '복사됨',
+                weather: '날씨',
+                dayTemp: '낮 기온',
+                nightTemp: '밤 기온',
+                feelsLike: '체감',
+                rainProb: '강수 확률',
+                sunrise: '일출',
+                sunset: '일몰',
+                usageTip: '💡 사용 팁',
+                usageTipText: '"카드 보기"로 전환하여 더 나은 표시.',
+                notice: '⚠️ 주의',
+                noticeText: '산악 날씨는 빠르게 변합니다. 안전 우선!',
+                footerText: '순례길 날씨 도구',
+                dataSource: '데이터 출처: AEMET (스페인 기상청)',
+                weekdays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
+                dateTooFarTitle: '날짜 범위 초과',
+                dateTooFarMessage: '선택한 날짜가 1년 이상입니다. 출발 1년 이내 조회하세요.',
+                understand: '알겠습니다',
+                historicalDataWarning: '알림: 날짜가 예보 범위 초과. 역사 데이터는 참고용.',
+                historicalDataBadge: '역사적 예측',
+                realTimeForecast: '실시간 예보',
+                dataSourceLabel: '출처',
+                historicalAvgSource: '역사 기반',
+                realtimeSource: 'AEMET 실시간 예보',
+                errorFetchingWeather: '날씨 데이터 오류',
+                retryQuery: '다시 시도',
+                noRainData: '강수 데이터 없음',
+                stormWarning: '⚠️ 폭풍 경보',
+                bringUmbrella: '🌧️ 우산 챙기세요',
+                keepWarm: '🧥 따뜻하게 입으세요',
+                dataInfo0to15: '15일 이내: AEMET 실시간 예보',
+                dataInfo15to365: '15일 - 1년: 역사적 예측 (참고용)',
+                dataInfoOver1Year: '1년 초과: 1년 이내 조회하세요',
+                dataInformation: '데이터 정보',
+                routeFrances115: '프랑스 길 115km',
+                routeFrancesFull: '프랑스 길 전체 (33단계)',
+                routePortugueseLisbon: '포르투갈 길 (리스본 출발)',
+                routePortuguesePorto: '포르투갈 길 (포르투 출발)',
+                routeNorthern: '북쪽 길 (36단계)',
+                routePrimitive: '원시 길'
             }
         };
 
-        // 其他语言简化版
         translations['zh-TW'] = {...translations['zh-CN'], 
             title: '朝聖之路天氣查詢',
             weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
         };
-        translations['fr'] = {...translations['en'], 
-            title: 'Météo du Chemin', 
-            days: 'jours',
-            weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
-        };
-        translations['de'] = {...translations['en'], 
-            title: 'Camino Wetter', 
-            days: 'Tage',
-            weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
-        };
-        translations['pt'] = {...translations['en'], 
-            title: 'Tempo do Caminho', 
-            days: 'dias',
-            weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
-        };
-        translations['ko'] = {...translations['en'], 
-            title: '순례길 날씨', 
-            days: '일',
-            weekdays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
-        };
 
-        // 弹窗组件
         const Modal = ({ isOpen, onClose, title, message, t }) => {
             if (!isOpen) return null;
-
             return (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay" onClick={onClose}>
                     <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
@@ -405,10 +564,7 @@
                             <h3 className="text-2xl font-bold text-gray-800">{title}</h3>
                         </div>
                         <p className="text-gray-600 mb-6 leading-relaxed">{message}</p>
-                        <button 
-                            onClick={onClose}
-                            className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all"
-                        >
+                        <button onClick={onClose} className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all">
                             {t('understand')}
                         </button>
                     </div>
@@ -416,7 +572,6 @@
             );
         };
 
-        // 城市自动补全组件
         const CityAutocomplete = ({ value, onChange, placeholder, dayIndex }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [showSuggestions, setShowSuggestions] = useState(false);
@@ -431,7 +586,6 @@
                         setShowSuggestions(false);
                     }
                 };
-
                 document.addEventListener('mousedown', handleClickOutside);
                 return () => document.removeEventListener('mousedown', handleClickOutside);
             }, []);
@@ -439,7 +593,6 @@
             const handleInputChange = (e) => {
                 const inputValue = e.target.value;
                 onChange(e);
-
                 if (inputValue.length > 0) {
                     const filtered = CAMINO_CITIES.filter(city =>
                         city.toLowerCase().startsWith(inputValue.toLowerCase())
@@ -461,12 +614,9 @@
 
             const handleKeyDown = (e) => {
                 if (!showSuggestions) return;
-
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
-                    setSelectedIndex(prev => 
-                        prev < suggestions.length - 1 ? prev + 1 : prev
-                    );
+                    setSelectedIndex(prev => prev < suggestions.length - 1 ? prev + 1 : prev);
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
                     setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
@@ -522,7 +672,7 @@
             const [viewMode, setViewMode] = useState('cards');
             const [showModal, setShowModal] = useState(false);
 
-            const t = (key) => translations[language][key] || translations['zh-CN'][key];
+            const t = (key) => translations[language]?.[key] || translations['zh-CN'][key] || key;
             const tempUnit = unit === 'metric' ? '°C' : '°F';
 
             const convertTemp = (celsius) => {
@@ -530,60 +680,27 @@
                 return unit === 'imperial' ? Math.round(celsius * 9 / 5 + 32) : Math.round(celsius);
             };
 
-            // 地点到AEMET市镇代码的映射
             const locationToMunicipioId = {
-                'santiago de compostela': '15078',
-                'santiago': '15078',
-                'sarria': '27062',
-                'portomarin': '27046',
-                'portomarín': '27046',
-                'palas de rei': '27039',
-                'arzua': '15005',
-                'arzúa': '15005',
-                'o pedrouzo': '15001',
-                'pedrouzo': '15001',
-                'leon': '24089',
-                'león': '24089',
-                'astorga': '24008',
-                'ponferrada': '24115',
-                'o cebreiro': '27050',
-                'triacastela': '27066',
-                'villafranca del bierzo': '24220',
-                'burgos': '09059',
-                'pamplona': '31201',
-                'logroño': '26089',
-                'estella': '31088',
-                'santo domingo de la calzada': '26158',
-                'najera': '26107',
-                'nájera': '26107',
-                'belorado': '09046',
-                'fromista': '34072',
-                'frómista': '34072',
-                'carrion de los condes': '34046',
-                'carrión de los condes': '34046',
-                'sahagun': '24139',
-                'sahagún': '24139',
-                'mansilla de las mulas': '24091',
-                'porto': '13037',
-                'tui': '36057',
-                'pontevedra': '36038',
-                'padron': '15063',
-                'padrón': '15063',
-                'bilbao': '48020',
-                'oviedo': '33044',
-                'lugo': '27028',
-                'foncebadón': '24063',
-                'roncesvalles': '31224',
-                'saint-jean-pied-de-port': '64485',
-                'zubiri': '31272',
-                'puente la reina': '31206',
-                'san juan de ortega': '09284',
-                'hornillos del camino': '09178',
-                'castrojeriz': '09086',
-                'terradillos de los templarios': '34900',
-                'melide': '15052',
-                'ribadiso': '15005',
-                'lavacolla': '15078'
+                'santiago de compostela': '15078', 'santiago': '15078', 'sarria': '27062',
+                'portomarin': '27046', 'portomarín': '27046', 'palas de rei': '27039',
+                'arzua': '15005', 'arzúa': '15005', 'o pedrouzo': '15001', 'pedrouzo': '15001',
+                'leon': '24089', 'león': '24089', 'astorga': '24008', 'ponferrada': '24115',
+                'o cebreiro': '27050', 'triacastela': '27066', 'villafranca del bierzo': '24220',
+                'burgos': '09059', 'pamplona': '31201', 'logroño': '26089', 'estella': '31088',
+                'santo domingo de la calzada': '26158', 'najera': '26107', 'nájera': '26107',
+                'belorado': '09046', 'fromista': '34072', 'frómista': '34072',
+                'carrion de los condes': '34046', 'carrión de los condes': '34046',
+                'sahagun': '24139', 'sahagún': '24139', 'mansilla de las mulas': '24091',
+                'porto': '13037', 'tui': '36057', 'pontevedra': '36038', 'padron': '15063', 'padrón': '15063',
+                'bilbao': '48020', 'oviedo': '33044', 'lugo': '27028', 'foncebadón': '24063',
+                'roncesvalles': '31224', 'saint-jean-pied-de-port': '64485', 'zubiri': '31272',
+                'puente la reina': '31206', 'san juan de ortega': '09284', 'hornillos del camino': '09178',
+                'castrojeriz': '09086', 'terradillos de los templarios': '34900', 'melide': '15052',
+                'los arcos': '31146', 'bercianos del real camino': '24020', 'san martín del camino': '24147',
+                'villar de mazarife': '24226', 'lisboa': '1110600', 'coimbra': '0605', 
+                'irún': '20055', 'san sebastián': '20069', 'zarautz': '20079', 'deba': '20029',
+                'gernika': '48037', 'santander': '39075', 'ribadeo': '27053', 'mondoñedo': '27030',
+                'vilalba': '27066', 'baamonde': '27005', 'sobrado dos monxes': '15081'
             };
 
             const getMunicipioId = (location) => {
@@ -591,7 +708,6 @@
                 return locationToMunicipioId[normalized] || '15078';
             };
 
-            // 计算日期差
             const getDaysDifference = (dateString) => {
                 const targetDate = new Date(dateString);
                 const today = new Date();
@@ -600,11 +716,10 @@
                 return Math.floor((targetDate - today) / (1000 * 60 * 60 * 24));
             };
 
-            // 预设路线
+            // 官方路线数据
             const presetRoutes = {
                 custom: { days: [{ date: '', location: '' }] },
                 frances115: {
-                    name: '法国之路 115公里',
                     days: [
                         { date: '', location: 'Sarria' },
                         { date: '', location: 'Portomarín' },
@@ -614,37 +729,7 @@
                         { date: '', location: 'Santiago de Compostela' }
                     ]
                 },
-                portuguesePorto: {
-                    name: '葡萄牙之路（波尔图出发）',
-                    days: [
-                        { date: '', location: 'Porto' },
-                        { date: '', location: 'Tui' },
-                        { date: '', location: 'Pontevedra' },
-                        { date: '', location: 'Padrón' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                portugueseLisbon: {
-                    name: '葡萄牙之路（里斯本出发）',
-                    days: [
-                        { date: '', location: 'Porto' },
-                        { date: '', location: 'Tui' },
-                        { date: '', location: 'Pontevedra' },
-                        { date: '', location: 'Padrón' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                northern: {
-                    name: '北方之路',
-                    days: [
-                        { date: '', location: 'Bilbao' },
-                        { date: '', location: 'Lugo' },
-                        { date: '', location: 'Arzúa' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
                 francesFull: {
-                    name: '法国之路全程（31天精简版）',
                     days: [
                         { date: '', location: 'Saint-Jean-Pied-de-Port' },
                         { date: '', location: 'Roncesvalles' },
@@ -652,16 +737,22 @@
                         { date: '', location: 'Pamplona' },
                         { date: '', location: 'Puente la Reina' },
                         { date: '', location: 'Estella' },
+                        { date: '', location: 'Los Arcos' },
                         { date: '', location: 'Logroño' },
                         { date: '', location: 'Nájera' },
                         { date: '', location: 'Santo Domingo de la Calzada' },
                         { date: '', location: 'Belorado' },
+                        { date: '', location: 'San Juan de Ortega' },
                         { date: '', location: 'Burgos' },
+                        { date: '', location: 'Hornillos del Camino' },
+                        { date: '', location: 'Castrojeriz' },
                         { date: '', location: 'Frómista' },
                         { date: '', location: 'Carrión de los Condes' },
-                        { date: '', location: 'Sahagún' },
+                        { date: '', location: 'Terradillos de los Templarios' },
+                        { date: '', location: 'Bercianos del Real Camino' },
                         { date: '', location: 'Mansilla de las Mulas' },
                         { date: '', location: 'León' },
+                        { date: '', location: 'San Martín del Camino' },
                         { date: '', location: 'Astorga' },
                         { date: '', location: 'Foncebadón' },
                         { date: '', location: 'Ponferrada' },
@@ -673,6 +764,74 @@
                         { date: '', location: 'Palas de Rei' },
                         { date: '', location: 'Arzúa' },
                         { date: '', location: 'O Pedrouzo' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                portugueseLisbon: {
+                    days: [
+                        { date: '', location: 'Lisboa' },
+                        { date: '', location: 'Santarém' },
+                        { date: '', location: 'Tomar' },
+                        { date: '', location: 'Coimbra' },
+                        { date: '', location: 'Porto' },
+                        { date: '', location: 'Barcelos' },
+                        { date: '', location: 'Ponte de Lima' },
+                        { date: '', location: 'Tui' },
+                        { date: '', location: 'Redondela' },
+                        { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Caldas de Reis' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                portuguesePorto: {
+                    days: [
+                        { date: '', location: 'Porto' },
+                        { date: '', location: 'Barcelos' },
+                        { date: '', location: 'Ponte de Lima' },
+                        { date: '', location: 'Rubiães' },
+                        { date: '', location: 'Tui' },
+                        { date: '', location: 'Redondela' },
+                        { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Caldas de Reis' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                northern: {
+                    days: [
+                        { date: '', location: 'Irún' },
+                        { date: '', location: 'San Sebastián' },
+                        { date: '', location: 'Zarautz' },
+                        { date: '', location: 'Deba' },
+                        { date: '', location: 'Gernika' },
+                        { date: '', location: 'Bilbao' },
+                        { date: '', location: 'Portugalete' },
+                        { date: '', location: 'Castro Urdiales' },
+                        { date: '', location: 'Laredo' },
+                        { date: '', location: 'Santander' },
+                        { date: '', location: 'Santillana del Mar' },
+                        { date: '', location: 'Comillas' },
+                        { date: '', location: 'Llanes' },
+                        { date: '', location: 'Ribadesella' },
+                        { date: '', location: 'Gijón' },
+                        { date: '', location: 'Avilés' },
+                        { date: '', location: 'Luarca' },
+                        { date: '', location: 'Ribadeo' },
+                        { date: '', location: 'Mondoñedo' },
+                        { date: '', location: 'Vilalba' },
+                        { date: '', location: 'Baamonde' },
+                        { date: '', location: 'Sobrado dos Monxes' },
+                        { date: '', location: 'Arzúa' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                primitive: {
+                    days: [
+                        { date: '', location: 'Oviedo' },
+                        { date: '', location: 'Lugo' },
+                        { date: '', location: 'Melide' },
+                        { date: '', location: 'Arzúa' },
                         { date: '', location: 'Santiago de Compostela' }
                     ]
                 }
@@ -696,7 +855,6 @@
                 }));
             };
 
-            // 调用AEMET API获取天气
             const fetchWeather = async () => {
                 const validDays = days.filter(d => d.date && d.location);
                 if (validDays.length === 0) {
@@ -704,7 +862,6 @@
                     return;
                 }
 
-                // 检查是否有超过1年的日期
                 const hasDateOver1Year = validDays.some(day => getDaysDifference(day.date) > 365);
                 if (hasDateOver1Year) {
                     setShowModal(true);
@@ -717,14 +874,12 @@
                 try {
                     const results = await Promise.all(validDays.map(async (day) => {
                         const daysDiff = getDaysDifference(day.date);
-                        
                         if (daysDiff > 15) {
                             return await fetchHistoricalWeather(day);
                         } else {
                             return await fetchAEMETWeather(day);
                         }
                     }));
-                    
                     setWeatherData(results);
                 } catch (err) {
                     console.error('Weather fetch error:', err);
@@ -734,7 +889,6 @@
                 }
             };
 
-            // 获取AEMET实时天气（0-15天）
             const fetchAEMETWeather = async (day) => {
                 try {
                     const municipioId = getMunicipioId(day.location);
@@ -776,98 +930,59 @@
                     const hasStormWarning = rainProb > 80 || condition.toLowerCase().includes('tormenta');
 
                     return {
-                        location: day.location,
-                        date: day.date,
-                        isHistorical: false,
-                        dayTemp: Math.round(tempMax),
-                        nightTemp: Math.round(tempMin),
-                        dayFeels: Math.round(sensMax),
-                        nightFeels: Math.round(sensMin),
-                        rainChance: rainProb,
-                        condition: condition,
-                        sunrise: sunrise,
-                        sunset: sunset,
-                        hasStormWarning: hasStormWarning,
-                        needUmbrella: rainProb > 50,
-                        needWarm: tempMin < 10,
-                        dataSource: 'AEMET'
+                        location: day.location, date: day.date, isHistorical: false,
+                        dayTemp: Math.round(tempMax), nightTemp: Math.round(tempMin),
+                        dayFeels: Math.round(sensMax), nightFeels: Math.round(sensMin),
+                        rainChance: rainProb, condition: condition, sunrise: sunrise, sunset: sunset,
+                        hasStormWarning: hasStormWarning, needUmbrella: rainProb > 50,
+                        needWarm: tempMin < 10, dataSource: 'AEMET'
                     };
-
                 } catch (err) {
                     console.error('AEMET fetch error:', err);
                     return getFallbackWeather(day);
                 }
             };
 
-            // 获取历史平均天气（>15天）
             const fetchHistoricalWeather = async (day) => {
                 const targetDate = new Date(day.date);
                 const month = targetDate.getMonth() + 1;
                 const monthAvg = getMonthlyAverage(month);
-                
                 return {
-                    location: day.location,
-                    date: day.date,
-                    isHistorical: true,
-                    dayTemp: monthAvg.day,
-                    nightTemp: monthAvg.night,
-                    dayFeels: null,
-                    nightFeels: null,
-                    rainChance: null,
-                    condition: 'N/A',
-                    sunrise: null,
-                    sunset: null,
-                    hasStormWarning: false,
-                    needUmbrella: false,
-                    needWarm: monthAvg.night < 10,
-                    dataSource: 'Historical Average'
+                    location: day.location, date: day.date, isHistorical: true,
+                    dayTemp: monthAvg.day, nightTemp: monthAvg.night,
+                    dayFeels: null, nightFeels: null, rainChance: null, condition: 'N/A',
+                    sunrise: null, sunset: null, hasStormWarning: false, needUmbrella: false,
+                    needWarm: monthAvg.night < 10, dataSource: 'Historical Average'
                 };
             };
 
-            // 降级方案：模拟数据
             const getFallbackWeather = (day) => {
                 const targetDate = new Date(day.date);
                 const month = targetDate.getMonth() + 1;
                 const monthAvg = getMonthlyAverage(month);
-                
                 const randomVar = Math.floor(Math.random() * 6) - 3;
                 const dayTemp = monthAvg.day + randomVar;
                 const nightTemp = monthAvg.night + randomVar;
                 const rainChance = Math.floor(Math.random() * 100);
-                
                 return {
-                    location: day.location,
-                    date: day.date,
-                    isHistorical: false,
-                    dayTemp: dayTemp,
-                    nightTemp: nightTemp,
-                    dayFeels: dayTemp - 2,
-                    nightFeels: nightTemp - 2,
-                    rainChance: rainChance,
-                    condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
-                    sunrise: '08:00',
-                    sunset: '18:30',
-                    hasStormWarning: rainChance > 80,
-                    needUmbrella: rainChance > 50,
-                    needWarm: nightTemp < 10,
-                    dataSource: 'Simulated'
+                    location: day.location, date: day.date, isHistorical: false,
+                    dayTemp: dayTemp, nightTemp: nightTemp, dayFeels: dayTemp - 2, nightFeels: nightTemp - 2,
+                    rainChance: rainChance, condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
+                    sunrise: '08:00', sunset: '18:30', hasStormWarning: rainChance > 80,
+                    needUmbrella: rainChance > 50, needWarm: nightTemp < 10, dataSource: 'Simulated'
                 };
             };
 
-            // 月度平均温度
             const getMonthlyAverage = (month) => {
                 const averages = {
-                    1: { day: 11, night: 4 }, 2: { day: 12, night: 4 },
-                    3: { day: 14, night: 6 }, 4: { day: 15, night: 7 },
-                    5: { day: 18, night: 10 }, 6: { day: 21, night: 13 },
-                    7: { day: 23, night: 15 }, 8: { day: 23, night: 15 },
-                    9: { day: 21, night: 13 }, 10: { day: 17, night: 10 },
-                    11: { day: 13, night: 7 }, 12: { day: 11, night: 5 }
+                    1: { day: 11, night: 4 }, 2: { day: 12, night: 4 }, 3: { day: 14, night: 6 },
+                    4: { day: 15, night: 7 }, 5: { day: 18, night: 10 }, 6: { day: 21, night: 13 },
+                    7: { day: 23, night: 15 }, 8: { day: 23, night: 15 }, 9: { day: 21, night: 13 },
+                    10: { day: 17, night: 10 }, 11: { day: 13, night: 7 }, 12: { day: 11, night: 5 }
                 };
                 return averages[month] || { day: 15, night: 8 };
             };
 
-            // 复制表格
             const copyTableData = () => {
                 if (!weatherData) return;
                 let text = `${t('weatherForecast')}\n\n`;
@@ -920,7 +1035,7 @@
                         </div>
 
                         <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
-                            <h3 className="font-semibold text-blue-900 mb-2 text-sm md:text-base">📊 {language.startsWith('zh') ? '数据说明' : 'Data Information'}</h3>
+                            <h3 className="font-semibold text-blue-900 mb-2 text-sm md:text-base">📊 {t('dataInformation')}</h3>
                             <div className="text-xs md:text-sm text-blue-800 space-y-1">
                                 <p><strong>• </strong>{t('dataInfo0to15')}</p>
                                 <p><strong>• </strong>{t('dataInfo15to365')}</p>
@@ -936,24 +1051,24 @@
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">{t('customRouteDesc')}</div>
                                 </button>
                                 <button onClick={() => loadRoute('frances115')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {language.startsWith('zh') ? '法国之路 115公里' : 'French Way 115km'}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (6{language.startsWith('zh') ? '天' : ' days'})</div>
-                                </button>
-                                <button onClick={() => loadRoute('portuguesePorto')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（波尔图）' : 'Portuguese Way (Porto)'}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago</div>
-                                </button>
-                                <button onClick={() => loadRoute('portugueseLisbon')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（里斯本）' : 'Portuguese Way (Lisbon)'}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisbon → Santiago</div>
-                                </button>
-                                <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {language.startsWith('zh') ? '北方之路' : 'Northern Way'}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Bilbao → Santiago</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrances115')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (6{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('francesFull')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {language.startsWith('zh') ? '法国之路全程（31天）' : 'French Way Full (31d)'}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrancesFull')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago (34{t('days')})</div>
+                                </button>
+                                <button onClick={() => loadRoute('portugueseLisbon')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbon')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (13{t('days')})</div>
+                                </button>
+                                <button onClick={() => loadRoute('portuguesePorto')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePorto')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (10{t('days')})</div>
+                                </button>
+                                <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routeNorthern')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (24{t('days')})</div>
                                 </button>
                             </div>
                         </div>
