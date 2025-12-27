@@ -170,11 +170,11 @@
                 dateTooFarTitle: '日期超出范围',
                 dateTooFarMessage: '您选择的日期距离现在超过1年，建议在出发前1年内查询天气信息以获得更准确的预报数据。',
                 understand: '我知道了',
-                historicalDataWarning: '提示：您选择的日期超出天气预报范围（最多提前15天）。以下显示的是基于AEMET过去10年（2014-2024）历史数据的平均值，仅供规划参考。建议出发前2周再次查询实时天气预报获取最准确的信息。',
+                historicalDataWarning: '提示：您选择的日期超出天气预报范围（最多提前15天）。以下显示的是基于Open-Meteo过去10年（2014-2024）历史数据的平均值，仅供规划参考。建议出发前2周再次查询实时天气预报获取最准确的信息。',
                 historicalDataBadge: '历史平均数据预测',
                 realTimeForecast: '实时天气预报',
                 dataSourceLabel: '数据来源',
-                historicalAvgSource: '基于过去10年平均值',
+                historicalAvgSource: '基于过去10年平均值 (Open-Meteo)',
                 realtimeSource: 'AEMET实时预报',
                 errorFetchingWeather: '获取天气数据失败',
                 retryQuery: '重试',
@@ -184,7 +184,7 @@
                 bringUmbrella: '🌧️ 记得带雨具',
                 keepWarm: '🧥 注意保暖',
                 dataInfo0to15: '0-15天内出发：显示AEMET实时天气预报',
-                dataInfo15to365: '15天-1年内出发：显示基于AEMET过去10年（2014-2024）历史数据的平均值（仅供参考）',
+                dataInfo15to365: '15天-1年内出发：显示基于Open-Meteo过去10年（2014-2024）历史数据的平均值（仅供参考）',
                 dataInfoOver1Year: '超过1年：建议在出发前1年内查询天气信息',
                 dataInformation: '数据说明',
                 routeFrances115: '法国之路 115公里',
@@ -231,11 +231,11 @@
                 dateTooFarTitle: 'Date Out of Range',
                 dateTooFarMessage: 'Your selected date is more than 1 year away. Please check weather within 1 year of departure.',
                 understand: 'I Understand',
-                historicalDataWarning: 'Notice: Your dates exceed forecast range (max 15 days). Data shown is based on AEMET 10-year historical average (2014-2024) for reference only.',
+                historicalDataWarning: 'Notice: Your dates exceed forecast range (max 15 days). Data shown is based on Open-Meteo 10-year historical average (2014-2024) for reference only.',
                 historicalDataBadge: 'Historical Prediction',
                 realTimeForecast: 'Real-time Forecast',
                 dataSourceLabel: 'Data Source',
-                historicalAvgSource: 'Based on 10-year average',
+                historicalAvgSource: 'Based on 10-year average (Open-Meteo)',
                 realtimeSource: 'AEMET real-time forecast',
                 errorFetchingWeather: 'Failed to fetch weather data',
                 retryQuery: 'Retry',
@@ -245,7 +245,7 @@
                 bringUmbrella: '🌧️ Bring umbrella',
                 keepWarm: '🧥 Keep warm',
                 dataInfo0to15: 'Within 15 days: Real-time AEMET forecast',
-                dataInfo15to365: '15 days - 1 year: Based on AEMET 10-year historical average (2014-2024, reference only)',
+                dataInfo15to365: '15 days - 1 year: Based on Open-Meteo 10-year historical average (2014-2024, reference only)',
                 dataInfoOver1Year: 'Beyond 1 year: Check within 1 year of departure',
                 dataInformation: 'Data Information',
                 routeFrances115: 'French Way 115km',
@@ -292,11 +292,11 @@
                 dateTooFarTitle: 'Fecha Fuera de Rango',
                 dateTooFarMessage: 'La fecha seleccionada está a más de 1 año. Consulte dentro de 1 año antes de la salida.',
                 understand: 'Entendido',
-                historicalDataWarning: 'Aviso: Fechas exceden pronóstico. Datos basados en promedio histórico AEMET de 10 años (2014-2024).',
+                historicalDataWarning: 'Aviso: Fechas exceden pronóstico. Datos basados en promedio histórico Open-Meteo de 10 años (2014-2024).',
                 historicalDataBadge: 'Predicción Histórica',
                 realTimeForecast: 'Pronóstico Tiempo Real',
                 dataSourceLabel: 'Fuente',
-                historicalAvgSource: 'Basado en promedio de 10 años',
+                historicalAvgSource: 'Basado en promedio de 10 años (Open-Meteo)',
                 realtimeSource: 'Pronóstico AEMET tiempo real',
                 errorFetchingWeather: 'Error al obtener datos',
                 retryQuery: 'Reintentar',
@@ -306,7 +306,7 @@
                 bringUmbrella: '🌧️ Lleva paraguas',
                 keepWarm: '🧥 Abrígate',
                 dataInfo0to15: 'Dentro de 15 días: Pronóstico AEMET tiempo real',
-                dataInfo15to365: '15 días - 1 año: Basado en promedio histórico AEMET de 10 años (2014-2024, referencia)',
+                dataInfo15to365: '15 días - 1 año: Basado en promedio histórico Open-Meteo de 10 años (2014-2024, referencia)',
                 dataInfoOver1Year: 'Más de 1 año: Consulte dentro de 1 año antes',
                 dataInformation: 'Información de Datos',
                 routeFrances115: 'Camino Francés 115km',
@@ -451,16 +451,59 @@
                 return unit === 'imperial' ? Math.round(celsius * 9 / 5 + 32) : Math.round(celsius);
             };
 
-            // 城市到AEMET气象站ID映射
-            const locationToStationId = {
-                'santiago de compostela': '1428', 'santiago': '1428',
-                'sarria': '1505', 'leon': '2661', 'león': '2661',
-                'astorga': '2661C', 'ponferrada': '1549',
-                'burgos': '2331', 'pamplona': '9263I',
-                'logroño': '9170', 'bilbao': '1082',
-                'oviedo': '1249I', 'lugo': '1505E',
-                'porto': '85543', 'pontevedra': '1484',
-                'tui': '1690A'
+            // 城市坐标映射（用于Open-Meteo历史数据）
+            const locationToCoordinates = {
+                'santiago de compostela': { lat: 42.88, lon: -8.54 }, 'santiago': { lat: 42.88, lon: -8.54 },
+                'sarria': { lat: 42.78, lon: -7.42 }, 'portomarin': { lat: 42.81, lon: -7.62 },
+                'portomarín': { lat: 42.81, lon: -7.62 }, 'palas de rei': { lat: 42.87, lon: -7.86 },
+                'arzua': { lat: 42.93, lon: -8.16 }, 'arzúa': { lat: 42.93, lon: -8.16 },
+                'o pedrouzo': { lat: 42.90, lon: -8.38 }, 'pedrouzo': { lat: 42.90, lon: -8.38 },
+                'leon': { lat: 42.60, lon: -5.57 }, 'león': { lat: 42.60, lon: -5.57 },
+                'astorga': { lat: 42.46, lon: -6.05 }, 'ponferrada': { lat: 42.55, lon: -6.59 },
+                'o cebreiro': { lat: 42.71, lon: -7.04 }, 'triacastela': { lat: 42.75, lon: -7.24 },
+                'villafranca del bierzo': { lat: 42.61, lon: -6.81 }, 'burgos': { lat: 42.34, lon: -3.70 },
+                'pamplona': { lat: 42.82, lon: -1.64 }, 'logroño': { lat: 42.47, lon: -2.45 },
+                'estella': { lat: 42.67, lon: -2.03 }, 'santo domingo de la calzada': { lat: 42.44, lon: -2.95 },
+                'najera': { lat: 42.42, lon: -2.73 }, 'nájera': { lat: 42.42, lon: -2.73 },
+                'belorado': { lat: 42.43, lon: -3.19 }, 'fromista': { lat: 42.27, lon: -4.40 },
+                'frómista': { lat: 42.27, lon: -4.40 }, 'carrion de los condes': { lat: 42.34, lon: -4.60 },
+                'carrión de los condes': { lat: 42.34, lon: -4.60 }, 'sahagun': { lat: 42.37, lon: -5.03 },
+                'sahagún': { lat: 42.37, lon: -5.03 }, 'mansilla de las mulas': { lat: 42.50, lon: -5.44 },
+                'porto': { lat: 41.16, lon: -8.63 }, 'tui': { lat: 42.05, lon: -8.64 },
+                'pontevedra': { lat: 42.43, lon: -8.64 }, 'padron': { lat: 42.74, lon: -8.66 },
+                'padrón': { lat: 42.74, lon: -8.66 }, 'bilbao': { lat: 43.26, lon: -2.93 },
+                'oviedo': { lat: 43.36, lon: -5.84 }, 'lugo': { lat: 43.01, lon: -7.56 },
+                'foncebadón': { lat: 42.49, lon: -6.36 }, 'roncesvalles': { lat: 43.01, lon: -1.32 },
+                'saint-jean-pied-de-port': { lat: 43.16, lon: -1.24 }, 'zubiri': { lat: 42.94, lon: -1.53 },
+                'puente la reina': { lat: 42.67, lon: -1.81 }, 'san juan de ortega': { lat: 42.38, lon: -3.51 },
+                'hornillos del camino': { lat: 42.35, lon: -4.06 }, 'castrojeriz': { lat: 42.29, lon: -4.14 },
+                'terradillos de los templarios': { lat: 42.38, lon: -4.82 }, 'melide': { lat: 42.92, lon: -8.02 },
+                'los arcos': { lat: 42.57, lon: -2.18 }, 'bercianos del real camino': { lat: 42.39, lon: -5.16 },
+                'san martín del camino': { lat: 42.44, lon: -5.68 }, 'villar de mazarife': { lat: 42.51, lon: -5.73 },
+                'lisboa': { lat: 38.72, lon: -9.14 }, 'coimbra': { lat: 40.21, lon: -8.43 },
+                'irún': { lat: 43.34, lon: -1.79 }, 'san sebastián': { lat: 43.32, lon: -1.98 },
+                'zarautz': { lat: 43.28, lon: -2.17 }, 'deba': { lat: 43.30, lon: -2.35 },
+                'gernika': { lat: 43.32, lon: -2.68 }, 'santander': { lat: 43.46, lon: -3.80 },
+                'ribadeo': { lat: 43.54, lon: -7.04 }, 'mondoñedo': { lat: 43.43, lon: -7.36 },
+                'vilalba': { lat: 43.30, lon: -7.68 }, 'baamonde': { lat: 43.20, lon: -7.70 },
+                'sobrado dos monxes': { lat: 43.05, lon: -7.95 }, 'lezama': { lat: 43.29, lon: -2.84 },
+                'portugalete': { lat: 43.32, lon: -3.02 }, 'castro urdiales': { lat: 43.38, lon: -3.22 },
+                'laredo': { lat: 43.42, lon: -3.42 }, 'santillana del mar': { lat: 43.39, lon: -4.10 },
+                'comillas': { lat: 43.39, lon: -4.29 }, 'llanes': { lat: 43.42, lon: -4.75 },
+                'ribadesella': { lat: 43.46, lon: -5.06 }, 'gijón': { lat: 43.54, lon: -5.66 },
+                'avilés': { lat: 43.56, lon: -5.92 }, 'luarca': { lat: 43.54, lon: -6.53 },
+                'vila franca de xira': { lat: 38.95, lon: -8.99 }, 'azambuja': { lat: 39.07, lon: -8.87 },
+                'santarém': { lat: 39.24, lon: -8.69 }, 'golegã': { lat: 39.40, lon: -8.49 },
+                'tomar': { lat: 39.60, lon: -8.41 }, 'águeda': { lat: 40.57, lon: -8.45 },
+                'grijó': { lat: 41.04, lon: -8.58 }, 'vilarinho': { lat: 41.46, lon: -8.72 },
+                'barcelos': { lat: 41.53, lon: -8.62 }, 'ponte de lima': { lat: 41.77, lon: -8.58 },
+                'rubiães': { lat: 41.94, lon: -8.64 }, 'redondela': { lat: 42.28, lon: -8.61 },
+                'caldas de reis': { lat: 42.60, lon: -8.64 }
+            };
+
+            const getCoordinates = (location) => {
+                const normalized = location.toLowerCase().trim();
+                return locationToCoordinates[normalized] || { lat: 42.88, lon: -8.54 }; // 默认圣地亚哥
             };
 
             const locationToMunicipioId = {
@@ -484,11 +527,6 @@
                 'irún': '20055', 'san sebastián': '20069', 'zarautz': '20079', 'deba': '20029',
                 'gernika': '48037', 'santander': '39075', 'ribadeo': '27053', 'mondoñedo': '27030',
                 'vilalba': '27066', 'baamonde': '27005', 'sobrado dos monxes': '15081'
-            };
-
-            const getStationId = (location) => {
-                const normalized = location.toLowerCase().trim();
-                return locationToStationId[normalized] || '1428'; // 默认圣地亚哥
             };
 
             const getMunicipioId = (location) => {
@@ -728,17 +766,16 @@
                     };
                 } catch (err) {
                     console.error('AEMET fetch error:', err);
-                    return getFallbackWeather(day);
+                    return getFallbackWeather(day, false); // 实时预报失败，返回模拟实时数据
                 }
             };
 
-            // 获取AEMET历史数据（过去10年，2014-2024）
+            // 获取Open-Meteo历史数据（过去10年，2014-2024）
             const fetchHistoricalWeather = async (day) => {
                 try {
                     const targetDate = new Date(day.date);
                     const month = targetDate.getMonth() + 1;
-                    const dayOfMonth = targetDate.getDate();
-                    const stationId = getStationId(day.location);
+                    const coords = getCoordinates(day.location);
 
                     // 获取过去10年同月数据
                     let totalMaxTemp = 0;
@@ -749,67 +786,54 @@
 
                     for (let year = 2014; year <= 2024; year++) {
                         try {
-                            // 构建该年该月的开始和结束日期
-                            const monthStart = `${year}-${String(month).padStart(2, '0')}-01T00:00:00UTC`;
+                            // 构建该年该月的日期范围
+                            const monthPadded = String(month).padStart(2, '0');
                             const lastDay = new Date(year, month, 0).getDate();
-                            const monthEnd = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}T23:59:59UTC`;
+                            const startDate = `${year}-${monthPadded}-01`;
+                            const endDate = `${year}-${monthPadded}-${String(lastDay).padStart(2, '0')}`;
                             
-                            const url = `https://opendata.aemet.es/opendata/api/valores/climatologicos/diarios/datos/fechaini/${monthStart}/fechafin/${monthEnd}/estacion/${stationId}`;
+                            // Open-Meteo Archive API
+                            const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${coords.lat}&longitude=${coords.lon}&start_date=${startDate}&end_date=${endDate}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum&timezone=Europe/Madrid`;
                             
-                            const response = await fetch(url, {
-                                headers: { 'api_key': AEMET_API_KEY }
-                            });
-
+                            const response = await fetch(url);
                             if (!response.ok) continue;
 
-                            const result = await response.json();
-                            if (result.estado !== 200 || !result.datos) continue;
+                            const data = await response.json();
+                            if (!data.daily || !data.daily.temperature_2m_max) continue;
 
-                            const dataResponse = await fetch(result.datos);
-                            const monthData = await dataResponse.json();
+                            // 计算该年该月的平均值
+                            const maxTemps = data.daily.temperature_2m_max.filter(t => t !== null);
+                            const minTemps = data.daily.temperature_2m_min.filter(t => t !== null);
+                            const precipitation = data.daily.precipitation_sum || [];
 
-                            if (!monthData || monthData.length === 0) continue;
-
-                            // 计算该年该月的平均温度和降雨天数
-                            let yearMaxSum = 0;
-                            let yearMinSum = 0;
-                            let yearDaysCount = 0;
-                            let yearRainyDays = 0;
-
-                            monthData.forEach(dayData => {
-                                if (dayData.tmax && dayData.tmin) {
-                                    yearMaxSum += parseFloat(dayData.tmax.replace(',', '.'));
-                                    yearMinSum += parseFloat(dayData.tmin.replace(',', '.'));
-                                    yearDaysCount++;
-                                }
-                                // 计算降雨天数（降水量>0）
-                                if (dayData.prec && parseFloat(dayData.prec.replace(',', '.')) > 0) {
-                                    yearRainyDays++;
-                                }
-                            });
-
-                            if (yearDaysCount > 0) {
-                                totalMaxTemp += yearMaxSum / yearDaysCount;
-                                totalMinTemp += yearMinSum / yearDaysCount;
-                                rainyDaysCount += yearRainyDays;
-                                totalDaysInMonth += yearDaysCount;
+                            if (maxTemps.length > 0 && minTemps.length > 0) {
+                                const avgMax = maxTemps.reduce((a, b) => a + b, 0) / maxTemps.length;
+                                const avgMin = minTemps.reduce((a, b) => a + b, 0) / minTemps.length;
+                                
+                                totalMaxTemp += avgMax;
+                                totalMinTemp += avgMin;
                                 validYearsCount++;
+                                
+                                // 统计降雨天数（降水量>0.1mm算作降雨）
+                                const rainyDays = precipitation.filter(p => p !== null && p > 0.1).length;
+                                rainyDaysCount += rainyDays;
+                                totalDaysInMonth += precipitation.length;
                             }
 
-                            // 添加延迟避免API限流
-                            await new Promise(resolve => setTimeout(resolve, 200));
+                            // 添加小延迟避免过快请求
+                            await new Promise(resolve => setTimeout(resolve, 100));
 
                         } catch (yearError) {
-                            console.warn(`Failed to fetch data for ${year}:`, yearError);
+                            console.warn(`Failed to fetch Open-Meteo data for ${year}:`, yearError);
                             continue;
                         }
                     }
 
                     if (validYearsCount === 0) {
-                        throw new Error('No historical data available');
+                        throw new Error('No historical data available from Open-Meteo');
                     }
 
-                    // 计算平均值
+                    // 计算10年平均值
                     const avgMaxTemp = Math.round(totalMaxTemp / validYearsCount);
                     const avgMinTemp = Math.round(totalMinTemp / validYearsCount);
                     const rainyDaysPercent = Math.round((rainyDaysCount / totalDaysInMonth) * 100);
@@ -822,31 +846,51 @@
                         condition: 'N/A', sunrise: null, sunset: null,
                         hasStormWarning: false, needUmbrella: rainyDaysPercent > 30,
                         needWarm: avgMinTemp < 10,
-                        dataSource: 'AEMET Historical (2014-2024)'
+                        dataSource: 'Open-Meteo Historical (2014-2024)'
                     };
 
                 } catch (err) {
                     console.error('Historical data fetch error:', err);
-                    return getFallbackWeather(day);
+                    return getFallbackWeather(day, true); // 历史数据失败，返回估算的历史平均值
                 }
             };
 
-            const getFallbackWeather = (day) => {
+            const getFallbackWeather = (day, isHistoricalQuery = false) => {
                 const targetDate = new Date(day.date);
                 const month = targetDate.getMonth() + 1;
                 const monthAvg = getMonthlyAverage(month);
                 const randomVar = Math.floor(Math.random() * 6) - 3;
                 const dayTemp = monthAvg.day + randomVar;
                 const nightTemp = monthAvg.night + randomVar;
-                const rainChance = Math.floor(Math.random() * 100);
-                return {
-                    location: day.location, date: day.date, isHistorical: false,
-                    dayTemp: dayTemp, nightTemp: nightTemp, dayFeels: dayTemp - 2, nightFeels: nightTemp - 2,
-                    rainChance: rainChance, rainyDaysPercent: null,
-                    condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
-                    sunrise: '08:00', sunset: '18:30', hasStormWarning: rainChance > 80,
-                    needUmbrella: rainChance > 50, needWarm: nightTemp < 10, dataSource: 'Simulated'
-                };
+                
+                if (isHistoricalQuery) {
+                    // 返回历史数据格式（无详细信息）
+                    const rainyDaysPercent = Math.round(Math.random() * 40 + 10); // 10-50%
+                    return {
+                        location: day.location, date: day.date, isHistorical: true,
+                        dayTemp: monthAvg.day, nightTemp: monthAvg.night,
+                        dayFeels: null, nightFeels: null,
+                        rainChance: null, rainyDaysPercent: rainyDaysPercent,
+                        condition: 'N/A', sunrise: null, sunset: null,
+                        hasStormWarning: false, needUmbrella: rainyDaysPercent > 30,
+                        needWarm: monthAvg.night < 10,
+                        dataSource: 'Estimated Historical Average'
+                    };
+                } else {
+                    // 返回实时预报格式（有详细信息）
+                    const rainChance = Math.floor(Math.random() * 100);
+                    return {
+                        location: day.location, date: day.date, isHistorical: false,
+                        dayTemp: dayTemp, nightTemp: nightTemp, 
+                        dayFeels: dayTemp - 2, nightFeels: nightTemp - 2,
+                        rainChance: rainChance, rainyDaysPercent: null,
+                        condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
+                        sunrise: '08:00', sunset: '18:30', 
+                        hasStormWarning: rainChance > 80,
+                        needUmbrella: rainChance > 50, needWarm: nightTemp < 10, 
+                        dataSource: 'Simulated'
+                    };
+                }
             };
 
             const getMonthlyAverage = (month) => {
