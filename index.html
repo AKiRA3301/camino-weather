@@ -36,6 +36,32 @@
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
         }
+        
+        /* 城市自动补全下拉框 */
+        .autocomplete-dropdown {
+            position: absolute;
+            z-index: 1000;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .autocomplete-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .autocomplete-item:hover {
+            background-color: #fef3c7;
+        }
+        
+        .autocomplete-item.selected {
+            background-color: #fde68a;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
@@ -45,10 +71,141 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useRef, useEffect } = React;
 
         // AEMET API配置
-        const AEMET_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6ZXl1bjMzMDFAZ21haWwuY29tIiwianRpIjoiODRiNDc5MWEtYzg1Mi00NzNkLTk0MGQtOWFjZmZjZjYwYmE3IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NjY3OTM3MTYsInVzZXJJZCI6Ijg0YjQ3OTFhLWM4NTItNDczZC05NDBkLTlhY2ZmY2Y2MGJhNyIsInJvbGUiOiIifQ.LeyjcmqkmvcW4leoagn8Ev25wQAAHPerCfSm-4fmwTLA';
+        const AEMET_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6ZXl1bjMzMDFAZ21haWwuY29tIiwianRpIjoiODRiNDc5MWEtYzg1Mi00NzNkLTk0MGQtOWFjZmZjZjYwYmE3IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NjY3OTM3MTYsInVzZXJJZCI6Ijg0YjQ3OTFhLWM4NTItNDczZC05NDBkLTlhY2ZmY2Y2MGJhNyIsInJvbGUiOiIifQ.LeyjcmqkmvcW4leoagn8Ev25wQAHPerCfSm-4fmwTLA';
+
+        // 朝圣之路城市列表（用于自动补全）
+        const CAMINO_CITIES = [
+            'Santiago de Compostela',
+            'Sarria',
+            'Portomarín',
+            'Palas de Rei',
+            'Arzúa',
+            'O Pedrouzo',
+            'León',
+            'Astorga',
+            'Ponferrada',
+            'O Cebreiro',
+            'Triacastela',
+            'Villafranca del Bierzo',
+            'Burgos',
+            'Pamplona',
+            'Logroño',
+            'Estella',
+            'Santo Domingo de la Calzada',
+            'Nájera',
+            'Belorado',
+            'Frómista',
+            'Carrión de los Condes',
+            'Sahagún',
+            'Mansilla de las Mulas',
+            'Porto',
+            'Tui',
+            'Pontevedra',
+            'Padrón',
+            'Bilbao',
+            'Oviedo',
+            'Lugo',
+            'Foncebadón',
+            'Roncesvalles',
+            'Saint-Jean-Pied-de-Port',
+            'Zubiri',
+            'Puente la Reina',
+            'San Juan de Ortega',
+            'Hornillos del Camino',
+            'Castrojeriz',
+            'Terradillos de los Templarios',
+            'Melide',
+            'Ribadiso',
+            'Pedrouzo',
+            'Lavacolla'
+        ].sort();
+
+        // 天气状况翻译（西班牙语到中文及其他语言）
+        const weatherTranslations = {
+            'zh-CN': {
+                'Despejado': '晴天',
+                'Poco nuboso': '少云',
+                'Parcialmente nuboso': '多云',
+                'Nuboso': '阴天',
+                'Muy nuboso': '密云',
+                'Cubierto': '全阴',
+                'Niebla': '雾',
+                'Bruma': '薄雾',
+                'Lluvia ligera': '小雨',
+                'Lluvia': '中雨',
+                'Lluvia fuerte': '大雨',
+                'Chubascos': '阵雨',
+                'Tormentas': '雷暴',
+                'Nieve': '雪',
+                'Granizo': '冰雹',
+                'N/A': 'N/A'
+            },
+            'en': {
+                'Despejado': 'Clear',
+                'Poco nuboso': 'Mostly Clear',
+                'Parcialmente nuboso': 'Partly Cloudy',
+                'Nuboso': 'Cloudy',
+                'Muy nuboso': 'Mostly Cloudy',
+                'Cubierto': 'Overcast',
+                'Niebla': 'Fog',
+                'Bruma': 'Mist',
+                'Lluvia ligera': 'Light Rain',
+                'Lluvia': 'Rain',
+                'Lluvia fuerte': 'Heavy Rain',
+                'Chubascos': 'Showers',
+                'Tormentas': 'Thunderstorm',
+                'Nieve': 'Snow',
+                'Granizo': 'Hail',
+                'N/A': 'N/A'
+            },
+            'es': {
+                'Despejado': 'Despejado',
+                'Poco nuboso': 'Poco nuboso',
+                'Parcialmente nuboso': 'Parcialmente nuboso',
+                'Nuboso': 'Nuboso',
+                'Muy nuboso': 'Muy nuboso',
+                'Cubierto': 'Cubierto',
+                'Niebla': 'Niebla',
+                'Bruma': 'Bruma',
+                'Lluvia ligera': 'Lluvia ligera',
+                'Lluvia': 'Lluvia',
+                'Lluvia fuerte': 'Lluvia fuerte',
+                'Chubascos': 'Chubascos',
+                'Tormentas': 'Tormentas',
+                'Nieve': 'Nieve',
+                'Granizo': 'Granizo',
+                'N/A': 'N/A'
+            }
+        };
+
+        // 天气图标映射
+        const getWeatherIcon = (condition) => {
+            const conditionLower = condition.toLowerCase();
+            if (conditionLower.includes('despejado') || conditionLower.includes('clear')) return '☀️';
+            if (conditionLower.includes('poco nuboso') || conditionLower.includes('mostly clear')) return '🌤️';
+            if (conditionLower.includes('parcialmente') || conditionLower.includes('partly')) return '⛅';
+            if (conditionLower.includes('nuboso') || conditionLower.includes('cloudy')) return '☁️';
+            if (conditionLower.includes('cubierto') || conditionLower.includes('overcast')) return '☁️';
+            if (conditionLower.includes('niebla') || conditionLower.includes('fog')) return '🌫️';
+            if (conditionLower.includes('bruma') || conditionLower.includes('mist')) return '🌫️';
+            if (conditionLower.includes('tormenta') || conditionLower.includes('thunder')) return '⛈️';
+            if (conditionLower.includes('lluvia fuerte') || conditionLower.includes('heavy rain')) return '🌧️';
+            if (conditionLower.includes('lluvia') || conditionLower.includes('rain')) return '🌦️';
+            if (conditionLower.includes('chubasco') || conditionLower.includes('shower')) return '🌦️';
+            if (conditionLower.includes('nieve') || conditionLower.includes('snow')) return '🌨️';
+            if (conditionLower.includes('granizo') || conditionLower.includes('hail')) return '🌨️';
+            return '☁️';
+        };
+
+        // 翻译天气状况
+        const translateWeather = (condition, language) => {
+            const langCode = language.startsWith('zh') ? 'zh-CN' : (language === 'es' ? 'es' : 'en');
+            const translations = weatherTranslations[langCode];
+            return translations[condition] || condition;
+        };
 
         // 多语言翻译字典
         const translations = {
@@ -63,7 +220,7 @@
                 total: '共',
                 autoFillDates: '自动填充日期',
                 addDay: '添加一天',
-                locationPlaceholder: '输入城镇名称（如：Santiago de Compostela）',
+                locationPlaceholder: '输入城镇名称（如：S 搜索 Santiago）',
                 queryWeather: '查询天气预报',
                 querying: '正在查询天气...',
                 weatherForecast: '天气预报',
@@ -115,7 +272,7 @@
                 total: 'Total',
                 autoFillDates: 'Auto-fill Dates',
                 addDay: 'Add Day',
-                locationPlaceholder: 'Enter town name (e.g., Santiago de Compostela)',
+                locationPlaceholder: 'Type city name (e.g., S for Santiago)',
                 queryWeather: 'Check Weather',
                 querying: 'Checking weather...',
                 weatherForecast: 'Weather Forecast',
@@ -167,7 +324,7 @@
                 total: 'Total',
                 autoFillDates: 'Rellenar Fechas',
                 addDay: 'Añadir Día',
-                locationPlaceholder: 'Introduce el nombre del pueblo',
+                locationPlaceholder: 'Escribe nombre (ej: S para Santiago)',
                 queryWeather: 'Consultar Tiempo',
                 querying: 'Consultando...',
                 weatherForecast: 'Previsión del Tiempo',
@@ -259,6 +416,101 @@
             );
         };
 
+        // 城市自动补全组件
+        const CityAutocomplete = ({ value, onChange, placeholder, dayIndex }) => {
+            const [suggestions, setSuggestions] = useState([]);
+            const [showSuggestions, setShowSuggestions] = useState(false);
+            const [selectedIndex, setSelectedIndex] = useState(-1);
+            const inputRef = useRef(null);
+            const dropdownRef = useRef(null);
+
+            useEffect(() => {
+                const handleClickOutside = (event) => {
+                    if (inputRef.current && !inputRef.current.contains(event.target) &&
+                        dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                        setShowSuggestions(false);
+                    }
+                };
+
+                document.addEventListener('mousedown', handleClickOutside);
+                return () => document.removeEventListener('mousedown', handleClickOutside);
+            }, []);
+
+            const handleInputChange = (e) => {
+                const inputValue = e.target.value;
+                onChange(e);
+
+                if (inputValue.length > 0) {
+                    const filtered = CAMINO_CITIES.filter(city =>
+                        city.toLowerCase().startsWith(inputValue.toLowerCase())
+                    );
+                    setSuggestions(filtered);
+                    setShowSuggestions(filtered.length > 0);
+                    setSelectedIndex(-1);
+                } else {
+                    setSuggestions([]);
+                    setShowSuggestions(false);
+                }
+            };
+
+            const handleSuggestionClick = (city) => {
+                onChange({ target: { value: city } });
+                setShowSuggestions(false);
+                setSuggestions([]);
+            };
+
+            const handleKeyDown = (e) => {
+                if (!showSuggestions) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    setSelectedIndex(prev => 
+                        prev < suggestions.length - 1 ? prev + 1 : prev
+                    );
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
+                } else if (e.key === 'Enter' && selectedIndex >= 0) {
+                    e.preventDefault();
+                    handleSuggestionClick(suggestions[selectedIndex]);
+                } else if (e.key === 'Escape') {
+                    setShowSuggestions(false);
+                }
+            };
+
+            return (
+                <div className="relative flex-1">
+                    <input
+                        ref={inputRef}
+                        type="text"
+                        value={value}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                        onFocus={() => {
+                            if (value.length > 0 && suggestions.length > 0) {
+                                setShowSuggestions(true);
+                            }
+                        }}
+                        className="w-full px-3 py-2 border rounded-lg"
+                        placeholder={placeholder}
+                    />
+                    {showSuggestions && suggestions.length > 0 && (
+                        <div ref={dropdownRef} className="autocomplete-dropdown w-full mt-1">
+                            {suggestions.map((city, index) => (
+                                <div
+                                    key={city}
+                                    className={`autocomplete-item ${index === selectedIndex ? 'selected' : ''}`}
+                                    onClick={() => handleSuggestionClick(city)}
+                                >
+                                    {city}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
         const CaminoWeatherApp = () => {
             const [language, setLanguage] = useState('zh-CN');
             const [unit, setUnit] = useState('metric');
@@ -289,6 +541,7 @@
                 'arzua': '15005',
                 'arzúa': '15005',
                 'o pedrouzo': '15001',
+                'pedrouzo': '15001',
                 'leon': '24089',
                 'león': '24089',
                 'astorga': '24008',
@@ -311,7 +564,7 @@
                 'sahagun': '24139',
                 'sahagún': '24139',
                 'mansilla de las mulas': '24091',
-                'porto': '13037', // Portugal - usar coordenadas
+                'porto': '13037',
                 'tui': '36057',
                 'pontevedra': '36038',
                 'padron': '15063',
@@ -321,14 +574,21 @@
                 'lugo': '27028',
                 'foncebadón': '24063',
                 'roncesvalles': '31224',
-                'saint-jean-pied-de-port': '64485', // Francia
+                'saint-jean-pied-de-port': '64485',
                 'zubiri': '31272',
-                'puente la reina': '31206'
+                'puente la reina': '31206',
+                'san juan de ortega': '09284',
+                'hornillos del camino': '09178',
+                'castrojeriz': '09086',
+                'terradillos de los templarios': '34900',
+                'melide': '15052',
+                'ribadiso': '15005',
+                'lavacolla': '15078'
             };
 
             const getMunicipioId = (location) => {
                 const normalized = location.toLowerCase().trim();
-                return locationToMunicipioId[normalized] || '15078'; // 默认圣地亚哥
+                return locationToMunicipioId[normalized] || '15078';
             };
 
             // 计算日期差
@@ -458,7 +718,6 @@
                     const results = await Promise.all(validDays.map(async (day) => {
                         const daysDiff = getDaysDifference(day.date);
                         
-                        // 超过15天使用历史数据
                         if (daysDiff > 15) {
                             return await fetchHistoricalWeather(day);
                         } else {
@@ -479,63 +738,41 @@
             const fetchAEMETWeather = async (day) => {
                 try {
                     const municipioId = getMunicipioId(day.location);
-                    
-                    // AEMET API调用
                     const url = `https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/${municipioId}`;
                     
                     const response = await fetch(url, {
-                        headers: {
-                            'api_key': AEMET_API_KEY
-                        }
+                        headers: { 'api_key': AEMET_API_KEY }
                     });
 
-                    if (!response.ok) {
-                        throw new Error('AEMET API request failed');
-                    }
+                    if (!response.ok) throw new Error('AEMET API request failed');
 
                     const result = await response.json();
-                    
-                    if (result.estado !== 200 || !result.datos) {
-                        throw new Error('Invalid AEMET response');
-                    }
+                    if (result.estado !== 200 || !result.datos) throw new Error('Invalid AEMET response');
 
-                    // 获取实际数据
                     const dataResponse = await fetch(result.datos);
                     const weatherData = await dataResponse.json();
                     
-                    // 查找对应日期的预报
-                    const forecast = weatherData[0]?.prediccion?.dia?.find(d => 
-                        d.fecha === day.date
-                    );
+                    const forecast = weatherData[0]?.prediccion?.dia?.find(d => d.fecha === day.date);
+                    if (!forecast) throw new Error('Forecast date not found');
 
-                    if (!forecast) {
-                        throw new Error('Forecast date not found');
-                    }
-
-                    // 解析AEMET数据
                     const tempMax = forecast.temperatura?.maxima || 15;
                     const tempMin = forecast.temperatura?.minima || 8;
                     const sensMax = forecast.sensTermica?.maxima || tempMax;
                     const sensMin = forecast.sensTermica?.minima || tempMin;
                     
-                    // 获取降雨概率（取最大值）
                     let rainProb = 0;
                     if (forecast.probPrecipitacion) {
                         const probs = forecast.probPrecipitacion.map(p => parseInt(p.value) || 0);
                         rainProb = Math.max(...probs);
                     }
 
-                    // 获取天气状况
                     let condition = 'Despejado';
                     if (forecast.estadoCielo && forecast.estadoCielo.length > 0) {
                         condition = forecast.estadoCielo[0].descripcion || 'Despejado';
                     }
 
-                    // 日出日落
                     const sunrise = forecast.orto || '08:00';
                     const sunset = forecast.ocaso || '18:00';
-
-                    // 判断是否有暴雨警告
                     const hasStormWarning = rainProb > 80 || condition.toLowerCase().includes('tormenta');
 
                     return {
@@ -558,7 +795,6 @@
 
                 } catch (err) {
                     console.error('AEMET fetch error:', err);
-                    // 降级到模拟数据
                     return getFallbackWeather(day);
                 }
             };
@@ -567,8 +803,6 @@
             const fetchHistoricalWeather = async (day) => {
                 const targetDate = new Date(day.date);
                 const month = targetDate.getMonth() + 1;
-                
-                // 使用月度平均估算
                 const monthAvg = getMonthlyAverage(month);
                 
                 return {
@@ -620,7 +854,7 @@
                 };
             };
 
-            // 月度平均温度（圣地亚哥）
+            // 月度平均温度
             const getMonthlyAverage = (month) => {
                 const averages = {
                     1: { day: 11, night: 4 }, 2: { day: 12, night: 4 },
@@ -638,7 +872,9 @@
                 if (!weatherData) return;
                 let text = `${t('weatherForecast')}\n\n`;
                 weatherData.forEach((day, i) => {
+                    const translatedCondition = translateWeather(day.condition, language);
                     text += `D${i+1} ${day.location} (${day.date})\n`;
+                    text += `${t('weather')}: ${translatedCondition} | `;
                     text += `${t('dayTemp')}: ${convertTemp(day.dayTemp)}${tempUnit} | `;
                     text += `${t('nightTemp')}: ${convertTemp(day.nightTemp)}${tempUnit} | `;
                     text += `${t('rainProb')}: ${day.isHistorical ? '/' : day.rainChance + '%'}\n\n`;
@@ -661,13 +897,13 @@
                     />
 
                     <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-8">
-                        <div className="flex justify-between items-start mb-6">
-                            <div>
-                                <h1 className="text-4xl font-bold text-gray-800 mb-2">{t('title')}</h1>
-                                <p className="text-lg text-gray-600">{t('subtitle')}</p>
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                            <div className="flex-1">
+                                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">{t('title')}</h1>
+                                <p className="text-base md:text-lg text-gray-600">{t('subtitle')}</p>
                             </div>
-                            <div className="flex gap-3">
-                                <select value={language} onChange={(e) => setLanguage(e.target.value)} className="px-4 py-2 border-2 rounded-lg">
+                            <div className="flex gap-3 w-full md:w-auto">
+                                <select value={language} onChange={(e) => setLanguage(e.target.value)} className="flex-1 md:flex-none px-3 md:px-4 py-2 border-2 rounded-lg text-sm md:text-base">
                                     <option value="zh-CN">🇨🇳 简体中文</option>
                                     <option value="zh-TW">🇹🇼 繁體中文</option>
                                     <option value="en">🇬🇧 English</option>
@@ -677,115 +913,120 @@
                                     <option value="pt">🇵🇹 Português</option>
                                     <option value="ko">🇰🇷 한국어</option>
                                 </select>
-                                <button onClick={() => setUnit(unit === 'metric' ? 'imperial' : 'metric')} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                                <button onClick={() => setUnit(unit === 'metric' ? 'imperial' : 'metric')} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm md:text-base">
                                     {tempUnit}
                                 </button>
                             </div>
                         </div>
 
                         <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
-                            <h3 className="font-semibold text-blue-900 mb-2">📊 {language.startsWith('zh') ? '数据说明' : 'Data Information'}</h3>
-                            <div className="text-sm text-blue-800 space-y-1">
+                            <h3 className="font-semibold text-blue-900 mb-2 text-sm md:text-base">📊 {language.startsWith('zh') ? '数据说明' : 'Data Information'}</h3>
+                            <div className="text-xs md:text-sm text-blue-800 space-y-1">
                                 <p><strong>• </strong>{t('dataInfo0to15')}</p>
                                 <p><strong>• </strong>{t('dataInfo15to365')}</p>
                                 <p><strong>• </strong>{t('dataInfoOver1Year')}</p>
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 mb-6">
-                            <h2 className="text-xl font-semibold text-gray-800 mb-4">{t('selectRoute')}</h2>
+                        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 md:p-6 mb-6">
+                            <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-4">{t('selectRoute')}</h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <button onClick={() => loadRoute('custom')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">{t('customRoute')}</div>
-                                    <div className="text-sm text-gray-600 mt-1">{t('customRouteDesc')}</div>
+                                <button onClick={() => loadRoute('custom')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">{t('customRoute')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">{t('customRouteDesc')}</div>
                                 </button>
-                                <button onClick={() => loadRoute('frances115')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">🇫🇷 {language.startsWith('zh') ? '法国之路 115公里' : 'French Way 115km'}</div>
-                                    <div className="text-sm text-gray-600 mt-1">Sarria → Santiago (6{language.startsWith('zh') ? '天' : ' days'})</div>
+                                <button onClick={() => loadRoute('frances115')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {language.startsWith('zh') ? '法国之路 115公里' : 'French Way 115km'}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (6{language.startsWith('zh') ? '天' : ' days'})</div>
                                 </button>
-                                <button onClick={() => loadRoute('portuguesePorto')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（波尔图）' : 'Portuguese Way (Porto)'}</div>
-                                    <div className="text-sm text-gray-600 mt-1">Porto → Santiago</div>
+                                <button onClick={() => loadRoute('portuguesePorto')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（波尔图）' : 'Portuguese Way (Porto)'}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago</div>
                                 </button>
-                                <button onClick={() => loadRoute('portugueseLisbon')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（里斯本）' : 'Portuguese Way (Lisbon)'}</div>
-                                    <div className="text-sm text-gray-600 mt-1">Lisbon → Santiago</div>
+                                <button onClick={() => loadRoute('portugueseLisbon')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（里斯本）' : 'Portuguese Way (Lisbon)'}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisbon → Santiago</div>
                                 </button>
-                                <button onClick={() => loadRoute('northern')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">⛰️ {language.startsWith('zh') ? '北方之路' : 'Northern Way'}</div>
-                                    <div className="text-sm text-gray-600 mt-1">Bilbao → Santiago</div>
+                                <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {language.startsWith('zh') ? '北方之路' : 'Northern Way'}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Bilbao → Santiago</div>
                                 </button>
-                                <button onClick={() => loadRoute('francesFull')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">🇫🇷 {language.startsWith('zh') ? '法国之路全程（31天）' : 'French Way Full (31d)'}</div>
-                                    <div className="text-sm text-gray-600 mt-1">SJPP → Santiago</div>
+                                <button onClick={() => loadRoute('francesFull')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {language.startsWith('zh') ? '法国之路全程（31天）' : 'French Way Full (31d)'}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago</div>
                                 </button>
                             </div>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-xl font-semibold">{t('itinerary')}（{t('total')} {days.length} {t('days')}）</h2>
-                                <button onClick={autoFillDates} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                        <div className="bg-gray-50 rounded-xl p-4 md:p-6">
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
+                                <h2 className="text-lg md:text-xl font-semibold">{t('itinerary')}（{t('total')} {days.length} {t('days')}）</h2>
+                                <button onClick={autoFillDates} className="w-full md:w-auto px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm md:text-base">
                                     {t('autoFillDates')}
                                 </button>
                             </div>
                             <div className="space-y-3">
                                 {days.map((day, i) => (
-                                    <div key={i} className="flex gap-3 bg-white p-3 rounded-lg">
-                                        <span className="text-amber-600 font-semibold w-12 pt-2">D{i + 1}</span>
+                                    <div key={i} className="flex gap-2 md:gap-3 bg-white p-3 rounded-lg">
+                                        <span className="text-amber-600 font-semibold w-8 md:w-12 pt-2 text-sm md:text-base">D{i + 1}</span>
                                         <input type="date" value={day.date} onChange={(e) => {
                                             const newDays = [...days];
                                             newDays[i].date = e.target.value;
                                             setDays(newDays);
-                                        }} className="px-3 py-2 border rounded-lg" />
-                                        <input type="text" value={day.location} onChange={(e) => {
-                                            const newDays = [...days];
-                                            newDays[i].location = e.target.value;
-                                            setDays(newDays);
-                                        }} className="flex-1 px-3 py-2 border rounded-lg" placeholder={t('locationPlaceholder')} />
+                                        }} className="px-2 md:px-3 py-2 border rounded-lg text-sm md:text-base" />
+                                        <CityAutocomplete
+                                            value={day.location}
+                                            onChange={(e) => {
+                                                const newDays = [...days];
+                                                newDays[i].location = e.target.value;
+                                                setDays(newDays);
+                                            }}
+                                            placeholder={t('locationPlaceholder')}
+                                            dayIndex={i}
+                                        />
                                         <button onClick={() => setDays(days.filter((_, idx) => idx !== i))} disabled={days.length === 1} className="p-2 text-red-500 hover:bg-red-50 rounded-lg disabled:opacity-30 transition">
                                             🗑️
                                         </button>
                                     </div>
                                 ))}
                             </div>
-                            <button onClick={() => setDays([...days, { date: '', location: '' }])} className="w-full mt-4 py-3 border-2 border-dashed border-gray-300 hover:border-amber-500 rounded-lg transition">
+                            <button onClick={() => setDays([...days, { date: '', location: '' }])} className="w-full mt-4 py-3 border-2 border-dashed border-gray-300 hover:border-amber-500 rounded-lg transition text-sm md:text-base">
                                 + {t('addDay')}
                             </button>
                         </div>
 
                         {error && (
                             <div className="mt-6 bg-red-50 border-2 border-red-300 rounded-xl p-4">
-                                <div className="text-red-800">{error}</div>
+                                <div className="text-red-800 text-sm md:text-base">{error}</div>
                             </div>
                         )}
 
                         <div className="mt-6">
-                            <button onClick={fetchWeather} disabled={loading} className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-4 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 disabled:opacity-50 transition-all">
+                            <button onClick={fetchWeather} disabled={loading} className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-3 md:py-4 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 disabled:opacity-50 transition-all text-sm md:text-base">
                                 {loading ? <span className="loading-pulse">☁️ {t('querying')}</span> : `☁️ ${t('queryWeather')}`}
                             </button>
                         </div>
                     </div>
 
                     {weatherData && weatherData.length > 0 && (
-                        <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10">
+                        <div className="bg-white rounded-3xl shadow-2xl p-4 md:p-10">
                             {hasHistoricalData && (
                                 <div className="mb-6 bg-yellow-50 border-2 border-yellow-400 rounded-xl p-4">
-                                    <div className="flex items-center gap-2 text-yellow-800 font-semibold mb-2">
+                                    <div className="flex items-center gap-2 text-yellow-800 font-semibold mb-2 text-sm md:text-base">
                                         📊 {t('historicalDataBadge')}
                                     </div>
-                                    <p className="text-yellow-700 text-sm">{t('historicalDataWarning')}</p>
+                                    <p className="text-yellow-700 text-xs md:text-sm">{t('historicalDataWarning')}</p>
                                 </div>
                             )}
                             
-                            <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-3xl font-bold">{t('weatherForecast')}</h2>
-                                <div className="flex gap-3">
-                                    <button onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')} className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition">
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-6">
+                                <h2 className="text-2xl md:text-3xl font-bold">{t('weatherForecast')}</h2>
+                                <div className="flex gap-2 md:gap-3 w-full md:w-auto">
+                                    <button onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')} className="flex-1 md:flex-none px-3 md:px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition text-sm md:text-base">
                                         {viewMode === 'cards' ? t('cardView') : t('tableView')}
                                     </button>
                                     {viewMode === 'table' && (
-                                        <button onClick={copyTableData} className="px-6 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition">
+                                        <button onClick={copyTableData} className="flex-1 md:flex-none px-4 md:px-6 py-2 md:py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 transition text-sm md:text-base">
                                             {copied ? '✓ ' + t('copied') : t('copyTable')}
                                         </button>
                                     )}
@@ -797,34 +1038,36 @@
                                     {weatherData.map((day, i) => {
                                         const weekDay = t('weekdays')[new Date(day.date).getDay()];
                                         const cardClass = day.isHistorical ? 'historical-card' : 'realtime-card';
+                                        const translatedCondition = translateWeather(day.condition, language);
+                                        const weatherIcon = getWeatherIcon(day.condition);
                                         
                                         return (
-                                            <div key={i} className={`${cardClass} rounded-2xl shadow-lg p-6`}>
+                                            <div key={i} className={`${cardClass} rounded-2xl shadow-lg p-4 md:p-6`}>
                                                 <div className="flex items-center justify-between mb-4">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className={`${day.isHistorical ? 'bg-amber-600' : 'bg-blue-600'} text-white rounded-full w-12 h-12 flex items-center justify-center font-bold`}>
+                                                    <div className="flex items-center gap-2 md:gap-3">
+                                                        <div className={`${day.isHistorical ? 'bg-amber-600' : 'bg-blue-600'} text-white rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center font-bold text-sm md:text-base`}>
                                                             D{i + 1}
                                                         </div>
                                                         <div>
-                                                            <div className="text-2xl font-bold">{day.location}</div>
-                                                            <div className="text-sm text-gray-600">{day.date.substring(5)} {weekDay}</div>
+                                                            <div className="text-xl md:text-2xl font-bold">{day.location}</div>
+                                                            <div className="text-xs md:text-sm text-gray-600">{day.date.substring(5)} {weekDay}</div>
                                                         </div>
                                                     </div>
-                                                    <div className={`px-3 py-1 rounded-full text-xs font-semibold ${day.isHistorical ? 'bg-amber-200 text-amber-800' : 'bg-blue-200 text-blue-800'}`}>
+                                                    <div className={`px-2 md:px-3 py-1 rounded-full text-xs font-semibold ${day.isHistorical ? 'bg-amber-200 text-amber-800' : 'bg-blue-200 text-blue-800'}`}>
                                                         {day.isHistorical ? '📊 ' + t('historicalDataBadge') : '🌐 ' + t('realTimeForecast')}
                                                     </div>
                                                 </div>
 
-                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4">
                                                     <div className={`${day.isHistorical ? 'bg-amber-100' : 'bg-orange-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-3xl mb-1">☁️</div>
-                                                        <div className="text-sm text-gray-600">{t('weather')}</div>
-                                                        <div className="font-semibold">{day.isHistorical ? 'N/A' : day.condition}</div>
+                                                        <div className="text-2xl md:text-3xl mb-1">{weatherIcon}</div>
+                                                        <div className="text-xs md:text-sm text-gray-600">{t('weather')}</div>
+                                                        <div className="font-semibold text-xs md:text-base">{day.isHistorical ? 'N/A' : translatedCondition}</div>
                                                     </div>
                                                     <div className={`${day.isHistorical ? 'bg-red-100' : 'bg-red-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-3xl mb-1">🌡️</div>
-                                                        <div className="text-sm text-gray-600">{t('dayTemp')}</div>
-                                                        <div className="font-bold text-2xl text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
+                                                        <div className="text-2xl md:text-3xl mb-1">🌡️</div>
+                                                        <div className="text-xs md:text-sm text-gray-600">{t('dayTemp')}</div>
+                                                        <div className="font-bold text-xl md:text-2xl text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
                                                         {day.dayFeels && (
                                                             <div className="text-xs text-gray-500 mt-1">
                                                                 {t('feelsLike')} {convertTemp(day.dayFeels)}{tempUnit}
@@ -832,9 +1075,9 @@
                                                         )}
                                                     </div>
                                                     <div className={`${day.isHistorical ? 'bg-blue-100' : 'bg-blue-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-3xl mb-1">🌙</div>
-                                                        <div className="text-sm text-gray-600">{t('nightTemp')}</div>
-                                                        <div className="font-bold text-2xl text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
+                                                        <div className="text-2xl md:text-3xl mb-1">🌙</div>
+                                                        <div className="text-xs md:text-sm text-gray-600">{t('nightTemp')}</div>
+                                                        <div className="font-bold text-xl md:text-2xl text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
                                                         {day.nightFeels && (
                                                             <div className="text-xs text-gray-500 mt-1">
                                                                 {t('feelsLike')} {convertTemp(day.nightFeels)}{tempUnit}
@@ -842,42 +1085,41 @@
                                                         )}
                                                     </div>
                                                     <div className={`${day.isHistorical ? 'bg-gray-100' : 'bg-cyan-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-3xl mb-1">{day.isHistorical ? '📊' : '💧'}</div>
-                                                        <div className="text-sm text-gray-600">{t('rainProb')}</div>
-                                                        <div className="font-bold text-xl">{day.isHistorical ? '/' : `${day.rainChance}%`}</div>
+                                                        <div className="text-2xl md:text-3xl mb-1">{day.isHistorical ? '📊' : '💧'}</div>
+                                                        <div className="text-xs md:text-sm text-gray-600">{t('rainProb')}</div>
+                                                        <div className="font-bold text-lg md:text-xl">{day.isHistorical ? '/' : `${day.rainChance}%`}</div>
                                                         {day.isHistorical && <div className="text-xs text-gray-500 mt-1">{t('noRainData')}</div>}
                                                     </div>
                                                 </div>
 
                                                 {!day.isHistorical && day.sunrise && day.sunset && (
                                                     <div className="bg-gradient-to-r from-orange-50 to-purple-50 rounded-xl p-3 mb-3">
-                                                        <div className="flex justify-around text-sm">
+                                                        <div className="flex justify-around text-xs md:text-sm">
                                                             <div className="text-center">
                                                                 <div className="text-orange-600 font-semibold">🌅 {t('sunrise')}</div>
-                                                                <div className="font-bold text-lg">{day.sunrise}</div>
+                                                                <div className="font-bold text-base md:text-lg">{day.sunrise}</div>
                                                             </div>
                                                             <div className="text-center">
                                                                 <div className="text-purple-600 font-semibold">🌇 {t('sunset')}</div>
-                                                                <div className="font-bold text-lg">{day.sunset}</div>
+                                                                <div className="font-bold text-base md:text-lg">{day.sunset}</div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 )}
 
-                                                {/* 天气警告 */}
                                                 <div className="flex flex-wrap gap-2">
                                                     {day.hasStormWarning && (
-                                                        <div className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                                        <div className="bg-red-100 text-red-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
                                                             {t('stormWarning')}
                                                         </div>
                                                     )}
                                                     {day.needUmbrella && !day.hasStormWarning && (
-                                                        <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                                        <div className="bg-blue-100 text-blue-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
                                                             {t('bringUmbrella')}
                                                         </div>
                                                     )}
                                                     {day.needWarm && (
-                                                        <div className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                                        <div className="bg-orange-100 text-orange-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
                                                             {t('keepWarm')}
                                                         </div>
                                                     )}
@@ -887,8 +1129,8 @@
                                     })}
                                 </div>
                             ) : (
-                                <div className="bg-gray-50 p-6 rounded-xl overflow-x-auto">
-                                    <table className="w-full text-sm">
+                                <div className="bg-gray-50 p-4 md:p-6 rounded-xl overflow-x-auto">
+                                    <table className="w-full text-xs md:text-sm">
                                         <thead>
                                             <tr className="border-b-2 border-gray-300">
                                                 <th className="text-left p-2">{t('itinerary')}</th>
@@ -896,31 +1138,34 @@
                                                 <th className="text-center p-2">{t('dayTemp')}</th>
                                                 <th className="text-center p-2">{t('nightTemp')}</th>
                                                 <th className="text-center p-2">{t('rainProb')}</th>
-                                                <th className="text-center p-2">{t('sunrise')}/{t('sunset')}</th>
+                                                <th className="text-center p-2 hidden md:table-cell">{t('sunrise')}/{t('sunset')}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {weatherData.map((day, i) => (
-                                                <tr key={i} className={`border-b border-gray-200 ${day.isHistorical ? 'bg-yellow-50' : ''}`}>
-                                                    <td className="p-2">
-                                                        <div className="font-semibold">D{i+1} {day.location}</div>
-                                                        <div className="text-xs text-gray-500">{day.date}</div>
-                                                    </td>
-                                                    <td className="text-center p-2">{day.isHistorical ? 'N/A' : day.condition}</td>
-                                                    <td className="text-center p-2">
-                                                        <div className="font-semibold text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
-                                                        {day.dayFeels && <div className="text-xs text-gray-500">{convertTemp(day.dayFeels)}{tempUnit}</div>}
-                                                    </td>
-                                                    <td className="text-center p-2">
-                                                        <div className="font-semibold text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
-                                                        {day.nightFeels && <div className="text-xs text-gray-500">{convertTemp(day.nightFeels)}{tempUnit}</div>}
-                                                    </td>
-                                                    <td className="text-center p-2">{day.isHistorical ? '/' : `${day.rainChance}%`}</td>
-                                                    <td className="text-center p-2 text-xs">
-                                                        {day.sunrise && day.sunset ? `${day.sunrise} / ${day.sunset}` : '-'}
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                            {weatherData.map((day, i) => {
+                                                const translatedCondition = translateWeather(day.condition, language);
+                                                return (
+                                                    <tr key={i} className={`border-b border-gray-200 ${day.isHistorical ? 'bg-yellow-50' : ''}`}>
+                                                        <td className="p-2">
+                                                            <div className="font-semibold">D{i+1} {day.location}</div>
+                                                            <div className="text-xs text-gray-500">{day.date}</div>
+                                                        </td>
+                                                        <td className="text-center p-2">{day.isHistorical ? 'N/A' : translatedCondition}</td>
+                                                        <td className="text-center p-2">
+                                                            <div className="font-semibold text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
+                                                            {day.dayFeels && <div className="text-xs text-gray-500">{convertTemp(day.dayFeels)}{tempUnit}</div>}
+                                                        </td>
+                                                        <td className="text-center p-2">
+                                                            <div className="font-semibold text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
+                                                            {day.nightFeels && <div className="text-xs text-gray-500">{convertTemp(day.nightFeels)}{tempUnit}</div>}
+                                                        </td>
+                                                        <td className="text-center p-2">{day.isHistorical ? '/' : `${day.rainChance}%`}</td>
+                                                        <td className="text-center p-2 text-xs hidden md:table-cell">
+                                                            {day.sunrise && day.sunset ? `${day.sunrise} / ${day.sunset}` : '-'}
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
                                         </tbody>
                                     </table>
                                 </div>
@@ -928,18 +1173,18 @@
 
                             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-                                    <h3 className="font-semibold text-blue-800 mb-2">{t('usageTip')}</h3>
-                                    <p className="text-sm text-blue-700">{t('usageTipText')}</p>
+                                    <h3 className="font-semibold text-blue-800 mb-2 text-sm md:text-base">{t('usageTip')}</h3>
+                                    <p className="text-xs md:text-sm text-blue-700">{t('usageTipText')}</p>
                                 </div>
                                 <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
-                                    <h3 className="font-semibold text-amber-800 mb-2">{t('notice')}</h3>
-                                    <p className="text-sm text-amber-700">{t('noticeText')}</p>
+                                    <h3 className="font-semibold text-amber-800 mb-2 text-sm md:text-base">{t('notice')}</h3>
+                                    <p className="text-xs md:text-sm text-amber-700">{t('noticeText')}</p>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    <div className="mt-8 text-center text-gray-600 text-sm">
+                    <div className="mt-8 text-center text-gray-600 text-xs md:text-sm">
                         <p>{t('footerText')}</p>
                         <p className="mt-2">{t('dataSource')}</p>
                     </div>
