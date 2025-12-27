@@ -725,6 +725,8 @@
             routePortuguesePortoCentral: '포르투갈 길 (포르투 출발)',
             routeNorthern: '북쪽 길 (36단계)',
             routePrimitivo: '원시 길',
+                routePortugueseCoastal: '포르투갈 해안 길',
+                routeSpiritual: '영성 변형',
             routePortugueseLisbonCentral: '포르투갈 길 (리스본 출발)',
                 routePortuguesePortoCentral: '포르투갈 길 (포르투 출발)',
                 routePortugueseCoastal: '포르투갈 해안 길',
@@ -1564,28 +1566,28 @@
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago (34{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('portugueseLisbonCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbon')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (13{t('days')})</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbonCentral')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (26{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('portuguesePortoCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePorto')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (10{t('days')})</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePortoCentral')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (11{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
                                     <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routeNorthern')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (24{t('days')})</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (33{t('days')})</div>
                                 </button>
                                 <button onClick={() => loadRoute('portugueseCoastal')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="text-xs text-gray-500 mb-1">PT routePortugueseCoastal</div>
-                                    <div className="font-semibold text-gray-800">{t.routePortugueseCoastal || '葡萄牙之路（海岸线）'}</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseCoastal')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (costa)</div>
                                 </button>
                                 <button onClick={() => loadRoute('primitivo')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="text-xs text-gray-500 mb-1">⛰️ routePrimitivo</div>
-                                    <div className="font-semibold text-gray-800">{t.routePrimitivo || '原始之路'}</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routePrimitivo')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Oviedo → Santiago</div>
                                 </button>
                                 <button onClick={() => loadRoute('spiritual')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="text-xs text-gray-500 mb-1">🌊 routeSpiritual</div>
-                                    <div className="font-semibold text-gray-800">{t.routeSpiritual || '灵性之路'}</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🌊 {t('routeSpiritual')}</div>
+                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Pontevedra → Santiago</div>
                                 </button>
                             </div>
                         </div>
