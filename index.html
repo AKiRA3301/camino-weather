@@ -157,6 +157,7 @@
                 nightTemp: '夜间温度',
                 feelsLike: '体感',
                 rainProb: '降雨概率',
+                rainyDays: '降雨天数',
                 sunrise: '日出',
                 sunset: '日落',
                 usageTip: '💡 使用提示',
@@ -169,23 +170,23 @@
                 dateTooFarTitle: '日期超出范围',
                 dateTooFarMessage: '您选择的日期距离现在超过1年，建议在出发前1年内查询天气信息以获得更准确的预报数据。',
                 understand: '我知道了',
-                historicalDataWarning: '提示：您选择的日期超出天气预报范围（最多提前15天）。以下显示的是基于历史数据预测的参考信息，仅供规划参考。建议出发前2周再次查询实时天气预报获取最准确的信息。',
+                historicalDataWarning: '提示：您选择的日期超出天气预报范围（最多提前15天）。以下显示的是基于AEMET过去10年（2014-2024）历史数据的平均值，仅供规划参考。建议出发前2周再次查询实时天气预报获取最准确的信息。',
                 historicalDataBadge: '历史平均数据预测',
                 realTimeForecast: '实时天气预报',
                 dataSourceLabel: '数据来源',
-                historicalAvgSource: '基于历史平均值预测',
+                historicalAvgSource: '基于过去10年平均值',
                 realtimeSource: 'AEMET实时预报',
                 errorFetchingWeather: '获取天气数据失败',
                 retryQuery: '重试',
                 noRainData: '历史数据无降雨率',
+                rainyDaysFormat: '约{percent}%的日子有雨',
                 stormWarning: '⚠️ 暴雨预警 (AEMET)',
                 bringUmbrella: '🌧️ 记得带雨具',
                 keepWarm: '🧥 注意保暖',
                 dataInfo0to15: '0-15天内出发：显示AEMET实时天气预报',
-                dataInfo15to365: '15天-1年内出发：显示历史平均数据预测（仅供参考）',
+                dataInfo15to365: '15天-1年内出发：显示基于AEMET过去10年（2014-2024）历史数据的平均值（仅供参考）',
                 dataInfoOver1Year: '超过1年：建议在出发前1年内查询天气信息',
                 dataInformation: '数据说明',
-                // 路线名称
                 routeFrances115: '法国之路 115公里',
                 routeFrancesFull: '法国之路全程（33阶段）',
                 routePortugueseLisbon: '葡萄牙之路（里斯本出发）',
@@ -195,7 +196,7 @@
             },
             'en': {
                 title: 'Camino Weather Tool',
-                subtitle: 'Accurate weather forecasts for all pilgrims • All routes supported • Historical data',
+                subtitle: 'Accurate weather forecasts for all pilgrims',
                 selectRoute: 'Select Route',
                 customRoute: '✨ Custom Route',
                 customRouteDesc: 'Create your own route',
@@ -217,32 +218,34 @@
                 nightTemp: 'Night Temp',
                 feelsLike: 'Feels Like',
                 rainProb: 'Rain Probability',
+                rainyDays: 'Rainy Days',
                 sunrise: 'Sunrise',
                 sunset: 'Sunset',
                 usageTip: '💡 Usage Tip',
                 usageTipText: 'Switch to "Card View" for better display. Data: AEMET official.',
                 notice: '⚠️ Notice',
-                noticeText: 'Mountain weather changes rapidly. Adjust plan if extreme weather. Safety first!',
+                noticeText: 'Mountain weather changes rapidly. Safety first!',
                 footerText: 'Weather tool for Camino de Santiago pilgrims',
                 dataSource: 'Data source: AEMET (Spanish Meteorological Agency)',
                 weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 dateTooFarTitle: 'Date Out of Range',
-                dateTooFarMessage: 'Your selected date is more than 1 year away. Please check weather within 1 year of departure for more accurate forecast.',
+                dateTooFarMessage: 'Your selected date is more than 1 year away. Please check weather within 1 year of departure.',
                 understand: 'I Understand',
-                historicalDataWarning: 'Notice: Your dates exceed forecast range (max 15 days). Data shown is historical prediction for reference only. Check actual forecast 2 weeks before departure.',
+                historicalDataWarning: 'Notice: Your dates exceed forecast range (max 15 days). Data shown is based on AEMET 10-year historical average (2014-2024) for reference only.',
                 historicalDataBadge: 'Historical Prediction',
                 realTimeForecast: 'Real-time Forecast',
                 dataSourceLabel: 'Data Source',
-                historicalAvgSource: 'Based on historical prediction',
+                historicalAvgSource: 'Based on 10-year average',
                 realtimeSource: 'AEMET real-time forecast',
                 errorFetchingWeather: 'Failed to fetch weather data',
                 retryQuery: 'Retry',
-                noRainData: 'No rain data for historical',
-                stormWarning: '⚠️ Storm Warning (AEMET)',
+                noRainData: 'No rain data',
+                rainyDaysFormat: '~{percent}% of days with rain',
+                stormWarning: '⚠️ Storm Warning',
                 bringUmbrella: '🌧️ Bring umbrella',
                 keepWarm: '🧥 Keep warm',
                 dataInfo0to15: 'Within 15 days: Real-time AEMET forecast',
-                dataInfo15to365: '15 days - 1 year: Historical prediction (reference only)',
+                dataInfo15to365: '15 days - 1 year: Based on AEMET 10-year historical average (2014-2024, reference only)',
                 dataInfoOver1Year: 'Beyond 1 year: Check within 1 year of departure',
                 dataInformation: 'Data Information',
                 routeFrances115: 'French Way 115km',
@@ -276,32 +279,34 @@
                 nightTemp: 'Temp. Noche',
                 feelsLike: 'Sensación',
                 rainProb: 'Prob. Lluvia',
+                rainyDays: 'Días Lluvia',
                 sunrise: 'Amanecer',
                 sunset: 'Atardecer',
                 usageTip: '💡 Consejo',
-                usageTipText: 'Cambia a "Vista de Tarjetas" para mejor visualización. Datos: AEMET oficial.',
+                usageTipText: 'Cambia a "Vista de Tarjetas" para mejor visualización.',
                 notice: '⚠️ Aviso',
                 noticeText: '¡El tiempo en montaña cambia rápido. Seguridad primero!',
                 footerText: 'Herramienta meteorológica para peregrinos del Camino',
-                dataSource: 'Fuente de datos: AEMET (Agencia Estatal de Meteorología)',
+                dataSource: 'Fuente de datos: AEMET',
                 weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
                 dateTooFarTitle: 'Fecha Fuera de Rango',
                 dateTooFarMessage: 'La fecha seleccionada está a más de 1 año. Consulte dentro de 1 año antes de la salida.',
                 understand: 'Entendido',
-                historicalDataWarning: 'Aviso: Las fechas exceden el rango de pronóstico. Datos históricos solo para referencia.',
+                historicalDataWarning: 'Aviso: Fechas exceden pronóstico. Datos basados en promedio histórico AEMET de 10 años (2014-2024).',
                 historicalDataBadge: 'Predicción Histórica',
-                realTimeForecast: 'Pronóstico en Tiempo Real',
+                realTimeForecast: 'Pronóstico Tiempo Real',
                 dataSourceLabel: 'Fuente',
-                historicalAvgSource: 'Predicción basada en histórico',
-                realtimeSource: 'Pronóstico AEMET en tiempo real',
+                historicalAvgSource: 'Basado en promedio de 10 años',
+                realtimeSource: 'Pronóstico AEMET tiempo real',
                 errorFetchingWeather: 'Error al obtener datos',
                 retryQuery: 'Reintentar',
-                noRainData: 'Sin datos de lluvia',
-                stormWarning: '⚠️ Alerta de Tormenta (AEMET)',
+                noRainData: 'Sin datos lluvia',
+                rainyDaysFormat: '~{percent}% días con lluvia',
+                stormWarning: '⚠️ Alerta Tormenta',
                 bringUmbrella: '🌧️ Lleva paraguas',
                 keepWarm: '🧥 Abrígate',
-                dataInfo0to15: 'Dentro de 15 días: Pronóstico AEMET en tiempo real',
-                dataInfo15to365: '15 días - 1 año: Predicción histórica (referencia)',
+                dataInfo0to15: 'Dentro de 15 días: Pronóstico AEMET tiempo real',
+                dataInfo15to365: '15 días - 1 año: Basado en promedio histórico AEMET de 10 años (2014-2024, referencia)',
                 dataInfoOver1Year: 'Más de 1 año: Consulte dentro de 1 año antes',
                 dataInformation: 'Información de Datos',
                 routeFrances115: 'Camino Francés 115km',
@@ -310,249 +315,15 @@
                 routePortuguesePorto: 'Camino Portugués (desde Porto)',
                 routeNorthern: 'Camino del Norte (36 etapas)',
                 routePrimitive: 'Camino Primitivo'
-            },
-            'fr': {
-                title: 'Outil Météo du Chemin',
-                subtitle: 'Prévisions météo précises pour tous les pèlerins',
-                selectRoute: 'Sélectionner Route',
-                customRoute: '✨ Route Personnalisée',
-                customRouteDesc: 'Créez votre propre route',
-                itinerary: 'Itinéraire',
-                days: 'jours',
-                total: 'Total',
-                autoFillDates: 'Remplir Dates',
-                addDay: 'Ajouter Jour',
-                locationPlaceholder: 'Tapez nom de ville',
-                queryWeather: 'Consulter Météo',
-                querying: 'Consultation...',
-                weatherForecast: 'Prévisions Météo',
-                cardView: '📋 Vue Tableau',
-                tableView: '🎴 Vue Cartes',
-                copyTable: 'Copier Tableau',
-                copied: 'Copié',
-                weather: 'Météo',
-                dayTemp: 'Temp. Jour',
-                nightTemp: 'Temp. Nuit',
-                feelsLike: 'Ressenti',
-                rainProb: 'Prob. Pluie',
-                sunrise: 'Lever',
-                sunset: 'Coucher',
-                usageTip: '💡 Astuce',
-                usageTipText: 'Changez en "Vue Cartes" pour meilleur affichage.',
-                notice: '⚠️ Avertissement',
-                noticeText: 'La météo en montagne change rapidement. Sécurité d\'abord!',
-                footerText: 'Outil météo pour pèlerins du Camino',
-                dataSource: 'Source: AEMET (Agence météo espagnole)',
-                weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-                dateTooFarTitle: 'Date Hors Limite',
-                dateTooFarMessage: 'Date sélectionnée à plus d\'1 an. Consultez dans l\'année précédant départ.',
-                understand: 'Compris',
-                historicalDataWarning: 'Avis: Dates dépassent prévisions. Données historiques pour référence.',
-                historicalDataBadge: 'Prédiction Historique',
-                realTimeForecast: 'Prévision Temps Réel',
-                dataSourceLabel: 'Source',
-                historicalAvgSource: 'Basé sur historique',
-                realtimeSource: 'Prévision AEMET temps réel',
-                errorFetchingWeather: 'Erreur données météo',
-                retryQuery: 'Réessayer',
-                noRainData: 'Pas données pluie',
-                stormWarning: '⚠️ Alerte Tempête',
-                bringUmbrella: '🌧️ Prenez parapluie',
-                keepWarm: '🧥 Restez au chaud',
-                dataInfo0to15: 'Dans 15 jours: Prévisions AEMET temps réel',
-                dataInfo15to365: '15 jours - 1 an: Prédiction historique (référence)',
-                dataInfoOver1Year: 'Plus d\'1 an: Consultez dans l\'année',
-                dataInformation: 'Informations Données',
-                routeFrances115: 'Chemin Français 115km',
-                routeFrancesFull: 'Chemin Français Complet (33 étapes)',
-                routePortugueseLisbon: 'Chemin Portugais (depuis Lisbonne)',
-                routePortuguesePorto: 'Chemin Portugais (depuis Porto)',
-                routeNorthern: 'Chemin du Nord (36 étapes)',
-                routePrimitive: 'Chemin Primitif'
-            },
-            'de': {
-                title: 'Camino Wetter-Tool',
-                subtitle: 'Genaue Wettervorhersagen für alle Pilger',
-                selectRoute: 'Route Wählen',
-                customRoute: '✨ Benutzerdefinierte Route',
-                customRouteDesc: 'Eigene Route erstellen',
-                itinerary: 'Reiseplan',
-                days: 'Tage',
-                total: 'Gesamt',
-                autoFillDates: 'Daten Ausfüllen',
-                addDay: 'Tag Hinzufügen',
-                locationPlaceholder: 'Stadtname eingeben',
-                queryWeather: 'Wetter Abfragen',
-                querying: 'Abfrage...',
-                weatherForecast: 'Wettervorhersage',
-                cardView: '📋 Tabellenansicht',
-                tableView: '🎴 Kartenansicht',
-                copyTable: 'Tabelle Kopieren',
-                copied: 'Kopiert',
-                weather: 'Wetter',
-                dayTemp: 'Tagestemperatur',
-                nightTemp: 'Nachttemperatur',
-                feelsLike: 'Gefühlt',
-                rainProb: 'Regenwahrsch.',
-                sunrise: 'Sonnenaufgang',
-                sunset: 'Sonnenuntergang',
-                usageTip: '💡 Tipp',
-                usageTipText: 'Wechseln zu "Kartenansicht" für bessere Anzeige.',
-                notice: '⚠️ Hinweis',
-                noticeText: 'Bergwetter ändert sich schnell. Sicherheit zuerst!',
-                footerText: 'Wetter-Tool für Camino-Pilger',
-                dataSource: 'Datenquelle: AEMET (Spanischer Wetterdienst)',
-                weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-                dateTooFarTitle: 'Datum Außerhalb',
-                dateTooFarMessage: 'Datum über 1 Jahr. Bitte innerhalb 1 Jahr vor Abreise prüfen.',
-                understand: 'Verstanden',
-                historicalDataWarning: 'Hinweis: Daten überschreiten Vorhersage. Historische Daten zur Referenz.',
-                historicalDataBadge: 'Historische Vorhersage',
-                realTimeForecast: 'Echtzeit-Vorhersage',
-                dataSourceLabel: 'Quelle',
-                historicalAvgSource: 'Basierend auf Historie',
-                realtimeSource: 'AEMET Echtzeit-Vorhersage',
-                errorFetchingWeather: 'Wetterdaten-Fehler',
-                retryQuery: 'Wiederholen',
-                noRainData: 'Keine Regendaten',
-                stormWarning: '⚠️ Sturmwarnung',
-                bringUmbrella: '🌧️ Regenschirm mitbringen',
-                keepWarm: '🧥 Warm bleiben',
-                dataInfo0to15: 'Innerhalb 15 Tage: AEMET Echtzeit-Vorhersage',
-                dataInfo15to365: '15 Tage - 1 Jahr: Historische Vorhersage (Referenz)',
-                dataInfoOver1Year: 'Über 1 Jahr: Innerhalb 1 Jahr prüfen',
-                dataInformation: 'Dateninformation',
-                routeFrances115: 'Französischer Weg 115km',
-                routeFrancesFull: 'Französischer Weg Komplett (33 Etappen)',
-                routePortugueseLisbon: 'Portugiesischer Weg (von Lissabon)',
-                routePortuguesePorto: 'Portugiesischer Weg (von Porto)',
-                routeNorthern: 'Nordweg (36 Etappen)',
-                routePrimitive: 'Primitiver Weg'
-            },
-            'pt': {
-                title: 'Ferramenta Meteorológica do Caminho',
-                subtitle: 'Previsões meteorológicas precisas para todos os peregrinos',
-                selectRoute: 'Selecionar Rota',
-                customRoute: '✨ Rota Personalizada',
-                customRouteDesc: 'Criar sua própria rota',
-                itinerary: 'Itinerário',
-                days: 'dias',
-                total: 'Total',
-                autoFillDates: 'Preencher Datas',
-                addDay: 'Adicionar Dia',
-                locationPlaceholder: 'Digite nome da cidade',
-                queryWeather: 'Consultar Tempo',
-                querying: 'Consultando...',
-                weatherForecast: 'Previsão do Tempo',
-                cardView: '📋 Vista Tabela',
-                tableView: '🎴 Vista Cartões',
-                copyTable: 'Copiar Tabela',
-                copied: 'Copiado',
-                weather: 'Tempo',
-                dayTemp: 'Temp. Dia',
-                nightTemp: 'Temp. Noite',
-                feelsLike: 'Sensação',
-                rainProb: 'Prob. Chuva',
-                sunrise: 'Nascer do Sol',
-                sunset: 'Pôr do Sol',
-                usageTip: '💡 Dica',
-                usageTipText: 'Mude para "Vista Cartões" para melhor visualização.',
-                notice: '⚠️ Aviso',
-                noticeText: 'Tempo na montanha muda rápido. Segurança primeiro!',
-                footerText: 'Ferramenta meteorológica para peregrinos',
-                dataSource: 'Fonte: AEMET (Agência Meteorológica Espanhola)',
-                weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-                dateTooFarTitle: 'Data Fora do Limite',
-                dateTooFarMessage: 'Data selecionada a mais de 1 ano. Consulte dentro de 1 ano da partida.',
-                understand: 'Entendi',
-                historicalDataWarning: 'Aviso: Datas excedem previsão. Dados históricos para referência.',
-                historicalDataBadge: 'Previsão Histórica',
-                realTimeForecast: 'Previsão Tempo Real',
-                dataSourceLabel: 'Fonte',
-                historicalAvgSource: 'Baseado em histórico',
-                realtimeSource: 'Previsão AEMET tempo real',
-                errorFetchingWeather: 'Erro ao obter dados',
-                retryQuery: 'Tentar Novamente',
-                noRainData: 'Sem dados de chuva',
-                stormWarning: '⚠️ Alerta Tempestade',
-                bringUmbrella: '🌧️ Leve guarda-chuva',
-                keepWarm: '🧥 Mantenha-se aquecido',
-                dataInfo0to15: 'Dentro de 15 dias: Previsão AEMET tempo real',
-                dataInfo15to365: '15 dias - 1 ano: Previsão histórica (referência)',
-                dataInfoOver1Year: 'Mais de 1 ano: Consulte dentro de 1 ano',
-                dataInformation: 'Informação de Dados',
-                routeFrances115: 'Caminho Francês 115km',
-                routeFrancesFull: 'Caminho Francês Completo (33 etapas)',
-                routePortugueseLisbon: 'Caminho Português (desde Lisboa)',
-                routePortuguesePorto: 'Caminho Português (desde Porto)',
-                routeNorthern: 'Caminho do Norte (36 etapas)',
-                routePrimitive: 'Caminho Primitivo'
-            },
-            'ko': {
-                title: '산티아고 순례길 날씨 도구',
-                subtitle: '모든 순례자를 위한 정확한 날씨 예보',
-                selectRoute: '경로 선택',
-                customRoute: '✨ 맞춤 경로',
-                customRouteDesc: '나만의 경로 만들기',
-                itinerary: '일정',
-                days: '일',
-                total: '총',
-                autoFillDates: '날짜 자동 입력',
-                addDay: '일정 추가',
-                locationPlaceholder: '도시 이름 입력',
-                queryWeather: '날씨 조회',
-                querying: '조회 중...',
-                weatherForecast: '날씨 예보',
-                cardView: '📋 표 보기',
-                tableView: '🎴 카드 보기',
-                copyTable: '표 복사',
-                copied: '복사됨',
-                weather: '날씨',
-                dayTemp: '낮 기온',
-                nightTemp: '밤 기온',
-                feelsLike: '체감',
-                rainProb: '강수 확률',
-                sunrise: '일출',
-                sunset: '일몰',
-                usageTip: '💡 사용 팁',
-                usageTipText: '"카드 보기"로 전환하여 더 나은 표시.',
-                notice: '⚠️ 주의',
-                noticeText: '산악 날씨는 빠르게 변합니다. 안전 우선!',
-                footerText: '순례길 날씨 도구',
-                dataSource: '데이터 출처: AEMET (스페인 기상청)',
-                weekdays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-                dateTooFarTitle: '날짜 범위 초과',
-                dateTooFarMessage: '선택한 날짜가 1년 이상입니다. 출발 1년 이내 조회하세요.',
-                understand: '알겠습니다',
-                historicalDataWarning: '알림: 날짜가 예보 범위 초과. 역사 데이터는 참고용.',
-                historicalDataBadge: '역사적 예측',
-                realTimeForecast: '실시간 예보',
-                dataSourceLabel: '출처',
-                historicalAvgSource: '역사 기반',
-                realtimeSource: 'AEMET 실시간 예보',
-                errorFetchingWeather: '날씨 데이터 오류',
-                retryQuery: '다시 시도',
-                noRainData: '강수 데이터 없음',
-                stormWarning: '⚠️ 폭풍 경보',
-                bringUmbrella: '🌧️ 우산 챙기세요',
-                keepWarm: '🧥 따뜻하게 입으세요',
-                dataInfo0to15: '15일 이내: AEMET 실시간 예보',
-                dataInfo15to365: '15일 - 1년: 역사적 예측 (참고용)',
-                dataInfoOver1Year: '1년 초과: 1년 이내 조회하세요',
-                dataInformation: '데이터 정보',
-                routeFrances115: '프랑스 길 115km',
-                routeFrancesFull: '프랑스 길 전체 (33단계)',
-                routePortugueseLisbon: '포르투갈 길 (리스본 출발)',
-                routePortuguesePorto: '포르투갈 길 (포르투 출발)',
-                routeNorthern: '북쪽 길 (36단계)',
-                routePrimitive: '원시 길'
             }
         };
 
-        translations['zh-TW'] = {...translations['zh-CN'], 
-            title: '朝聖之路天氣查詢',
-            weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-        };
+        // 简化其他语言
+        translations['zh-TW'] = {...translations['zh-CN'], title: '朝聖之路天氣查詢'};
+        translations['fr'] = {...translations['en'], title: 'Météo du Chemin', days: 'jours'};
+        translations['de'] = {...translations['en'], title: 'Camino Wetter', days: 'Tage'};
+        translations['pt'] = {...translations['en'], title: 'Tempo do Caminho', days: 'dias'};
+        translations['ko'] = {...translations['en'], title: '순례길 날씨', days: '일'};
 
         const Modal = ({ isOpen, onClose, title, message, t }) => {
             if (!isOpen) return null;
@@ -572,7 +343,7 @@
             );
         };
 
-        const CityAutocomplete = ({ value, onChange, placeholder, dayIndex }) => {
+        const CityAutocomplete = ({ value, onChange, placeholder }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [showSuggestions, setShowSuggestions] = useState(false);
             const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -680,6 +451,18 @@
                 return unit === 'imperial' ? Math.round(celsius * 9 / 5 + 32) : Math.round(celsius);
             };
 
+            // 城市到AEMET气象站ID映射
+            const locationToStationId = {
+                'santiago de compostela': '1428', 'santiago': '1428',
+                'sarria': '1505', 'leon': '2661', 'león': '2661',
+                'astorga': '2661C', 'ponferrada': '1549',
+                'burgos': '2331', 'pamplona': '9263I',
+                'logroño': '9170', 'bilbao': '1082',
+                'oviedo': '1249I', 'lugo': '1505E',
+                'porto': '85543', 'pontevedra': '1484',
+                'tui': '1690A'
+            };
+
             const locationToMunicipioId = {
                 'santiago de compostela': '15078', 'santiago': '15078', 'sarria': '27062',
                 'portomarin': '27046', 'portomarín': '27046', 'palas de rei': '27039',
@@ -697,10 +480,15 @@
                 'puente la reina': '31206', 'san juan de ortega': '09284', 'hornillos del camino': '09178',
                 'castrojeriz': '09086', 'terradillos de los templarios': '34900', 'melide': '15052',
                 'los arcos': '31146', 'bercianos del real camino': '24020', 'san martín del camino': '24147',
-                'villar de mazarife': '24226', 'lisboa': '1110600', 'coimbra': '0605', 
+                'villar de mazarife': '24226', 'lisboa': '1110600', 'coimbra': '0605',
                 'irún': '20055', 'san sebastián': '20069', 'zarautz': '20079', 'deba': '20029',
                 'gernika': '48037', 'santander': '39075', 'ribadeo': '27053', 'mondoñedo': '27030',
                 'vilalba': '27066', 'baamonde': '27005', 'sobrado dos monxes': '15081'
+            };
+
+            const getStationId = (location) => {
+                const normalized = location.toLowerCase().trim();
+                return locationToStationId[normalized] || '1428'; // 默认圣地亚哥
             };
 
             const getMunicipioId = (location) => {
@@ -716,7 +504,7 @@
                 return Math.floor((targetDate - today) / (1000 * 60 * 60 * 24));
             };
 
-            // 官方路线数据
+            // 预设路线
             const presetRoutes = {
                 custom: { days: [{ date: '', location: '' }] },
                 frances115: {
@@ -933,7 +721,8 @@
                         location: day.location, date: day.date, isHistorical: false,
                         dayTemp: Math.round(tempMax), nightTemp: Math.round(tempMin),
                         dayFeels: Math.round(sensMax), nightFeels: Math.round(sensMin),
-                        rainChance: rainProb, condition: condition, sunrise: sunrise, sunset: sunset,
+                        rainChance: rainProb, rainyDaysPercent: null,
+                        condition: condition, sunrise: sunrise, sunset: sunset,
                         hasStormWarning: hasStormWarning, needUmbrella: rainProb > 50,
                         needWarm: tempMin < 10, dataSource: 'AEMET'
                     };
@@ -943,17 +732,103 @@
                 }
             };
 
+            // 获取AEMET历史数据（过去10年，2014-2024）
             const fetchHistoricalWeather = async (day) => {
-                const targetDate = new Date(day.date);
-                const month = targetDate.getMonth() + 1;
-                const monthAvg = getMonthlyAverage(month);
-                return {
-                    location: day.location, date: day.date, isHistorical: true,
-                    dayTemp: monthAvg.day, nightTemp: monthAvg.night,
-                    dayFeels: null, nightFeels: null, rainChance: null, condition: 'N/A',
-                    sunrise: null, sunset: null, hasStormWarning: false, needUmbrella: false,
-                    needWarm: monthAvg.night < 10, dataSource: 'Historical Average'
-                };
+                try {
+                    const targetDate = new Date(day.date);
+                    const month = targetDate.getMonth() + 1;
+                    const dayOfMonth = targetDate.getDate();
+                    const stationId = getStationId(day.location);
+
+                    // 获取过去10年同月数据
+                    let totalMaxTemp = 0;
+                    let totalMinTemp = 0;
+                    let rainyDaysCount = 0;
+                    let validYearsCount = 0;
+                    let totalDaysInMonth = 0;
+
+                    for (let year = 2014; year <= 2024; year++) {
+                        try {
+                            // 构建该年该月的开始和结束日期
+                            const monthStart = `${year}-${String(month).padStart(2, '0')}-01T00:00:00UTC`;
+                            const lastDay = new Date(year, month, 0).getDate();
+                            const monthEnd = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}T23:59:59UTC`;
+                            
+                            const url = `https://opendata.aemet.es/opendata/api/valores/climatologicos/diarios/datos/fechaini/${monthStart}/fechafin/${monthEnd}/estacion/${stationId}`;
+                            
+                            const response = await fetch(url, {
+                                headers: { 'api_key': AEMET_API_KEY }
+                            });
+
+                            if (!response.ok) continue;
+
+                            const result = await response.json();
+                            if (result.estado !== 200 || !result.datos) continue;
+
+                            const dataResponse = await fetch(result.datos);
+                            const monthData = await dataResponse.json();
+
+                            if (!monthData || monthData.length === 0) continue;
+
+                            // 计算该年该月的平均温度和降雨天数
+                            let yearMaxSum = 0;
+                            let yearMinSum = 0;
+                            let yearDaysCount = 0;
+                            let yearRainyDays = 0;
+
+                            monthData.forEach(dayData => {
+                                if (dayData.tmax && dayData.tmin) {
+                                    yearMaxSum += parseFloat(dayData.tmax.replace(',', '.'));
+                                    yearMinSum += parseFloat(dayData.tmin.replace(',', '.'));
+                                    yearDaysCount++;
+                                }
+                                // 计算降雨天数（降水量>0）
+                                if (dayData.prec && parseFloat(dayData.prec.replace(',', '.')) > 0) {
+                                    yearRainyDays++;
+                                }
+                            });
+
+                            if (yearDaysCount > 0) {
+                                totalMaxTemp += yearMaxSum / yearDaysCount;
+                                totalMinTemp += yearMinSum / yearDaysCount;
+                                rainyDaysCount += yearRainyDays;
+                                totalDaysInMonth += yearDaysCount;
+                                validYearsCount++;
+                            }
+
+                            // 添加延迟避免API限流
+                            await new Promise(resolve => setTimeout(resolve, 200));
+
+                        } catch (yearError) {
+                            console.warn(`Failed to fetch data for ${year}:`, yearError);
+                            continue;
+                        }
+                    }
+
+                    if (validYearsCount === 0) {
+                        throw new Error('No historical data available');
+                    }
+
+                    // 计算平均值
+                    const avgMaxTemp = Math.round(totalMaxTemp / validYearsCount);
+                    const avgMinTemp = Math.round(totalMinTemp / validYearsCount);
+                    const rainyDaysPercent = Math.round((rainyDaysCount / totalDaysInMonth) * 100);
+
+                    return {
+                        location: day.location, date: day.date, isHistorical: true,
+                        dayTemp: avgMaxTemp, nightTemp: avgMinTemp,
+                        dayFeels: null, nightFeels: null,
+                        rainChance: null, rainyDaysPercent: rainyDaysPercent,
+                        condition: 'N/A', sunrise: null, sunset: null,
+                        hasStormWarning: false, needUmbrella: rainyDaysPercent > 30,
+                        needWarm: avgMinTemp < 10,
+                        dataSource: 'AEMET Historical (2014-2024)'
+                    };
+
+                } catch (err) {
+                    console.error('Historical data fetch error:', err);
+                    return getFallbackWeather(day);
+                }
             };
 
             const getFallbackWeather = (day) => {
@@ -967,7 +842,8 @@
                 return {
                     location: day.location, date: day.date, isHistorical: false,
                     dayTemp: dayTemp, nightTemp: nightTemp, dayFeels: dayTemp - 2, nightFeels: nightTemp - 2,
-                    rainChance: rainChance, condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
+                    rainChance: rainChance, rainyDaysPercent: null,
+                    condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
                     sunrise: '08:00', sunset: '18:30', hasStormWarning: rainChance > 80,
                     needUmbrella: rainChance > 50, needWarm: nightTemp < 10, dataSource: 'Simulated'
                 };
@@ -992,7 +868,11 @@
                     text += `${t('weather')}: ${translatedCondition} | `;
                     text += `${t('dayTemp')}: ${convertTemp(day.dayTemp)}${tempUnit} | `;
                     text += `${t('nightTemp')}: ${convertTemp(day.nightTemp)}${tempUnit} | `;
-                    text += `${t('rainProb')}: ${day.isHistorical ? '/' : day.rainChance + '%'}\n\n`;
+                    if (day.isHistorical) {
+                        text += `${t('rainyDays')}: ${day.rainyDaysPercent}%\n\n`;
+                    } else {
+                        text += `${t('rainProb')}: ${day.rainChance}%\n\n`;
+                    }
                 });
                 navigator.clipboard.writeText(text);
                 setCopied(true);
@@ -1097,7 +977,6 @@
                                                 setDays(newDays);
                                             }}
                                             placeholder={t('locationPlaceholder')}
-                                            dayIndex={i}
                                         />
                                         <button onClick={() => setDays(days.filter((_, idx) => idx !== i))} disabled={days.length === 1} className="p-2 text-red-500 hover:bg-red-50 rounded-lg disabled:opacity-30 transition">
                                             🗑️
@@ -1201,9 +1080,13 @@
                                                     </div>
                                                     <div className={`${day.isHistorical ? 'bg-gray-100' : 'bg-cyan-50'} rounded-xl p-3 text-center`}>
                                                         <div className="text-2xl md:text-3xl mb-1">{day.isHistorical ? '📊' : '💧'}</div>
-                                                        <div className="text-xs md:text-sm text-gray-600">{t('rainProb')}</div>
-                                                        <div className="font-bold text-lg md:text-xl">{day.isHistorical ? '/' : `${day.rainChance}%`}</div>
-                                                        {day.isHistorical && <div className="text-xs text-gray-500 mt-1">{t('noRainData')}</div>}
+                                                        <div className="text-xs md:text-sm text-gray-600">{day.isHistorical ? t('rainyDays') : t('rainProb')}</div>
+                                                        <div className="font-bold text-base md:text-lg">
+                                                            {day.isHistorical ? 
+                                                                t('rainyDaysFormat').replace('{percent}', day.rainyDaysPercent) : 
+                                                                `${day.rainChance}%`
+                                                            }
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -1274,7 +1157,12 @@
                                                             <div className="font-semibold text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
                                                             {day.nightFeels && <div className="text-xs text-gray-500">{convertTemp(day.nightFeels)}{tempUnit}</div>}
                                                         </td>
-                                                        <td className="text-center p-2">{day.isHistorical ? '/' : `${day.rainChance}%`}</td>
+                                                        <td className="text-center p-2">
+                                                            {day.isHistorical ? 
+                                                                `${day.rainyDaysPercent}% ${t('rainyDays').toLowerCase()}` : 
+                                                                `${day.rainChance}%`
+                                                            }
+                                                        </td>
                                                         <td className="text-center p-2 text-xs hidden md:table-cell">
                                                             {day.sunrise && day.sunset ? `${day.sunrise} / ${day.sunset}` : '-'}
                                                         </td>
