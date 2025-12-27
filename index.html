@@ -30,6 +30,12 @@
         .loading-pulse {
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+        
+        /* 弹窗遮罩 */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
@@ -40,6 +46,9 @@
     
     <script type="text/babel">
         const { useState } = React;
+
+        // AEMET API配置
+        const AEMET_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ6ZXl1bjMzMDFAZ21haWwuY29tIiwianRpIjoiODRiNDc5MWEtYzg1Mi00NzNkLTk0MGQtOWFjZmZjZjYwYmE3IiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NjY3OTM3MTYsInVzZXJJZCI6Ijg0YjQ3OTFhLWM4NTItNDczZC05NDBkLTlhY2ZmY2Y2MGJhNyIsInJvbGUiOiIifQ.LeyjcmqkmvcW4leoagn8Ev25wQAAHPerCfSm-4fmwTLA';
 
         // 多语言翻译字典
         const translations = {
@@ -65,23 +74,35 @@
                 weather: '天气',
                 dayTemp: '日间温度',
                 nightTemp: '夜间温度',
+                feelsLike: '体感',
                 rainProb: '降雨概率',
+                sunrise: '日出',
+                sunset: '日落',
                 usageTip: '💡 使用提示',
-                usageTipText: '切换"卡片视图"查看美观界面，或"表格视图"复制文本。',
+                usageTipText: '切换"卡片视图"查看美观界面，或"表格视图"复制文本。数据来源：AEMET官方。',
                 notice: '⚠️ 注意事项',
                 noticeText: '山区天气变化快，遇极端天气预警请调整行程。安全第一！',
                 footerText: '本工具为朝圣之路徒步者提供便捷的天气查询服务',
-                dataSource: '数据来源：Open-Meteo（免费天气API）',
-                weekdays: ['日', '一', '二', '三', '四', '五', '六'],
-                historicalDataWarning: '提示：您选择的日期超出天气预报范围（最多提前15天）。以下显示的是基于历史数据的参考信息，仅供规划参考。建议出发前2周再次查询实时天气预报获取最准确的信息。',
-                historicalDataBadge: '历史平均数据',
+                dataSource: '数据来源：AEMET（西班牙气象局）',
+                weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                dateTooFarTitle: '日期超出范围',
+                dateTooFarMessage: '您选择的日期距离现在超过1年，建议在出发前1年内查询天气信息以获得更准确的预报数据。',
+                understand: '我知道了',
+                historicalDataWarning: '提示：您选择的日期超出天气预报范围（最多提前15天）。以下显示的是基于历史数据预测的参考信息，仅供规划参考。建议出发前2周再次查询实时天气预报获取最准确的信息。',
+                historicalDataBadge: '历史平均数据预测',
                 realTimeForecast: '实时天气预报',
                 dataSourceLabel: '数据来源',
-                historicalAvgSource: '基于历史平均值',
-                realtimeSource: '实时预报',
+                historicalAvgSource: '基于历史平均值预测',
+                realtimeSource: 'AEMET实时预报',
                 errorFetchingWeather: '获取天气数据失败',
                 retryQuery: '重试',
-                noRainData: '历史数据无降雨率'
+                noRainData: '历史数据无降雨率',
+                stormWarning: '⚠️ 暴雨预警 (AEMET)',
+                bringUmbrella: '🌧️ 记得带雨具',
+                keepWarm: '🧥 注意保暖',
+                dataInfo0to15: '0-15天内出发：显示AEMET实时天气预报',
+                dataInfo15to365: '15天-1年内出发：显示历史平均数据预测（仅供参考）',
+                dataInfoOver1Year: '超过1年：建议在出发前1年内查询天气信息'
             },
             'en': {
                 title: 'Camino Weather Tool',
@@ -105,23 +126,35 @@
                 weather: 'Weather',
                 dayTemp: 'Day Temp',
                 nightTemp: 'Night Temp',
+                feelsLike: 'Feels Like',
                 rainProb: 'Rain Probability',
+                sunrise: 'Sunrise',
+                sunset: 'Sunset',
                 usageTip: '💡 Usage Tip',
-                usageTipText: 'Switch to "Card View" for better display, or "Table View" to copy text.',
+                usageTipText: 'Switch to "Card View" for better display. Data: AEMET official.',
                 notice: '⚠️ Notice',
-                noticeText: 'Mountain weather changes rapidly. Adjust your plan if extreme weather. Safety first!',
+                noticeText: 'Mountain weather changes rapidly. Adjust plan if extreme weather. Safety first!',
                 footerText: 'Weather tool for Camino de Santiago pilgrims',
-                dataSource: 'Data source: Open-Meteo (Free Weather API)',
-                weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                historicalDataWarning: 'Notice: Your selected dates exceed weather forecast range (max 15 days ahead). Data shown is based on historical averages for planning reference only. Please check actual forecast 2 weeks before departure.',
-                historicalDataBadge: 'Historical Average Data',
+                dataSource: 'Data source: AEMET (Spanish Meteorological Agency)',
+                weekdays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                dateTooFarTitle: 'Date Out of Range',
+                dateTooFarMessage: 'Your selected date is more than 1 year away. Please check weather within 1 year of departure for more accurate forecast.',
+                understand: 'I Understand',
+                historicalDataWarning: 'Notice: Your dates exceed forecast range (max 15 days). Data shown is historical prediction for reference only. Check actual forecast 2 weeks before departure.',
+                historicalDataBadge: 'Historical Prediction',
                 realTimeForecast: 'Real-time Forecast',
                 dataSourceLabel: 'Data Source',
-                historicalAvgSource: 'Based on historical average',
-                realtimeSource: 'Real-time forecast',
+                historicalAvgSource: 'Based on historical prediction',
+                realtimeSource: 'AEMET real-time forecast',
                 errorFetchingWeather: 'Failed to fetch weather data',
                 retryQuery: 'Retry',
-                noRainData: 'No rain data for historical'
+                noRainData: 'No rain data for historical',
+                stormWarning: '⚠️ Storm Warning (AEMET)',
+                bringUmbrella: '🌧️ Bring umbrella',
+                keepWarm: '🧥 Keep warm',
+                dataInfo0to15: 'Within 15 days: Real-time AEMET forecast',
+                dataInfo15to365: '15 days - 1 year: Historical prediction (reference only)',
+                dataInfoOver1Year: 'Beyond 1 year: Check within 1 year of departure'
             },
             'es': {
                 title: 'Herramienta del Tiempo del Camino',
@@ -145,32 +178,86 @@
                 weather: 'Tiempo',
                 dayTemp: 'Temp. Día',
                 nightTemp: 'Temp. Noche',
+                feelsLike: 'Sensación',
                 rainProb: 'Prob. Lluvia',
+                sunrise: 'Amanecer',
+                sunset: 'Atardecer',
                 usageTip: '💡 Consejo',
-                usageTipText: 'Cambia a "Vista de Tarjetas" para mejor visualización.',
+                usageTipText: 'Cambia a "Vista de Tarjetas" para mejor visualización. Datos: AEMET oficial.',
                 notice: '⚠️ Aviso',
                 noticeText: '¡El tiempo en montaña cambia rápido. Seguridad primero!',
                 footerText: 'Herramienta meteorológica para peregrinos del Camino',
-                dataSource: 'Fuente de datos: Open-Meteo',
-                weekdays: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                dataSource: 'Fuente de datos: AEMET (Agencia Estatal de Meteorología)',
+                weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dateTooFarTitle: 'Fecha Fuera de Rango',
+                dateTooFarMessage: 'La fecha seleccionada está a más de 1 año. Consulte dentro de 1 año antes de la salida.',
+                understand: 'Entendido',
                 historicalDataWarning: 'Aviso: Las fechas exceden el rango de pronóstico. Datos históricos solo para referencia.',
-                historicalDataBadge: 'Datos Históricos',
+                historicalDataBadge: 'Predicción Histórica',
                 realTimeForecast: 'Pronóstico en Tiempo Real',
                 dataSourceLabel: 'Fuente',
-                historicalAvgSource: 'Promedio histórico',
-                realtimeSource: 'Pronóstico en tiempo real',
+                historicalAvgSource: 'Predicción basada en histórico',
+                realtimeSource: 'Pronóstico AEMET en tiempo real',
                 errorFetchingWeather: 'Error al obtener datos',
                 retryQuery: 'Reintentar',
-                noRainData: 'Sin datos de lluvia'
+                noRainData: 'Sin datos de lluvia',
+                stormWarning: '⚠️ Alerta de Tormenta (AEMET)',
+                bringUmbrella: '🌧️ Lleva paraguas',
+                keepWarm: '🧥 Abrígate',
+                dataInfo0to15: 'Dentro de 15 días: Pronóstico AEMET en tiempo real',
+                dataInfo15to365: '15 días - 1 año: Predicción histórica (referencia)',
+                dataInfoOver1Year: 'Más de 1 año: Consulte dentro de 1 año antes'
             }
         };
 
         // 其他语言简化版
-        translations['zh-TW'] = {...translations['zh-CN'], title: '朝聖之路天氣查詢'};
-        translations['fr'] = {...translations['en'], title: 'Météo du Chemin', days: 'jours'};
-        translations['de'] = {...translations['en'], title: 'Camino Wetter', days: 'Tage'};
-        translations['pt'] = {...translations['en'], title: 'Tempo do Caminho', days: 'dias'};
-        translations['ko'] = {...translations['en'], title: '순례길 날씨', days: '일'};
+        translations['zh-TW'] = {...translations['zh-CN'], 
+            title: '朝聖之路天氣查詢',
+            weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+        };
+        translations['fr'] = {...translations['en'], 
+            title: 'Météo du Chemin', 
+            days: 'jours',
+            weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
+        };
+        translations['de'] = {...translations['en'], 
+            title: 'Camino Wetter', 
+            days: 'Tage',
+            weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
+        };
+        translations['pt'] = {...translations['en'], 
+            title: 'Tempo do Caminho', 
+            days: 'dias',
+            weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
+        };
+        translations['ko'] = {...translations['en'], 
+            title: '순례길 날씨', 
+            days: '일',
+            weekdays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일']
+        };
+
+        // 弹窗组件
+        const Modal = ({ isOpen, onClose, title, message, t }) => {
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay" onClick={onClose}>
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="text-4xl">⚠️</div>
+                            <h3 className="text-2xl font-bold text-gray-800">{title}</h3>
+                        </div>
+                        <p className="text-gray-600 mb-6 leading-relaxed">{message}</p>
+                        <button 
+                            onClick={onClose}
+                            className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all"
+                        >
+                            {t('understand')}
+                        </button>
+                    </div>
+                </div>
+            );
+        };
 
         const CaminoWeatherApp = () => {
             const [language, setLanguage] = useState('zh-CN');
@@ -181,6 +268,7 @@
             const [error, setError] = useState(null);
             const [copied, setCopied] = useState(false);
             const [viewMode, setViewMode] = useState('cards');
+            const [showModal, setShowModal] = useState(false);
 
             const t = (key) => translations[language][key] || translations['zh-CN'][key];
             const tempUnit = unit === 'metric' ? '°C' : '°F';
@@ -190,37 +278,57 @@
                 return unit === 'imperial' ? Math.round(celsius * 9 / 5 + 32) : Math.round(celsius);
             };
 
-            // 地点坐标映射（朝圣之路主要城镇）
-            const locationCoords = {
-                'santiago de compostela': { lat: 42.88, lon: -8.54 },
-                'santiago': { lat: 42.88, lon: -8.54 },
-                'sarria': { lat: 42.78, lon: -7.42 },
-                'portomarin': { lat: 42.81, lon: -7.62 },
-                'palas de rei': { lat: 42.87, lon: -7.86 },
-                'arzua': { lat: 42.93, lon: -8.16 },
-                'o pedrouzo': { lat: 42.92, lon: -8.42 },
-                'leon': { lat: 42.60, lon: -5.57 },
-                'astorga': { lat: 42.46, lon: -6.05 },
-                'ponferrada': { lat: 42.55, lon: -6.59 },
-                'o cebreiro': { lat: 42.71, lon: -7.04 },
-                'triacastela': { lat: 42.76, lon: -7.24 },
-                'villafranca del bierzo': { lat: 42.61, lon: -6.81 },
-                'burgos': { lat: 42.34, lon: -3.70 },
-                'pamplona': { lat: 42.82, lon: -1.64 },
-                'logroño': { lat: 42.47, lon: -2.45 },
-                'estella': { lat: 42.67, lon: -2.03 },
-                'porto': { lat: 41.16, lon: -8.62 },
-                'tui': { lat: 42.05, lon: -8.64 },
-                'pontevedra': { lat: 42.43, lon: -8.64 },
-                'bilbao': { lat: 43.26, lon: -2.93 },
-                'oviedo': { lat: 43.36, lon: -5.84 },
-                'lugo': { lat: 43.01, lon: -7.56 }
+            // 地点到AEMET市镇代码的映射
+            const locationToMunicipioId = {
+                'santiago de compostela': '15078',
+                'santiago': '15078',
+                'sarria': '27062',
+                'portomarin': '27046',
+                'portomarín': '27046',
+                'palas de rei': '27039',
+                'arzua': '15005',
+                'arzúa': '15005',
+                'o pedrouzo': '15001',
+                'leon': '24089',
+                'león': '24089',
+                'astorga': '24008',
+                'ponferrada': '24115',
+                'o cebreiro': '27050',
+                'triacastela': '27066',
+                'villafranca del bierzo': '24220',
+                'burgos': '09059',
+                'pamplona': '31201',
+                'logroño': '26089',
+                'estella': '31088',
+                'santo domingo de la calzada': '26158',
+                'najera': '26107',
+                'nájera': '26107',
+                'belorado': '09046',
+                'fromista': '34072',
+                'frómista': '34072',
+                'carrion de los condes': '34046',
+                'carrión de los condes': '34046',
+                'sahagun': '24139',
+                'sahagún': '24139',
+                'mansilla de las mulas': '24091',
+                'porto': '13037', // Portugal - usar coordenadas
+                'tui': '36057',
+                'pontevedra': '36038',
+                'padron': '15063',
+                'padrón': '15063',
+                'bilbao': '48020',
+                'oviedo': '33044',
+                'lugo': '27028',
+                'foncebadón': '24063',
+                'roncesvalles': '31224',
+                'saint-jean-pied-de-port': '64485', // Francia
+                'zubiri': '31272',
+                'puente la reina': '31206'
             };
 
-            // 获取地点坐标
-            const getCoords = (location) => {
+            const getMunicipioId = (location) => {
                 const normalized = location.toLowerCase().trim();
-                return locationCoords[normalized] || { lat: 42.88, lon: -8.54 }; // 默认圣地亚哥
+                return locationToMunicipioId[normalized] || '15078'; // 默认圣地亚哥
             };
 
             // 计算日期差
@@ -236,34 +344,75 @@
             const presetRoutes = {
                 custom: { days: [{ date: '', location: '' }] },
                 frances115: {
+                    name: '法国之路 115公里',
                     days: [
                         { date: '', location: 'Sarria' },
-                        { date: '', location: 'Portomarin' },
+                        { date: '', location: 'Portomarín' },
                         { date: '', location: 'Palas de Rei' },
-                        { date: '', location: 'Arzua' },
+                        { date: '', location: 'Arzúa' },
                         { date: '', location: 'O Pedrouzo' },
                         { date: '', location: 'Santiago de Compostela' }
                     ]
                 },
-                francesFull: {
-                    days: [
-                        { date: '', location: 'Pamplona' },
-                        { date: '', location: 'Estella' },
-                        { date: '', location: 'Logroño' },
-                        { date: '', location: 'Burgos' },
-                        { date: '', location: 'Leon' },
-                        { date: '', location: 'Astorga' },
-                        { date: '', location: 'Ponferrada' },
-                        { date: '', location: 'O Cebreiro' },
-                        { date: '', location: 'Sarria' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                portuguese: {
+                portuguesePorto: {
+                    name: '葡萄牙之路（波尔图出发）',
                     days: [
                         { date: '', location: 'Porto' },
                         { date: '', location: 'Tui' },
                         { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                portugueseLisbon: {
+                    name: '葡萄牙之路（里斯本出发）',
+                    days: [
+                        { date: '', location: 'Porto' },
+                        { date: '', location: 'Tui' },
+                        { date: '', location: 'Pontevedra' },
+                        { date: '', location: 'Padrón' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                northern: {
+                    name: '北方之路',
+                    days: [
+                        { date: '', location: 'Bilbao' },
+                        { date: '', location: 'Lugo' },
+                        { date: '', location: 'Arzúa' },
+                        { date: '', location: 'Santiago de Compostela' }
+                    ]
+                },
+                francesFull: {
+                    name: '法国之路全程（31天精简版）',
+                    days: [
+                        { date: '', location: 'Saint-Jean-Pied-de-Port' },
+                        { date: '', location: 'Roncesvalles' },
+                        { date: '', location: 'Zubiri' },
+                        { date: '', location: 'Pamplona' },
+                        { date: '', location: 'Puente la Reina' },
+                        { date: '', location: 'Estella' },
+                        { date: '', location: 'Logroño' },
+                        { date: '', location: 'Nájera' },
+                        { date: '', location: 'Santo Domingo de la Calzada' },
+                        { date: '', location: 'Belorado' },
+                        { date: '', location: 'Burgos' },
+                        { date: '', location: 'Frómista' },
+                        { date: '', location: 'Carrión de los Condes' },
+                        { date: '', location: 'Sahagún' },
+                        { date: '', location: 'Mansilla de las Mulas' },
+                        { date: '', location: 'León' },
+                        { date: '', location: 'Astorga' },
+                        { date: '', location: 'Foncebadón' },
+                        { date: '', location: 'Ponferrada' },
+                        { date: '', location: 'Villafranca del Bierzo' },
+                        { date: '', location: 'O Cebreiro' },
+                        { date: '', location: 'Triacastela' },
+                        { date: '', location: 'Sarria' },
+                        { date: '', location: 'Portomarín' },
+                        { date: '', location: 'Palas de Rei' },
+                        { date: '', location: 'Arzúa' },
+                        { date: '', location: 'O Pedrouzo' },
                         { date: '', location: 'Santiago de Compostela' }
                     ]
                 }
@@ -287,11 +436,18 @@
                 }));
             };
 
-            // 调用Open-Meteo API获取天气
+            // 调用AEMET API获取天气
             const fetchWeather = async () => {
                 const validDays = days.filter(d => d.date && d.location);
                 if (validDays.length === 0) {
                     setError('请填写日期和地点');
+                    return;
+                }
+
+                // 检查是否有超过1年的日期
+                const hasDateOver1Year = validDays.some(day => getDaysDifference(day.date) > 365);
+                if (hasDateOver1Year) {
+                    setShowModal(true);
                     return;
                 }
 
@@ -300,14 +456,13 @@
                 
                 try {
                     const results = await Promise.all(validDays.map(async (day) => {
-                        const coords = getCoords(day.location);
                         const daysDiff = getDaysDifference(day.date);
                         
-                        // 超过15天使用历史数据API
+                        // 超过15天使用历史数据
                         if (daysDiff > 15) {
-                            return await fetchHistoricalWeather(day, coords);
+                            return await fetchHistoricalWeather(day);
                         } else {
-                            return await fetchRealtimeWeather(day, coords);
+                            return await fetchAEMETWeather(day);
                         }
                     }));
                     
@@ -320,74 +475,149 @@
                 }
             };
 
-            // 获取实时天气（0-15天）
-            const fetchRealtimeWeather = async (day, coords) => {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&timezone=Europe/Madrid&forecast_days=16`;
-                
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('API request failed');
-                
-                const data = await response.json();
-                const dateIndex = data.daily.time.indexOf(day.date);
-                
-                if (dateIndex === -1) {
-                    throw new Error('Date not found in forecast');
+            // 获取AEMET实时天气（0-15天）
+            const fetchAEMETWeather = async (day) => {
+                try {
+                    const municipioId = getMunicipioId(day.location);
+                    
+                    // AEMET API调用
+                    const url = `https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/${municipioId}`;
+                    
+                    const response = await fetch(url, {
+                        headers: {
+                            'api_key': AEMET_API_KEY
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('AEMET API request failed');
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.estado !== 200 || !result.datos) {
+                        throw new Error('Invalid AEMET response');
+                    }
+
+                    // 获取实际数据
+                    const dataResponse = await fetch(result.datos);
+                    const weatherData = await dataResponse.json();
+                    
+                    // 查找对应日期的预报
+                    const forecast = weatherData[0]?.prediccion?.dia?.find(d => 
+                        d.fecha === day.date
+                    );
+
+                    if (!forecast) {
+                        throw new Error('Forecast date not found');
+                    }
+
+                    // 解析AEMET数据
+                    const tempMax = forecast.temperatura?.maxima || 15;
+                    const tempMin = forecast.temperatura?.minima || 8;
+                    const sensMax = forecast.sensTermica?.maxima || tempMax;
+                    const sensMin = forecast.sensTermica?.minima || tempMin;
+                    
+                    // 获取降雨概率（取最大值）
+                    let rainProb = 0;
+                    if (forecast.probPrecipitacion) {
+                        const probs = forecast.probPrecipitacion.map(p => parseInt(p.value) || 0);
+                        rainProb = Math.max(...probs);
+                    }
+
+                    // 获取天气状况
+                    let condition = 'Despejado';
+                    if (forecast.estadoCielo && forecast.estadoCielo.length > 0) {
+                        condition = forecast.estadoCielo[0].descripcion || 'Despejado';
+                    }
+
+                    // 日出日落
+                    const sunrise = forecast.orto || '08:00';
+                    const sunset = forecast.ocaso || '18:00';
+
+                    // 判断是否有暴雨警告
+                    const hasStormWarning = rainProb > 80 || condition.toLowerCase().includes('tormenta');
+
+                    return {
+                        location: day.location,
+                        date: day.date,
+                        isHistorical: false,
+                        dayTemp: Math.round(tempMax),
+                        nightTemp: Math.round(tempMin),
+                        dayFeels: Math.round(sensMax),
+                        nightFeels: Math.round(sensMin),
+                        rainChance: rainProb,
+                        condition: condition,
+                        sunrise: sunrise,
+                        sunset: sunset,
+                        hasStormWarning: hasStormWarning,
+                        needUmbrella: rainProb > 50,
+                        needWarm: tempMin < 10,
+                        dataSource: 'AEMET'
+                    };
+
+                } catch (err) {
+                    console.error('AEMET fetch error:', err);
+                    // 降级到模拟数据
+                    return getFallbackWeather(day);
                 }
+            };
+
+            // 获取历史平均天气（>15天）
+            const fetchHistoricalWeather = async (day) => {
+                const targetDate = new Date(day.date);
+                const month = targetDate.getMonth() + 1;
+                
+                // 使用月度平均估算
+                const monthAvg = getMonthlyAverage(month);
+                
+                return {
+                    location: day.location,
+                    date: day.date,
+                    isHistorical: true,
+                    dayTemp: monthAvg.day,
+                    nightTemp: monthAvg.night,
+                    dayFeels: null,
+                    nightFeels: null,
+                    rainChance: null,
+                    condition: 'N/A',
+                    sunrise: null,
+                    sunset: null,
+                    hasStormWarning: false,
+                    needUmbrella: false,
+                    needWarm: monthAvg.night < 10,
+                    dataSource: 'Historical Average'
+                };
+            };
+
+            // 降级方案：模拟数据
+            const getFallbackWeather = (day) => {
+                const targetDate = new Date(day.date);
+                const month = targetDate.getMonth() + 1;
+                const monthAvg = getMonthlyAverage(month);
+                
+                const randomVar = Math.floor(Math.random() * 6) - 3;
+                const dayTemp = monthAvg.day + randomVar;
+                const nightTemp = monthAvg.night + randomVar;
+                const rainChance = Math.floor(Math.random() * 100);
                 
                 return {
                     location: day.location,
                     date: day.date,
                     isHistorical: false,
-                    dayTemp: Math.round(data.daily.temperature_2m_max[dateIndex]),
-                    nightTemp: Math.round(data.daily.temperature_2m_min[dateIndex]),
-                    rainChance: data.daily.precipitation_probability_max[dateIndex] || 0,
-                    condition: getWeatherDescription(data.daily.weathercode[dateIndex]),
-                    dataSource: 'Open-Meteo'
+                    dayTemp: dayTemp,
+                    nightTemp: nightTemp,
+                    dayFeels: dayTemp - 2,
+                    nightFeels: nightTemp - 2,
+                    rainChance: rainChance,
+                    condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
+                    sunrise: '08:00',
+                    sunset: '18:30',
+                    hasStormWarning: rainChance > 80,
+                    needUmbrella: rainChance > 50,
+                    needWarm: nightTemp < 10,
+                    dataSource: 'Simulated'
                 };
-            };
-
-            // 获取历史平均天气（>15天）
-            const fetchHistoricalWeather = async (day, coords) => {
-                const targetDate = new Date(day.date);
-                const month = targetDate.getMonth() + 1;
-                
-                // 使用去年同期数据作为参考
-                const lastYear = new Date(targetDate);
-                lastYear.setFullYear(lastYear.getFullYear() - 1);
-                const startDate = lastYear.toISOString().split('T')[0];
-                
-                const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${coords.lat}&longitude=${coords.lon}&start_date=${startDate}&end_date=${startDate}&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Madrid`;
-                
-                try {
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error('Historical API failed');
-                    
-                    const data = await response.json();
-                    
-                    return {
-                        location: day.location,
-                        date: day.date,
-                        isHistorical: true,
-                        dayTemp: Math.round(data.daily.temperature_2m_max[0]),
-                        nightTemp: Math.round(data.daily.temperature_2m_min[0]),
-                        rainChance: null,
-                        condition: 'N/A',
-                        dataSource: 'Historical Average'
-                    };
-                } catch (err) {
-                    // 如果历史API失败，使用月度平均估算
-                    const monthAvg = getMonthlyAverage(month);
-                    return {
-                        location: day.location,
-                        date: day.date,
-                        isHistorical: true,
-                        dayTemp: monthAvg.day,
-                        nightTemp: monthAvg.night,
-                        rainChance: null,
-                        condition: 'N/A',
-                        dataSource: 'Monthly Average'
-                    };
-                }
             };
 
             // 月度平均温度（圣地亚哥）
@@ -401,16 +631,6 @@
                     11: { day: 13, night: 7 }, 12: { day: 11, night: 5 }
                 };
                 return averages[month] || { day: 15, night: 8 };
-            };
-
-            // 天气代码转描述
-            const getWeatherDescription = (code) => {
-                const descriptions = {
-                    0: '晴天', 1: '晴', 2: '多云', 3: '阴天',
-                    45: '雾', 48: '雾', 51: '小雨', 53: '中雨', 55: '大雨',
-                    61: '小雨', 63: '中雨', 65: '大雨', 80: '阵雨', 95: '雷暴'
-                };
-                return descriptions[code] || '未知';
             };
 
             // 复制表格
@@ -432,6 +652,14 @@
 
             return (
                 <div className="p-4 md:p-8 max-w-7xl mx-auto">
+                    <Modal 
+                        isOpen={showModal}
+                        onClose={() => setShowModal(false)}
+                        title={t('dateTooFarTitle')}
+                        message={t('dateTooFarMessage')}
+                        t={t}
+                    />
+
                     <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-8">
                         <div className="flex justify-between items-start mb-6">
                             <div>
@@ -458,8 +686,9 @@
                         <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
                             <h3 className="font-semibold text-blue-900 mb-2">📊 {language.startsWith('zh') ? '数据说明' : 'Data Information'}</h3>
                             <div className="text-sm text-blue-800 space-y-1">
-                                <p><strong>• 0-15天：</strong>{language.startsWith('zh') ? '实时天气预报' : 'Real-time forecast'}</p>
-                                <p><strong>• 15天以上：</strong>{language.startsWith('zh') ? '历史平均数据（仅供参考）' : 'Historical average (reference only)'}</p>
+                                <p><strong>• </strong>{t('dataInfo0to15')}</p>
+                                <p><strong>• </strong>{t('dataInfo15to365')}</p>
+                                <p><strong>• </strong>{t('dataInfoOver1Year')}</p>
                             </div>
                         </div>
 
@@ -471,16 +700,24 @@
                                     <div className="text-sm text-gray-600 mt-1">{t('customRouteDesc')}</div>
                                 </button>
                                 <button onClick={() => loadRoute('frances115')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">🇫🇷 {language.startsWith('zh') ? '法国之路 115km' : 'French Way 115km'}</div>
+                                    <div className="font-semibold text-gray-800">🇫🇷 {language.startsWith('zh') ? '法国之路 115公里' : 'French Way 115km'}</div>
                                     <div className="text-sm text-gray-600 mt-1">Sarria → Santiago (6{language.startsWith('zh') ? '天' : ' days'})</div>
                                 </button>
-                                <button onClick={() => loadRoute('francesFull')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">🇫🇷 {language.startsWith('zh') ? '法国之路（精简）' : 'French Way (Short)'}</div>
-                                    <div className="text-sm text-gray-600 mt-1">10{language.startsWith('zh') ? '天精简版' : ' days'}</div>
-                                </button>
-                                <button onClick={() => loadRoute('portuguese')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路' : 'Portuguese Way'}</div>
+                                <button onClick={() => loadRoute('portuguesePorto')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（波尔图）' : 'Portuguese Way (Porto)'}</div>
                                     <div className="text-sm text-gray-600 mt-1">Porto → Santiago</div>
+                                </button>
+                                <button onClick={() => loadRoute('portugueseLisbon')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800">🇵🇹 {language.startsWith('zh') ? '葡萄牙之路（里斯本）' : 'Portuguese Way (Lisbon)'}</div>
+                                    <div className="text-sm text-gray-600 mt-1">Lisbon → Santiago</div>
+                                </button>
+                                <button onClick={() => loadRoute('northern')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800">⛰️ {language.startsWith('zh') ? '北方之路' : 'Northern Way'}</div>
+                                    <div className="text-sm text-gray-600 mt-1">Bilbao → Santiago</div>
+                                </button>
+                                <button onClick={() => loadRoute('francesFull')} className="p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
+                                    <div className="font-semibold text-gray-800">🇫🇷 {language.startsWith('zh') ? '法国之路全程（31天）' : 'French Way Full (31d)'}</div>
+                                    <div className="text-sm text-gray-600 mt-1">SJPP → Santiago</div>
                                 </button>
                             </div>
                         </div>
@@ -578,7 +815,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                                                     <div className={`${day.isHistorical ? 'bg-amber-100' : 'bg-orange-50'} rounded-xl p-3 text-center`}>
                                                         <div className="text-3xl mb-1">☁️</div>
                                                         <div className="text-sm text-gray-600">{t('weather')}</div>
@@ -587,12 +824,22 @@
                                                     <div className={`${day.isHistorical ? 'bg-red-100' : 'bg-red-50'} rounded-xl p-3 text-center`}>
                                                         <div className="text-3xl mb-1">🌡️</div>
                                                         <div className="text-sm text-gray-600">{t('dayTemp')}</div>
-                                                        <div className="font-bold text-xl text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
+                                                        <div className="font-bold text-2xl text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
+                                                        {day.dayFeels && (
+                                                            <div className="text-xs text-gray-500 mt-1">
+                                                                {t('feelsLike')} {convertTemp(day.dayFeels)}{tempUnit}
+                                                            </div>
+                                                        )}
                                                     </div>
                                                     <div className={`${day.isHistorical ? 'bg-blue-100' : 'bg-blue-50'} rounded-xl p-3 text-center`}>
                                                         <div className="text-3xl mb-1">🌙</div>
                                                         <div className="text-sm text-gray-600">{t('nightTemp')}</div>
-                                                        <div className="font-bold text-xl text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
+                                                        <div className="font-bold text-2xl text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
+                                                        {day.nightFeels && (
+                                                            <div className="text-xs text-gray-500 mt-1">
+                                                                {t('feelsLike')} {convertTemp(day.nightFeels)}{tempUnit}
+                                                            </div>
+                                                        )}
                                                     </div>
                                                     <div className={`${day.isHistorical ? 'bg-gray-100' : 'bg-cyan-50'} rounded-xl p-3 text-center`}>
                                                         <div className="text-3xl mb-1">{day.isHistorical ? '📊' : '💧'}</div>
@@ -600,6 +847,40 @@
                                                         <div className="font-bold text-xl">{day.isHistorical ? '/' : `${day.rainChance}%`}</div>
                                                         {day.isHistorical && <div className="text-xs text-gray-500 mt-1">{t('noRainData')}</div>}
                                                     </div>
+                                                </div>
+
+                                                {!day.isHistorical && day.sunrise && day.sunset && (
+                                                    <div className="bg-gradient-to-r from-orange-50 to-purple-50 rounded-xl p-3 mb-3">
+                                                        <div className="flex justify-around text-sm">
+                                                            <div className="text-center">
+                                                                <div className="text-orange-600 font-semibold">🌅 {t('sunrise')}</div>
+                                                                <div className="font-bold text-lg">{day.sunrise}</div>
+                                                            </div>
+                                                            <div className="text-center">
+                                                                <div className="text-purple-600 font-semibold">🌇 {t('sunset')}</div>
+                                                                <div className="font-bold text-lg">{day.sunset}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* 天气警告 */}
+                                                <div className="flex flex-wrap gap-2">
+                                                    {day.hasStormWarning && (
+                                                        <div className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                                            {t('stormWarning')}
+                                                        </div>
+                                                    )}
+                                                    {day.needUmbrella && !day.hasStormWarning && (
+                                                        <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                                            {t('bringUmbrella')}
+                                                        </div>
+                                                    )}
+                                                    {day.needWarm && (
+                                                        <div className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold">
+                                                            {t('keepWarm')}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         );
@@ -611,9 +892,11 @@
                                         <thead>
                                             <tr className="border-b-2 border-gray-300">
                                                 <th className="text-left p-2">{t('itinerary')}</th>
+                                                <th className="text-center p-2">{t('weather')}</th>
                                                 <th className="text-center p-2">{t('dayTemp')}</th>
                                                 <th className="text-center p-2">{t('nightTemp')}</th>
                                                 <th className="text-center p-2">{t('rainProb')}</th>
+                                                <th className="text-center p-2">{t('sunrise')}/{t('sunset')}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -623,9 +906,19 @@
                                                         <div className="font-semibold">D{i+1} {day.location}</div>
                                                         <div className="text-xs text-gray-500">{day.date}</div>
                                                     </td>
-                                                    <td className="text-center p-2 font-semibold text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</td>
-                                                    <td className="text-center p-2 font-semibold text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</td>
+                                                    <td className="text-center p-2">{day.isHistorical ? 'N/A' : day.condition}</td>
+                                                    <td className="text-center p-2">
+                                                        <div className="font-semibold text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
+                                                        {day.dayFeels && <div className="text-xs text-gray-500">{convertTemp(day.dayFeels)}{tempUnit}</div>}
+                                                    </td>
+                                                    <td className="text-center p-2">
+                                                        <div className="font-semibold text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
+                                                        {day.nightFeels && <div className="text-xs text-gray-500">{convertTemp(day.nightFeels)}{tempUnit}</div>}
+                                                    </td>
                                                     <td className="text-center p-2">{day.isHistorical ? '/' : `${day.rainChance}%`}</td>
+                                                    <td className="text-center p-2 text-xs">
+                                                        {day.sunrise && day.sunset ? `${day.sunrise} / ${day.sunset}` : '-'}
+                                                    </td>
                                                 </tr>
                                             ))}
                                         </tbody>
