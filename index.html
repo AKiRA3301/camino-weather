@@ -58,27 +58,6 @@
         .autocomplete-item.selected {
             background-color: #fde68a;
         }
-    
-        .dropdown-menu {
-            position: absolute;
-            z-index: 50;
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            min-width: 200px;
-        }
-        .dropdown-item {
-            padding: 0.75rem 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .dropdown-item:hover { background-color: #f9fafb; }
-        .dropdown-item:first-child { border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
-        .dropdown-item:last-child { border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; }
     </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
@@ -173,20 +152,6 @@
                 cardView: '📋 表格视图',
                 tableView: '🎴 卡片视图',
                 copyTable: '复制表格',
-                shareLink: '分享链接',
-                moreActions: '更多操作',
-                shareThisQuery: '分享此次查询',
-                shareTitle: '🔗 分享天气查询',
-                shareDescription: '链接已包含路线和日期信息',
-                copyLinkButton: '📋 复制链接',
-                linkCopied: '✓ 链接已复制！',
-                shareVia: '─── 或分享到 ───',
-                shareWechat: '📱 微信',
-                shareEmail: '📧 邮件',
-                shareWhatsApp: '💬 WhatsApp',
-                shareLine: '🟢 Line',
-                shareKakao: '💛 KakaoTalk',
-                shareMessage: '📍 朝圣之路天气预报\n🗓️ {route} | {date}出发\n🌤️ 查看完整天气预报：\n{url}',
                 copied: '已复制',
                 weather: '天气',
                 dayTemp: '日间温度',
@@ -237,7 +202,21 @@
                 wechat: '微信支付',
                 buyMeCoffee: 'Buy Me a Coffee',
                 scanQRCode: '扫码支持开发者',
-                thankYou: '感谢您的支持！'
+                thankYou: '感谢您的支持！',
+                shareButton: '分享',
+                shareTitle: '分享朝圣之路天气工具',
+                shareMessage: '发现一个超实用的朝圣之路天气预报工具！支持所有路线、8种语言、历史数据参考',
+                shareUrl: 'https://caminoforecast.com',
+                shareTo: '分享到',
+                shareViaEmail: '邮件分享',
+                shareViaWhatsApp: 'WhatsApp',
+                shareViaWechat: '微信',
+                shareViaLine: 'Line',
+                shareViaKakao: 'KakaoTalk',
+                copyLink: '复制链接',
+                linkCopied: '已复制！',
+                shareEmailSubject: '推荐：朝圣之路天气工具',
+                shareEmailBody: '我发现了一个超实用的朝圣之路天气预报工具！\n\n访问：https://caminoforecast.com\n\nBuen Camino! 🥾',
             },
             'en': {
                 title: 'Camino Weather Tool',
@@ -307,7 +286,21 @@
                 wechat: 'WeChat Pay',
                 buyMeCoffee: 'Buy Me a Coffee',
                 scanQRCode: 'Scan to Support',
-                thankYou: 'Thank you for your support!'
+                thankYou: 'Thank you for your support!',
+                shareButton: 'Share',
+                shareTitle: 'Share Camino Weather Tool',
+                shareMessage: 'Check out this useful Camino weather forecast tool! Supports all routes, 8 languages, and historical data',
+                shareUrl: 'https://caminoforecast.com',
+                shareTo: 'Share via',
+                shareViaEmail: 'Email',
+                shareViaWhatsApp: 'WhatsApp',
+                shareViaWechat: 'WeChat',
+                shareViaLine: 'Line',
+                shareViaKakao: 'KakaoTalk',
+                copyLink: 'Copy Link',
+                linkCopied: 'Copied!',
+                shareEmailSubject: 'Recommended: Camino Weather Tool',
+                shareEmailBody: 'I found a great Camino weather forecast tool!\n\nVisit: https://caminoforecast.com\n\nBuen Camino! 🥾',
             },
             'es': {
                 title: 'Herramienta del Tiempo del Camino',
@@ -377,7 +370,21 @@
                 wechat: 'WeChat Pay',
                 buyMeCoffee: 'Invítame un Café',
                 scanQRCode: 'Escanea para Apoyar',
-                thankYou: '¡Gracias por tu apoyo!'
+                thankYou: '¡Gracias por tu apoyo!',
+                shareButton: 'Compartir',
+                shareTitle: 'Compartir Herramienta del Tiempo',
+                shareMessage: '¡Descubre esta útil herramienta de pronóstico del tiempo del Camino! Soporta todas las rutas, 8 idiomas y datos históricos',
+                shareUrl: 'https://caminoforecast.com',
+                shareTo: 'Compartir vía',
+                shareViaEmail: 'Correo',
+                shareViaWhatsApp: 'WhatsApp',
+                shareViaWechat: 'WeChat',
+                shareViaLine: 'Line',
+                shareViaKakao: 'KakaoTalk',
+                copyLink: 'Copiar Enlace',
+                linkCopied: '¡Copiado!',
+                shareEmailSubject: 'Recomendado: Herramienta del Tiempo del Camino',
+                shareEmailBody: '¡He encontrado una gran herramienta de pronóstico del tiempo del Camino!\n\nVisita: https://caminoforecast.com\n\nBuen Camino! 🥾',
             }
         };
 
@@ -436,6 +443,20 @@
             dataInfo15to365: '15天-1年內出發：顯示基於Open-Meteo過去10年（2014-2024）歷史數據的平均值預測（僅供參考）僅顯示溫度，降雨，不顯示天氣',
             dataInfoOver1Year: '超過1年：建議在出發前1年內查詢天氣信息',
             dataInformation: '數據說明',
+            shareButton: '分享',
+            shareTitle: '分享朝聖之路天氣工具',
+            shareMessage: '發現一個超實用的朝聖之路天氣預報工具！',
+            shareUrl: 'https://caminoforecast.com',
+            shareTo: '分享到',
+            shareViaEmail: '郵件分享',
+            shareViaWhatsApp: 'WhatsApp',
+            shareViaWechat: '微信',
+            shareViaLine: 'Line',
+            shareViaKakao: 'KakaoTalk',
+            copyLink: '複製連結',
+            linkCopied: '已複製！',
+            shareEmailSubject: '推薦：朝聖之路天氣工具',
+            shareEmailBody: '我發現了一個超實用的朝聖之路天氣預報工具！\n\n訪問：https://caminoforecast.com\n\nBuen Camino! 🥾',
             routeFrances115: '法國之路 115公里',
             routeFrancesFull: '法國之路全程（33階段）',
             routePortugueseLisbon: '葡萄牙之路（里斯本出發）',
@@ -724,6 +745,20 @@
             dataInfo15to365: '15일 - 1년: Open-Meteo 10년 역사 평균 예측 기반 (2014-2024, 참고용) - 온도, 강수만 표시, 날씨 상태 없음',
             dataInfoOver1Year: '1년 초과: 1년 이내 조회하세요',
             dataInformation: '데이터 정보',
+                shareButton: '공유',
+                shareTitle: 'Share Camino Weather Tool',
+                shareMessage: 'Check out this useful Camino weather forecast tool!',
+                shareUrl: 'https://caminoforecast.com',
+                shareTo: 'Share via',
+                shareViaEmail: 'Email',
+                shareViaWhatsApp: 'WhatsApp',
+                shareViaWechat: 'WeChat',
+                shareViaLine: 'Line',
+                shareViaKakao: 'KakaoTalk',
+                copyLink: 'Copy Link',
+                linkCopied: 'Copied!',
+                shareEmailSubject: 'Recommended: Camino Weather Tool',
+                shareEmailBody: 'Check out this great Camino weather tool!\n\nVisit: https://caminoforecast.com\n\nBuen Camino! 🥾',
             routeFrances115: '프랑스 길 115km',
             routeFrancesFull: '프랑스 길 전체 (33단계)',
             routePortugueseLisbon: '포르투갈 길 (리스본 출발)',
@@ -761,6 +796,139 @@
         };
 
         // 二维码打赏模态窗
+
+        // 分享模态框组件
+        const ShareModal = ({ isOpen, onClose, t, language }) => {
+            const [copied, setCopied] = React.useState(false);
+            
+            if (!isOpen) return null;
+
+            const shareUrl = 'https://caminoforecast.com';
+            const shareText = t('shareMessage');
+            const shareTitle = t('shareTitle');
+
+            // 复制链接
+            const copyToClipboard = () => {
+                navigator.clipboard.writeText(shareUrl);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            // 邮件分享
+            const shareViaEmail = () => {
+                const subject = encodeURIComponent(t('shareEmailSubject'));
+                const body = encodeURIComponent(t('shareEmailBody'));
+                window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+            };
+
+            // WhatsApp分享
+            const shareViaWhatsApp = () => {
+                const text = encodeURIComponent(`${shareText}\n\n${shareUrl}`);
+                window.open(`https://wa.me/?text=${text}`, '_blank');
+            };
+
+            // 微信分享（生成二维码）
+            const shareViaWechat = () => {
+                alert(t('shareViaWechat') + '\n\n' + 
+                      (language.startsWith('zh') ? 
+                       '请使用微信扫一扫功能扫描此页面的二维码，或手动复制链接分享：\n\n' + shareUrl :
+                       'Please use WeChat QR code scanner or copy the link manually:\n\n' + shareUrl));
+            };
+
+            // Line分享（日本）
+            const shareViaLine = () => {
+                const text = encodeURIComponent(shareText);
+                const url = encodeURIComponent(shareUrl);
+                window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`, '_blank');
+            };
+
+            // KakaoTalk分享（韩国）
+            const shareViaKakao = () => {
+                // KakaoTalk分享通常需要SDK，这里使用简化的URL方式
+                alert(t('shareViaKakao') + '\n\n' + 
+                      (language === 'ko' ? 
+                       '다음 링크를 복사하여 카카오톡에서 공유하세요:\n\n' + shareUrl :
+                       'Please copy this link and share via KakaoTalk:\n\n' + shareUrl));
+                copyToClipboard();
+            };
+
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay" onClick={onClose}>
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="text-xl font-bold text-gray-800">📤 {shareTitle}</h3>
+                            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">×</button>
+                        </div>
+
+                        <div className="space-y-3">
+                            {/* 复制链接 */}
+                            <button
+                                onClick={copyToClipboard}
+                                className="w-full flex items-center justify-between gap-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold py-3 px-4 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all shadow-md"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <span className="text-2xl">🔗</span>
+                                    <span>{copied ? t('linkCopied') : t('copyLink')}</span>
+                                </div>
+                                {copied && <span className="text-sm">✓</span>}
+                            </button>
+
+                            {/* WhatsApp */}
+                            <button
+                                onClick={shareViaWhatsApp}
+                                className="w-full flex items-center gap-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold py-3 px-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-md"
+                            >
+                                <span className="text-2xl">💬</span>
+                                <span>{t('shareViaWhatsApp')}</span>
+                            </button>
+
+                            {/* 邮件 */}
+                            <button
+                                onClick={shareViaEmail}
+                                className="w-full flex items-center gap-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold py-3 px-4 rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all shadow-md"
+                            >
+                                <span className="text-2xl">📧</span>
+                                <span>{t('shareViaEmail')}</span>
+                            </button>
+
+                            {/* 微信 (中文用户) */}
+                            {(language === 'zh-CN' || language === 'zh-TW') && (
+                                <button
+                                    onClick={shareViaWechat}
+                                    className="w-full flex items-center gap-3 bg-gradient-to-r from-green-400 to-green-500 text-white font-semibold py-3 px-4 rounded-xl hover:from-green-500 hover:to-green-600 transition-all shadow-md"
+                                >
+                                    <span className="text-2xl">💚</span>
+                                    <span>{t('shareViaWechat')}</span>
+                                </button>
+                            )}
+
+                            {/* Line (日文/英文用户) */}
+                            <button
+                                onClick={shareViaLine}
+                                className="w-full flex items-center gap-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-3 px-4 rounded-xl hover:from-green-700 hover:to-green-800 transition-all shadow-md"
+                            >
+                                <span className="text-2xl">💚</span>
+                                <span>{t('shareViaLine')}</span>
+                            </button>
+
+                            {/* KakaoTalk (韩文/英文用户) */}
+                            <button
+                                onClick={shareViaKakao}
+                                className="w-full flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-800 font-semibold py-3 px-4 rounded-xl hover:from-yellow-500 hover:to-yellow-600 transition-all shadow-md"
+                            >
+                                <span className="text-2xl">💬</span>
+                                <span>{t('shareViaKakao')}</span>
+                            </button>
+                        </div>
+
+                        <div className="mt-6 text-center">
+                            <p className="text-sm text-gray-500">{shareUrl}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const QRCodeModal = ({ isOpen, onClose, type, t }) => {
             if (!isOpen) return null;
             
@@ -797,95 +965,6 @@
                             {t('thankYou')}
                         </p>
                     </div>
-                </div>
-            );
-        };
-
-
-        // === 分享面板组件 ===
-        const SharePanel = ({ isOpen, onClose, shareUrl, shareText, t }) => {
-            const [copied, setCopied] = useState(false);
-            if (!isOpen) return null;
-            
-            const handleCopyLink = () => {
-                navigator.clipboard.writeText(shareUrl);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
-            };
-            
-            const handleShare = (platform) => {
-                const urls = {
-                    wechat: () => { handleCopyLink(); alert('链接已复制！请在微信中粘贴分享'); },
-                    email: () => window.open(`mailto:?body=${encodeURIComponent(shareText + '\n\n' + shareUrl)}`),
-                    whatsapp: () => window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`),
-                    line: () => window.open(`https://line.me/R/msg/text/?${encodeURIComponent(shareText + ' ' + shareUrl)}`),
-                    kakao: () => window.open(`https://story.kakao.com/share?url=${encodeURIComponent(shareUrl)}`)
-                };
-                urls[platform]();
-            };
-            
-            return (
-                <div className="fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4" onClick={onClose}>
-                    <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-xl font-bold text-gray-800 mb-2 text-center">{t('shareTitle')}</h3>
-                        <p className="text-sm text-gray-600 mb-4 text-center">{t('shareDescription')}</p>
-                        <div className="bg-gray-50 rounded-lg p-3 mb-4">
-                            <p className="text-xs text-gray-600 break-all">{shareUrl}</p>
-                        </div>
-                        <button onClick={handleCopyLink} className="w-full mb-4 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600">
-                            {copied ? t('linkCopied') : t('copyLinkButton')}
-                        </button>
-                        <p className="text-sm text-gray-500 text-center mb-3">{t('shareVia')}</p>
-                        <div className="grid grid-cols-2 gap-2">
-                            <button onClick={() => handleShare('wechat')} className="py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg hover:bg-green-100 text-sm">
-                                {t('shareWechat')}
-                            </button>
-                            <button onClick={() => handleShare('email')} className="py-2 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-100 text-sm">
-                                {t('shareEmail')}
-                            </button>
-                            <button onClick={() => handleShare('whatsapp')} className="py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg hover:bg-green-100 text-sm">
-                                {t('shareWhatsApp')}
-                            </button>
-                            <button onClick={() => handleShare('line')} className="py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg hover:bg-green-100 text-sm">
-                                {t('shareLine')}
-                            </button>
-                            <button onClick={() => handleShare('kakao')} className="py-2 bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-lg hover:bg-yellow-100 text-sm col-span-2">
-                                {t('shareKakao')}
-                            </button>
-                        </div>
-                        <button onClick={onClose} className="w-full mt-4 py-2 text-gray-600 hover:text-gray-800">关闭</button>
-                    </div>
-                </div>
-            );
-        };
-        
-        // === 下拉菜单组件 ===
-        const ActionDropdown = ({ t, onCopyTable, onShare, copied }) => {
-            const [isOpen, setIsOpen] = useState(false);
-            const dropdownRef = useRef(null);
-            useEffect(() => {
-                const handleClickOutside = (e) => {
-                    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setIsOpen(false);
-                };
-                if (isOpen) document.addEventListener('mousedown', handleClickOutside);
-                return () => document.removeEventListener('mousedown', handleClickOutside);
-            }, [isOpen]);
-            
-            return (
-                <div className="relative" ref={dropdownRef}>
-                    <button onClick={() => setIsOpen(!isOpen)} className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 font-semibold shadow-md text-sm md:text-base">
-                        ⋮ {t('moreActions')}
-                    </button>
-                    {isOpen && (
-                        <div className="dropdown-menu" style={{top:'100%',marginTop:'0.5rem',right:0}}>
-                            <div className="dropdown-item" onClick={() => {onShare(); setIsOpen(false);}}>
-                                <span>🔗</span><span>{t('shareLink')}</span>
-                            </div>
-                            <div className="dropdown-item" onClick={() => {onCopyTable(); setIsOpen(false);}}>
-                                <span>📋</span><span>{copied ? t('copied') : t('copyTable')}</span>
-                            </div>
-                        </div>
-                    )}
                 </div>
             );
         };
@@ -985,11 +1064,9 @@
             const [days, setDays] = useState([{ date: '', location: '' }]);
             const [weatherData, setWeatherData] = useState(null);
             const [qrModalOpen, setQrModalOpen] = useState(false);
+            const [shareModalOpen, setShareModalOpen] = useState(false);
             const [qrModalType, setQrModalType] = useState('');
-            const [showDonation, setShowDonation] = useState(true);
-        const [showSharePanel, setShowSharePanel] = useState(false);
-        const [shareUrl, setShareUrl] = useState('');
-        const [shareText, setShareText] = useState(''); // 始终显示打赏区域
+            const [showDonation, setShowDonation] = useState(true); // 始终显示打赏区域
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const [copied, setCopied] = useState(false);
@@ -1530,25 +1607,6 @@
                 setTimeout(() => setCopied(false), 2000);
             };
 
-
-            const generateShareLink = () => {
-                const base = window.location.origin + window.location.pathname;
-                const params = new URLSearchParams();
-                params.set('route', days.length === 6 ? 'frances115' : days.length === 34 ? 'francesFull' : 'custom');
-                params.set('date', days[0]?.date || '');
-                params.set('lang', language);
-                return base + '?' + params;
-            };
-            
-            const handleShare = () => {
-                const url = generateShareLink();
-                const route = days[0]?.location || t('customRoute');
-                const date = days[0]?.date || '';
-                const msg = t('shareMessage').replace('{route}', route).replace('{date}', date).replace('{url}', url);
-                setShareUrl(url);
-                setShareText(msg);
-                setShowSharePanel(true);
-            };
             const hasHistoricalData = weatherData && weatherData.some(d => d.isHistorical);
 
             return (
@@ -1580,6 +1638,12 @@
                                 </select>
                                 <button onClick={() => setUnit(unit === 'metric' ? 'imperial' : 'metric')} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm md:text-base">
                                     {tempUnit}
+                                </button>
+                                <button 
+                                    onClick={() => setShareModalOpen(true)}
+                                    className="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition shadow-md hover:shadow-lg text-sm md:text-base font-semibold"
+                                >
+                                    📤 {t('shareButton')}
                                 </button>
                             </div>
                         </div>
@@ -1919,8 +1983,15 @@
                         type={qrModalType}
                         t={t}
                     />
-                    
-                    <SharePanel isOpen={showSharePanel} onClose={() => setShowSharePanel(false)} shareUrl={shareUrl} shareText={shareText} t={t} />
+
+                    {/* 分享模态窗 */}
+                    <ShareModal 
+                        isOpen={shareModalOpen} 
+                        onClose={() => setShareModalOpen(false)} 
+                        t={t}
+                        language={language}
+                    />
+
 
                     <div className="mt-8 text-center text-gray-600 text-xs md:text-sm">
                         <p>{t('footerText')}</p>
