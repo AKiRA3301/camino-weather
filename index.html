@@ -766,6 +766,162 @@
             );
         };
 
+
+        // 分享面板组件
+        const SharePanel = ({ isOpen, onClose, shareUrl, shareText, t }) => {
+            const [copied, setCopied] = useState(false);
+
+            if (!isOpen) return null;
+
+            const handleCopyLink = () => {
+                navigator.clipboard.writeText(shareUrl);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            const handleShare = (platform) => {
+                const encodedUrl = encodeURIComponent(shareUrl);
+                const encodedText = encodeURIComponent(shareText);
+
+                const urls = {
+                    wechat: `weixin://`,
+                    email: `mailto:?subject=${encodedText}&body=${encodedText}%0A%0A${encodedUrl}`,
+                    whatsapp: `https://wa.me/?text=${encodedText}%0A${encodedUrl}`,
+                    line: `https://line.me/R/msg/text/?${encodedText}%0A${encodedUrl}`,
+                    kakao: `https://story.kakao.com/share?url=${encodedUrl}`
+                };
+
+                if (platform === 'wechat') {
+                    handleCopyLink();
+                    alert('链接已复制！请在微信中粘贴分享');
+                } else {
+                    window.open(urls[platform], '_blank');
+                }
+            };
+
+            return (
+                <div className="fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4" onClick={onClose}>
+                    <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <div className="text-center mb-4">
+                            <h3 className="text-xl font-bold text-gray-800 mb-2">{t('shareTitle')}</h3>
+                            <p className="text-sm text-gray-600">{t('shareDescription')}</p>
+                        </div>
+
+                        <div className="bg-gray-50 rounded-lg p-3 mb-4">
+                            <p className="text-xs text-gray-600 break-all">{shareUrl}</p>
+                        </div>
+
+                        <button
+                            onClick={handleCopyLink}
+                            className="w-full mb-4 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-all"
+                        >
+                            {copied ? t('linkCopied') : t('copyLinkButton')}
+                        </button>
+
+                        <p className="text-sm text-gray-500 text-center mb-3">{t('shareVia')}</p>
+
+                        <div className="grid grid-cols-2 gap-2">
+                            <button
+                                onClick={() => handleShare('wechat')}
+                                className="flex items-center justify-center gap-2 py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg hover:bg-green-100 transition-all"
+                            >
+                                {t('shareWechat')}
+                            </button>
+                            <button
+                                onClick={() => handleShare('email')}
+                                className="flex items-center justify-center gap-2 py-2 bg-gray-50 border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-100 transition-all"
+                            >
+                                {t('shareEmail')}
+                            </button>
+                            <button
+                                onClick={() => handleShare('whatsapp')}
+                                className="flex items-center justify-center gap-2 py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg hover:bg-green-100 transition-all"
+                            >
+                                {t('shareWhatsApp')}
+                            </button>
+                            <button
+                                onClick={() => handleShare('line')}
+                                className="flex items-center justify-center gap-2 py-2 bg-green-50 border border-green-200 text-green-700 rounded-lg hover:bg-green-100 transition-all"
+                            >
+                                {t('shareLine')}
+                            </button>
+                            <button
+                                onClick={() => handleShare('kakao')}
+                                className="flex items-center justify-center gap-2 py-2 bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-lg hover:bg-yellow-100 transition-all col-span-2"
+                            >
+                                {t('shareKakao')}
+                            </button>
+                        </div>
+
+                        <button
+                            onClick={onClose}
+                            className="w-full mt-4 py-2 text-gray-600 hover:text-gray-800 transition-all"
+                        >
+                            关闭
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        // 下拉菜单组件
+        const ActionDropdown = ({ t, onCopyTable, onShare, copied }) => {
+            const [isOpen, setIsOpen] = useState(false);
+            const dropdownRef = useRef(null);
+
+            useEffect(() => {
+                const handleClickOutside = (event) => {
+                    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                        setIsOpen(false);
+                    }
+                };
+
+                if (isOpen) {
+                    document.addEventListener('mousedown', handleClickOutside);
+                }
+
+                return () => {
+                    document.removeEventListener('mousedown', handleClickOutside);
+                };
+            }, [isOpen]);
+
+            return (
+                <div className="relative" ref={dropdownRef}>
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all font-semibold shadow-md text-sm md:text-base"
+                    >
+                        ⋮ {t('moreActions')}
+                    </button>
+
+                    {isOpen && (
+                        <div className="dropdown-menu" style={{ top: '100%', marginTop: '0.5rem', right: 0 }}>
+                            <div
+                                className="dropdown-item"
+                                onClick={() => {
+                                    onShare();
+                                    setIsOpen(false);
+                                }}
+                            >
+                                <span>🔗</span>
+                                <span>{t('shareLink')}</span>
+                            </div>
+                            <div
+                                className="dropdown-item"
+                                onClick={() => {
+                                    onCopyTable();
+                                    setIsOpen(false);
+                                }}
+                            >
+                                <span>📋</span>
+                                <span>{copied ? t('copied') : t('copyTable')}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
         const CityAutocomplete = ({ value, onChange, placeholder }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [showSuggestions, setShowSuggestions] = useState(false);
@@ -862,7 +1018,10 @@
             const [weatherData, setWeatherData] = useState(null);
             const [qrModalOpen, setQrModalOpen] = useState(false);
             const [qrModalType, setQrModalType] = useState('');
-            const [showDonation, setShowDonation] = useState(true); // 始终显示打赏区域
+            const [showDonation, setShowDonation] = useState(true);
+        const [showSharePanel, setShowSharePanel] = useState(false);
+        const [shareUrl, setShareUrl] = useState('');
+        const [shareText, setShareText] = useState(''); // 始终显示打赏区域
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const [copied, setCopied] = useState(false);
@@ -1403,6 +1562,40 @@
                 setTimeout(() => setCopied(false), 2000);
             };
 
+
+            // 生成分享链接
+            const generateShareLink = () => {
+                const baseUrl = window.location.origin + window.location.pathname;
+                const params = new URLSearchParams();
+                
+                // 添加路线信息（简化的路线名）
+                let routeName = 'custom';
+                if (days.length === 6) routeName = 'frances115';
+                else if (days.length === 34) routeName = 'francesFull';
+                
+                params.set('route', routeName);
+                params.set('startDate', days[0]?.date || '');
+                params.set('lang', language);
+                
+                const url = `${baseUrl}?${params.toString()}`;
+                return url;
+            };
+
+            // 处理分享按钮点击
+            const handleShare = () => {
+                const url = generateShareLink();
+                const routeText = days[0]?.location || t('customRoute');
+                const dateText = days[0]?.date || '';
+                const message = t('shareMessage')
+                    .replace('{route}', routeText)
+                    .replace('{date}', dateText)
+                    .replace('{url}', url);
+                
+                setShareUrl(url);
+                setShareText(message);
+                setShowSharePanel(true);
+            };
+
             const hasHistoricalData = weatherData && weatherData.some(d => d.isHistorical);
 
             return (
@@ -1765,6 +1958,46 @@
                             </div>
                         </div>
                     )}
+
+
+                    {/* 用户反馈区域 */}
+                    <div className="mt-6 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-2 border-dashed border-blue-300 rounded-2xl p-6 md:p-8">
+                        <div className="text-center mb-4">
+                            <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
+                                {t('feedbackTitle')}
+                            </h3>
+                            <p className="text-sm md:text-base text-gray-600 mb-1">
+                                {t('feedbackSubtitle')}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                                {t('feedbackDescription')}
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 max-w-3xl mx-auto">
+                            <button
+                                onClick={() => window.open('https://forms.gle/YOUR_GOOGLE_FORM_ID_BUG', '_blank')}
+                                className="flex flex-col items-center justify-center gap-2 bg-white border-2 border-red-300 text-red-700 font-semibold py-4 px-4 rounded-xl hover:bg-red-50 transition-all shadow-sm hover:shadow-md"
+                            >
+                                <span className="text-3xl">🐛</span>
+                                <span className="text-sm">{t('reportBug')}</span>
+                            </button>
+                            <button
+                                onClick={() => window.open('https://forms.gle/YOUR_GOOGLE_FORM_ID_FEATURE', '_blank')}
+                                className="flex flex-col items-center justify-center gap-2 bg-white border-2 border-yellow-300 text-yellow-700 font-semibold py-4 px-4 rounded-xl hover:bg-yellow-50 transition-all shadow-sm hover:shadow-md"
+                            >
+                                <span className="text-3xl">💡</span>
+                                <span className="text-sm">{t('featureSuggestion')}</span>
+                            </button>
+                            <button
+                                onClick={() => window.open('https://forms.gle/YOUR_GOOGLE_FORM_ID_OTHER', '_blank')}
+                                className="flex flex-col items-center justify-center gap-2 bg-white border-2 border-blue-300 text-blue-700 font-semibold py-4 px-4 rounded-xl hover:bg-blue-50 transition-all shadow-sm hover:shadow-md"
+                            >
+                                <span className="text-3xl">📝</span>
+                                <span className="text-sm">{t('otherFeedback')}</span>
+                            </button>
+                        </div>
+                    </div>
 
                     {/* 二维码模态窗 */}
                     <QRCodeModal 
