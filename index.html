@@ -75,6 +75,15 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+
+        .route-card {
+            transition: all 0.2s ease;
+        }
+        
+        .route-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
@@ -102,7 +111,9 @@
             'Caldas de Reis', 'Irún', 'San Sebastián', 'Zarautz', 'Deba', 'Gernika', 'Lezama',
             'Portugalete', 'Castro Urdiales', 'Laredo', 'Santander', 'Santillana del Mar', 'Comillas',
             'Llanes', 'Ribadesella', 'Gijón', 'Avilés', 'Luarca', 'Ribadeo', 'Mondoñedo', 'Vilalba',
-            'Baamonde', 'Sobrado dos Monxes'
+            'Baamonde', 'Sobrado dos Monxes', 'Ferrol', 'Pontedeume', 'Betanzos', 'Sigüeiro',
+            'Grado', 'Salas', 'Tineo', 'Grandas de Salime', 'A Fonsagrada', 'Vigo',
+            'Viana do Castelo', 'Caminha', 'A Ramallosa', 'Vilanova de Arousa', 'A Armenteira'
         ].sort();
 
         const weatherTranslations = {
@@ -150,145 +161,197 @@
             return translations[condition] || condition;
         };
 
-        // ==================== 分享相关翻译 ====================
-        const shareTranslations = {
-            'zh-CN': {
-                share: '分享',
-                shareTitle: '分享给朋友',
-                shareDescription: '选择分享方式',
-                shareToWeChat: '微信',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: '邮件',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: '复制链接',
-                linkCopied: '链接已复制！',
-                shareText: '推荐一个超好用的朝圣之路天气查询工具！支持多条路线和多语言，帮你规划Camino行程 ☁️🚶',
-                wechatShareTip: '请复制链接后在微信中粘贴分享',
-                close: '关闭'
+        // ==================== 路线数据 ====================
+        const routeData = {
+            custom: { 
+                days: [{ date: '', location: '' }],
+                distance: '',
+                stages: 0
             },
-            'zh-TW': {
-                share: '分享',
-                shareTitle: '分享給朋友',
-                shareDescription: '選擇分享方式',
-                shareToWeChat: '微信',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: '郵件',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: '複製連結',
-                linkCopied: '連結已複製！',
-                shareText: '推薦一個超好用的朝聖之路天氣查詢工具！支持多條路線和多語言，幫你規劃Camino行程 ☁️🚶',
-                wechatShareTip: '請複製連結後在微信中貼上分享',
-                close: '關閉'
+            francesFull: {
+                days: [
+                    { date: '', location: 'Saint-Jean-Pied-de-Port' },
+                    { date: '', location: 'Roncesvalles' },
+                    { date: '', location: 'Zubiri' },
+                    { date: '', location: 'Pamplona' },
+                    { date: '', location: 'Puente la Reina' },
+                    { date: '', location: 'Estella' },
+                    { date: '', location: 'Los Arcos' },
+                    { date: '', location: 'Logroño' },
+                    { date: '', location: 'Nájera' },
+                    { date: '', location: 'Santo Domingo de la Calzada' },
+                    { date: '', location: 'Belorado' },
+                    { date: '', location: 'San Juan de Ortega' },
+                    { date: '', location: 'Burgos' },
+                    { date: '', location: 'Hornillos del Camino' },
+                    { date: '', location: 'Castrojeriz' },
+                    { date: '', location: 'Frómista' },
+                    { date: '', location: 'Carrión de los Condes' },
+                    { date: '', location: 'Terradillos de los Templarios' },
+                    { date: '', location: 'Bercianos del Real Camino' },
+                    { date: '', location: 'Mansilla de las Mulas' },
+                    { date: '', location: 'León' },
+                    { date: '', location: 'San Martín del Camino' },
+                    { date: '', location: 'Astorga' },
+                    { date: '', location: 'Foncebadón' },
+                    { date: '', location: 'Ponferrada' },
+                    { date: '', location: 'Villafranca del Bierzo' },
+                    { date: '', location: 'O Cebreiro' },
+                    { date: '', location: 'Triacastela' },
+                    { date: '', location: 'Sarria' },
+                    { date: '', location: 'Portomarín' },
+                    { date: '', location: 'Palas de Rei' },
+                    { date: '', location: 'Arzúa' },
+                    { date: '', location: 'O Pedrouzo' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~780 km',
+                stages: 33
             },
-            'en': {
-                share: 'Share',
-                shareTitle: 'Share with Friends',
-                shareDescription: 'Choose how to share',
-                shareToWeChat: 'WeChat',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: 'Email',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: 'Copy Link',
-                linkCopied: 'Link copied!',
-                shareText: 'Check out this amazing Camino Weather Tool! Multi-route and multi-language support for planning your pilgrimage ☁️🚶',
-                wechatShareTip: 'Please copy the link and paste it in WeChat to share',
-                close: 'Close'
+            francesSarria: {
+                days: [
+                    { date: '', location: 'Sarria' },
+                    { date: '', location: 'Portomarín' },
+                    { date: '', location: 'Palas de Rei' },
+                    { date: '', location: 'Arzúa' },
+                    { date: '', location: 'O Pedrouzo' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~114 km',
+                stages: 5
             },
-            'es': {
-                share: 'Compartir',
-                shareTitle: 'Compartir con Amigos',
-                shareDescription: 'Elige cómo compartir',
-                shareToWeChat: 'WeChat',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: 'Correo',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: 'Copiar Enlace',
-                linkCopied: '¡Enlace copiado!',
-                shareText: '¡Descubre esta increíble herramienta del tiempo para el Camino! Soporte multi-ruta y multi-idioma ☁️🚶',
-                wechatShareTip: 'Copia el enlace y pégalo en WeChat para compartir',
-                close: 'Cerrar'
+            norte: {
+                days: [
+                    { date: '', location: 'Irún' },
+                    { date: '', location: 'San Sebastián' },
+                    { date: '', location: 'Zarautz' },
+                    { date: '', location: 'Deba' },
+                    { date: '', location: 'Gernika' },
+                    { date: '', location: 'Lezama' },
+                    { date: '', location: 'Bilbao' },
+                    { date: '', location: 'Portugalete' },
+                    { date: '', location: 'Castro Urdiales' },
+                    { date: '', location: 'Laredo' },
+                    { date: '', location: 'Santander' },
+                    { date: '', location: 'Santillana del Mar' },
+                    { date: '', location: 'Comillas' },
+                    { date: '', location: 'Llanes' },
+                    { date: '', location: 'Ribadesella' },
+                    { date: '', location: 'Gijón' },
+                    { date: '', location: 'Avilés' },
+                    { date: '', location: 'Luarca' },
+                    { date: '', location: 'Ribadeo' },
+                    { date: '', location: 'Mondoñedo' },
+                    { date: '', location: 'Vilalba' },
+                    { date: '', location: 'Baamonde' },
+                    { date: '', location: 'Sobrado dos Monxes' },
+                    { date: '', location: 'Arzúa' },
+                    { date: '', location: 'O Pedrouzo' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~784 km',
+                stages: 36
             },
-            'fr': {
-                share: 'Partager',
-                shareTitle: 'Partager avec des Amis',
-                shareDescription: 'Choisissez comment partager',
-                shareToWeChat: 'WeChat',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: 'Email',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: 'Copier le Lien',
-                linkCopied: 'Lien copié!',
-                shareText: 'Découvrez cet outil météo incroyable pour le Camino! Support multi-route et multi-langue ☁️🚶',
-                wechatShareTip: 'Copiez le lien et collez-le dans WeChat pour partager',
-                close: 'Fermer'
+            portuguesPorto: {
+                days: [
+                    { date: '', location: 'Porto' },
+                    { date: '', location: 'Vilarinho' },
+                    { date: '', location: 'Barcelos' },
+                    { date: '', location: 'Ponte de Lima' },
+                    { date: '', location: 'Rubiães' },
+                    { date: '', location: 'Tui' },
+                    { date: '', location: 'Redondela' },
+                    { date: '', location: 'Pontevedra' },
+                    { date: '', location: 'Caldas de Reis' },
+                    { date: '', location: 'Padrón' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~240 km',
+                stages: 10
             },
-            'de': {
-                share: 'Teilen',
-                shareTitle: 'Mit Freunden teilen',
-                shareDescription: 'Wählen Sie, wie Sie teilen möchten',
-                shareToWeChat: 'WeChat',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: 'E-Mail',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: 'Link kopieren',
-                linkCopied: 'Link kopiert!',
-                shareText: 'Entdecken Sie dieses großartige Camino-Wetter-Tool! Multi-Route und Multi-Sprache Unterstützung ☁️🚶',
-                wechatShareTip: 'Kopieren Sie den Link und fügen Sie ihn in WeChat ein',
-                close: 'Schließen'
+            portuguesLisboa: {
+                days: [
+                    { date: '', location: 'Lisboa' },
+                    { date: '', location: 'Vila Franca de Xira' },
+                    { date: '', location: 'Azambuja' },
+                    { date: '', location: 'Santarém' },
+                    { date: '', location: 'Golegã' },
+                    { date: '', location: 'Tomar' },
+                    { date: '', location: 'Coimbra' },
+                    { date: '', location: 'Águeda' },
+                    { date: '', location: 'Grijó' },
+                    { date: '', location: 'Porto' },
+                    { date: '', location: 'Vilarinho' },
+                    { date: '', location: 'Barcelos' },
+                    { date: '', location: 'Ponte de Lima' },
+                    { date: '', location: 'Tui' },
+                    { date: '', location: 'Redondela' },
+                    { date: '', location: 'Pontevedra' },
+                    { date: '', location: 'Caldas de Reis' },
+                    { date: '', location: 'Padrón' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~620 km',
+                stages: 25
             },
-            'pt': {
-                share: 'Compartilhar',
-                shareTitle: 'Compartilhar com Amigos',
-                shareDescription: 'Escolha como compartilhar',
-                shareToWeChat: 'WeChat',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: 'Email',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: 'Copiar Link',
-                linkCopied: 'Link copiado!',
-                shareText: 'Confira esta incrível ferramenta de tempo do Camino! Suporte multi-rota e multi-idioma ☁️🚶',
-                wechatShareTip: 'Copie o link e cole no WeChat para compartilhar',
-                close: 'Fechar'
+            primitivo: {
+                days: [
+                    { date: '', location: 'Oviedo' },
+                    { date: '', location: 'Grado' },
+                    { date: '', location: 'Salas' },
+                    { date: '', location: 'Tineo' },
+                    { date: '', location: 'Grandas de Salime' },
+                    { date: '', location: 'A Fonsagrada' },
+                    { date: '', location: 'Lugo' },
+                    { date: '', location: 'Melide' },
+                    { date: '', location: 'Arzúa' },
+                    { date: '', location: 'O Pedrouzo' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~313 km',
+                stages: 11
             },
-            'ko': {
-                share: '공유',
-                shareTitle: '친구에게 공유',
-                shareDescription: '공유 방법 선택',
-                shareToWeChat: '위챗',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: '이메일',
-                shareToLine: 'Line',
-                shareToKakao: '카카오톡',
-                copyLink: '링크 복사',
-                linkCopied: '링크가 복사되었습니다!',
-                shareText: '이 멋진 카미노 날씨 도구를 확인하세요! 다중 경로 및 다국어 지원 ☁️🚶',
-                wechatShareTip: '링크를 복사하여 WeChat에 붙여넣어 공유하세요',
-                close: '닫기'
+            ingles: {
+                days: [
+                    { date: '', location: 'Ferrol' },
+                    { date: '', location: 'Pontedeume' },
+                    { date: '', location: 'Betanzos' },
+                    { date: '', location: 'Sigüeiro' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~112 km',
+                stages: 5
             },
-            'ja': {
-                share: '共有',
-                shareTitle: '友達と共有',
-                shareDescription: '共有方法を選択',
-                shareToWeChat: 'WeChat',
-                shareToWhatsApp: 'WhatsApp',
-                shareToEmail: 'メール',
-                shareToLine: 'Line',
-                shareToKakao: 'KakaoTalk',
-                copyLink: 'リンクをコピー',
-                linkCopied: 'リンクをコピーしました！',
-                shareText: 'この素晴らしいカミーノ天気ツールをチェック！マルチルート・多言語対応 ☁️🚶',
-                wechatShareTip: 'リンクをコピーしてWeChatに貼り付けて共有',
-                close: '閉じる'
+            portuguesCosta: {
+                days: [
+                    { date: '', location: 'Porto' },
+                    { date: '', location: 'Póvoa de Varzim' },
+                    { date: '', location: 'Viana do Castelo' },
+                    { date: '', location: 'Caminha' },
+                    { date: '', location: 'Vigo' },
+                    { date: '', location: 'Redondela' },
+                    { date: '', location: 'Pontevedra' },
+                    { date: '', location: 'Caldas de Reis' },
+                    { date: '', location: 'Padrón' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~271 km',
+                stages: 9
+            },
+            espiritual: {
+                days: [
+                    { date: '', location: 'Pontevedra' },
+                    { date: '', location: 'A Armenteira' },
+                    { date: '', location: 'Vilanova de Arousa' },
+                    { date: '', location: 'Padrón' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~74 km',
+                stages: 3
             }
         };
 
+        // ==================== 翻译 ====================
         const translations = {
             'zh-CN': {
                 title: '朝圣之路天气查询',
@@ -341,31 +404,125 @@
                 bringUmbrella: '🌧️ 记得带雨具',
                 keepWarm: '🧥 注意保暖',
                 dataInfo0to15: '0-15天内出发：显示AEMET实时天气预报',
-                dataInfo15to365: '15天-1年内出发：显示基于Open-Meteo过去10年（2014-2024）历史数据的平均值预测（仅供参考）仅显示温度，降雨，不显示天气',
+                dataInfo15to365: '15天-1年内出发：显示基于Open-Meteo过去10年（2014-2024）历史数据的平均值预测（仅供参考），仅显示温度和降雨',
                 dataInfoOver1Year: '超过1年：建议在出发前1年内查询天气信息',
                 dataInformation: '数据说明',
-                routeFrances115: '法国之路 115公里',
-                routeFrancesFull: '法国之路全程（33阶段）',
-                routePortugueseLisbonCentral: '葡萄牙之路（里斯本出发）',
-                routePortuguesePortoCentral: '葡萄牙之路（波尔图出发）',
-                routeNorthern: '北方之路（36阶段）',
-                routePortugueseCoastal: '葡萄牙之路（海岸线）',
-                routePrimitivo: '原始之路',
-                routeSpiritual: '灵性之路',
-                donationTitle: '这个工具对您的朝圣之旅有帮助吗？',
-                donationSubtitle: '请我喝杯咖啡，支持我持续改进和维护',
-                donationChinaUsers: '🇨🇳 中国用户',
-                donationInternational: '🌍 国际用户',
-                alipay: '支付宝',
-                wechat: '微信支付',
-                buyMeCoffee: 'Buy Me a Coffee',
-                scanQRCode: '扫码支持开发者',
-                thankYou: '感谢您的支持！',
-                ...shareTranslations['zh-CN']
+                // 路线翻译
+                routeFrancesFull: '🇫🇷 法国之路全程',
+                routeFrancesSarria: '🇫🇷 法国之路（从Sarria）',
+                routeNorte: '🌊 北方之路',
+                routePortuguesPorto: '🇵🇹 葡萄牙之路（从Porto）',
+                routePortuguesLisboa: '🇵🇹 葡萄牙之路（从Lisboa）',
+                routePrimitivo: '⛰️ 原始之路',
+                routeIngles: '🇬🇧 英国之路',
+                routePortuguesCosta: '🏖️ 葡萄牙海岸之路',
+                routeEspiritual: '🙏 灵性变体',
+                routeDescFrancesFull: 'Saint-Jean → Santiago（33阶段）',
+                routeDescFrancesSarria: 'Sarria → Santiago（5阶段）',
+                routeDescNorte: 'Irún → Santiago（36阶段）',
+                routeDescPortuguesPorto: 'Porto → Santiago（10阶段）',
+                routeDescPortuguesLisboa: 'Lisboa → Santiago（25阶段）',
+                routeDescPrimitivo: 'Oviedo → Santiago（11阶段）',
+                routeDescIngles: 'Ferrol → Santiago（5阶段）',
+                routeDescPortuguesCosta: 'Porto → Santiago 沿海岸（9阶段）',
+                routeDescEspiritual: 'Pontevedra → Padrón 含渡船（3阶段）',
+                stages: '阶段',
+                // 分享
+                share: '分享',
+                shareTitle: '分享给朋友',
+                shareDescription: '选择分享方式',
+                shareToWeChat: '微信',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: '邮件',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: '复制链接',
+                linkCopied: '链接已复制！',
+                shareText: '推荐一个超好用的朝圣之路天气查询工具！支持多条路线和多语言，帮你规划Camino行程 ☁️🚶',
+                wechatShareTip: '请复制链接后在微信中粘贴分享',
+                close: '关闭'
+            },
+            'zh-TW': {
+                title: '朝聖之路天氣查詢',
+                subtitle: '為所有朝聖者提供精準的天氣預報服務 • 支持所有路線 • 歷史數據參考',
+                selectRoute: '選擇路線',
+                customRoute: '✨ 自定義路線',
+                customRouteDesc: '創建你的專屬路線',
+                itinerary: '行程安排',
+                days: '天',
+                total: '共',
+                autoFillDates: '自動填充日期',
+                addDay: '添加一天',
+                locationPlaceholder: '輸入城鎮名稱（如：S 搜索 Santiago）',
+                queryWeather: '查詢天氣預報',
+                querying: '正在查詢天氣...',
+                weatherForecast: '天氣預報',
+                cardView: '📋 表格視圖',
+                tableView: '🎴 卡片視圖',
+                copyTable: '複製表格',
+                copied: '已複製',
+                weather: '天氣',
+                dayTemp: '日間溫度',
+                nightTemp: '夜間溫度',
+                feelsLike: '體感',
+                rainProb: '降雨概率',
+                rainyDays: '降雨天數',
+                sunrise: '日出',
+                sunset: '日落',
+                usageTip: '💡 使用提示',
+                usageTipText: '切換"卡片視圖"查看美觀界面，或"表格視圖"複製文本。',
+                notice: '⚠️ 注意事項',
+                noticeText: '山區天氣變化快，遇極端天氣預警請調整行程。安全第一！',
+                footerText: '本工具為朝聖之路徒步者提供便捷的天氣查詢服務',
+                dataSource: '數據來源：AEMET（西班牙氣象局）',
+                weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                dateTooFarTitle: '日期超出範圍',
+                dateTooFarMessage: '您選擇的日期距離現在超過1年，建議在出發前1年內查詢天氣信息。',
+                understand: '我知道了',
+                historicalDataWarning: '提示：您選擇的日期超出天氣預報範圍（最多提前15天）。以下顯示的是基於過去10年歷史數據的平均值預測。',
+                historicalDataBadge: '歷史平均數據預測',
+                realTimeForecast: '實時天氣預報',
+                dataInfo0to15: '0-15天內出發：顯示AEMET實時天氣預報',
+                dataInfo15to365: '15天-1年內出發：顯示基於Open-Meteo過去10年歷史數據的平均值預測（僅供參考），僅顯示溫度和降雨',
+                dataInfoOver1Year: '超過1年：建議在出發前1年內查詢天氣信息',
+                dataInformation: '數據說明',
+                // 路線翻譯
+                routeFrancesFull: '🇫🇷 法國之路全程',
+                routeFrancesSarria: '🇫🇷 法國之路（從Sarria）',
+                routeNorte: '🌊 北方之路',
+                routePortuguesPorto: '🇵🇹 葡萄牙之路（從Porto）',
+                routePortuguesLisboa: '🇵🇹 葡萄牙之路（從Lisboa）',
+                routePrimitivo: '⛰️ 原始之路',
+                routeIngles: '🇬🇧 英國之路',
+                routePortuguesCosta: '🏖️ 葡萄牙海岸之路',
+                routeEspiritual: '🙏 靈性變體',
+                routeDescFrancesFull: 'Saint-Jean → Santiago（33階段）',
+                routeDescFrancesSarria: 'Sarria → Santiago（5階段）',
+                routeDescNorte: 'Irún → Santiago（36階段）',
+                routeDescPortuguesPorto: 'Porto → Santiago（10階段）',
+                routeDescPortuguesLisboa: 'Lisboa → Santiago（25階段）',
+                routeDescPrimitivo: 'Oviedo → Santiago（11階段）',
+                routeDescIngles: 'Ferrol → Santiago（5階段）',
+                routeDescPortuguesCosta: 'Porto → Santiago 沿海岸（9階段）',
+                routeDescEspiritual: 'Pontevedra → Padrón 含渡船（3階段）',
+                stages: '階段',
+                share: '分享',
+                shareTitle: '分享給朋友',
+                shareDescription: '選擇分享方式',
+                shareToWeChat: '微信',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: '郵件',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: '複製連結',
+                linkCopied: '連結已複製！',
+                shareText: '推薦一個超好用的朝聖之路天氣查詢工具！支持多條路線和多語言 ☁️🚶',
+                wechatShareTip: '請複製連結後在微信中貼上分享',
+                close: '關閉'
             },
             'en': {
                 title: 'Camino Weather Tool',
-                subtitle: 'Accurate weather forecasts for all pilgrims',
+                subtitle: 'Accurate weather forecasts for all pilgrims • All routes • Historical data',
                 selectRoute: 'Select Route',
                 customRoute: '✨ Custom Route',
                 customRouteDesc: 'Create your own route',
@@ -400,41 +557,46 @@
                 dateTooFarTitle: 'Date Out of Range',
                 dateTooFarMessage: 'Your selected date is more than 1 year away. Please check weather within 1 year of departure.',
                 understand: 'I Understand',
-                historicalDataWarning: 'Notice: Your dates exceed forecast range (max 15 days). Data shown is based on Open-Meteo 10-year historical average prediction (2014-2024) for reference only.',
+                historicalDataWarning: 'Notice: Your dates exceed forecast range (max 15 days). Data shown is based on 10-year historical average.',
                 historicalDataBadge: 'Historical Prediction',
                 realTimeForecast: 'Real-time Forecast',
-                dataSourceLabel: 'Data Source',
-                historicalAvgSource: 'Based on 10-year average (Open-Meteo)',
-                realtimeSource: 'AEMET real-time forecast',
-                errorFetchingWeather: 'Failed to fetch weather data',
-                retryQuery: 'Retry',
-                noRainData: 'No rain data',
-                rainyDaysFormat: '~{percent}% of days with rain',
-                stormWarning: '⚠️ Storm Warning',
-                bringUmbrella: '🌧️ Bring umbrella',
-                keepWarm: '🧥 Keep warm',
                 dataInfo0to15: 'Within 15 days: Real-time AEMET forecast',
-                dataInfo15to365: '15 days - 1 year: Based on Open-Meteo 10-year historical average prediction (2014-2024, reference only) - Shows temperature, rain only, no weather conditions',
+                dataInfo15to365: '15 days - 1 year: Based on Open-Meteo 10-year historical average (reference only), shows temperature and rain only',
                 dataInfoOver1Year: 'Beyond 1 year: Check within 1 year of departure',
                 dataInformation: 'Data Information',
-                routeFrances115: 'French Way 115km',
-                routeFrancesFull: 'French Way Full (33 stages)',
-                routePortugueseLisbonCentral: 'Portuguese Way (from Lisbon)',
-                routePortuguesePortoCentral: 'Portuguese Way (from Porto)',
-                routeNorthern: 'Northern Way (36 stages)',
-                routePrimitivo: 'Primitive Way',
-                routePortugueseCoastal: 'Portuguese Coastal Way',
-                routeSpiritual: 'Spiritual Variant',
-                donationTitle: 'Enjoying this tool?',
-                donationSubtitle: 'Buy me a coffee to support continued development',
-                donationChinaUsers: '🇨🇳 For users in China',
-                donationInternational: '🌍 International',
-                alipay: 'Alipay',
-                wechat: 'WeChat Pay',
-                buyMeCoffee: 'Buy Me a Coffee',
-                scanQRCode: 'Scan to Support',
-                thankYou: 'Thank you for your support!',
-                ...shareTranslations['en']
+                // Route translations
+                routeFrancesFull: '🇫🇷 French Way (Full)',
+                routeFrancesSarria: '🇫🇷 French Way (from Sarria)',
+                routeNorte: '🌊 Northern Way',
+                routePortuguesPorto: '🇵🇹 Portuguese Way (from Porto)',
+                routePortuguesLisboa: '🇵🇹 Portuguese Way (from Lisbon)',
+                routePrimitivo: '⛰️ Primitive Way',
+                routeIngles: '🇬🇧 English Way',
+                routePortuguesCosta: '🏖️ Portuguese Coastal Way',
+                routeEspiritual: '🙏 Spiritual Variant',
+                routeDescFrancesFull: 'Saint-Jean → Santiago (33 stages)',
+                routeDescFrancesSarria: 'Sarria → Santiago (5 stages)',
+                routeDescNorte: 'Irún → Santiago (36 stages)',
+                routeDescPortuguesPorto: 'Porto → Santiago (10 stages)',
+                routeDescPortuguesLisboa: 'Lisbon → Santiago (25 stages)',
+                routeDescPrimitivo: 'Oviedo → Santiago (11 stages)',
+                routeDescIngles: 'Ferrol → Santiago (5 stages)',
+                routeDescPortuguesCosta: 'Porto → Santiago coastal (9 stages)',
+                routeDescEspiritual: 'Pontevedra → Padrón with boat (3 stages)',
+                stages: 'stages',
+                share: 'Share',
+                shareTitle: 'Share with Friends',
+                shareDescription: 'Choose how to share',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'Email',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'Copy Link',
+                linkCopied: 'Link copied!',
+                shareText: 'Check out this amazing Camino Weather Tool! Multi-route and multi-language support ☁️🚶',
+                wechatShareTip: 'Please copy the link and paste it in WeChat to share',
+                close: 'Close'
             },
             'es': {
                 title: 'Herramienta del Tiempo del Camino',
@@ -473,219 +635,47 @@
                 dateTooFarTitle: 'Fecha Fuera de Rango',
                 dateTooFarMessage: 'La fecha seleccionada está a más de 1 año. Consulte dentro de 1 año antes de la salida.',
                 understand: 'Entendido',
-                historicalDataWarning: 'Aviso: Fechas exceden pronóstico. Datos basados en predicción de promedio histórico Open-Meteo de 10 años (2014-2024).',
+                historicalDataWarning: 'Aviso: Fechas exceden pronóstico. Datos basados en promedio histórico de 10 años.',
                 historicalDataBadge: 'Predicción Histórica',
                 realTimeForecast: 'Pronóstico Tiempo Real',
-                dataSourceLabel: 'Fuente',
-                historicalAvgSource: 'Basado en promedio de 10 años (Open-Meteo)',
-                realtimeSource: 'Pronóstico AEMET tiempo real',
-                errorFetchingWeather: 'Error al obtener datos',
-                retryQuery: 'Reintentar',
-                noRainData: 'Sin datos lluvia',
-                rainyDaysFormat: '~{percent}% días con lluvia',
-                stormWarning: '⚠️ Alerta Tormenta',
-                bringUmbrella: '🌧️ Lleva paraguas',
-                keepWarm: '🧥 Abrígate',
                 dataInfo0to15: 'Dentro de 15 días: Pronóstico AEMET tiempo real',
-                dataInfo15to365: '15 días - 1 año: Basado en predicción de promedio histórico Open-Meteo de 10 años (2014-2024, referencia) - Solo muestra temperatura, lluvia, no condiciones meteorológicas',
-                dataInfoOver1Year: 'Más de 1 año: Consulte dentro de 1 año antes',
+                dataInfo15to365: '15 días - 1 año: Basado en promedio histórico Open-Meteo de 10 años (referencia), solo temperatura y lluvia',
+                dataInfoOver1Year: 'Más de 1 año: Consulte dentro de 1 año antes de salir',
                 dataInformation: 'Información de Datos',
-                routeFrances115: 'Camino Francés 115km',
-                routeFrancesFull: 'Camino Francés Completo (33 etapas)',
-                routePortugueseLisbonCentral: 'Camino Portugués (desde Lisboa)',
-                routePortuguesePortoCentral: 'Camino Portugués (desde Porto)',
-                routeNorthern: 'Camino del Norte (36 etapas)',
-                routePrimitivo: 'Camino Primitivo',
-                routePortugueseCoastal: 'Camino Portugués de la Costa',
-                routeSpiritual: 'Variante Espiritual',
-                donationTitle: '¿Te gusta esta herramienta?',
-                donationSubtitle: 'Invítame un café para apoyar el desarrollo',
-                donationChinaUsers: '🇨🇳 Para usuarios en China',
-                donationInternational: '🌍 Internacional',
-                alipay: 'Alipay',
-                wechat: 'WeChat Pay',
-                buyMeCoffee: 'Invítame un Café',
-                scanQRCode: 'Escanea para Apoyar',
-                thankYou: '¡Gracias por tu apoyo!',
-                ...shareTranslations['es']
+                // Traducciones de rutas
+                routeFrancesFull: '🇫🇷 Camino Francés (Completo)',
+                routeFrancesSarria: '🇫🇷 Camino Francés (desde Sarria)',
+                routeNorte: '🌊 Camino del Norte',
+                routePortuguesPorto: '🇵🇹 Camino Portugués (desde Porto)',
+                routePortuguesLisboa: '🇵🇹 Camino Portugués (desde Lisboa)',
+                routePrimitivo: '⛰️ Camino Primitivo',
+                routeIngles: '🇬🇧 Camino Inglés',
+                routePortuguesCosta: '🏖️ Camino Portugués de la Costa',
+                routeEspiritual: '🙏 Variante Espiritual',
+                routeDescFrancesFull: 'Saint-Jean → Santiago (33 etapas)',
+                routeDescFrancesSarria: 'Sarria → Santiago (5 etapas)',
+                routeDescNorte: 'Irún → Santiago (36 etapas)',
+                routeDescPortuguesPorto: 'Porto → Santiago (10 etapas)',
+                routeDescPortuguesLisboa: 'Lisboa → Santiago (25 etapas)',
+                routeDescPrimitivo: 'Oviedo → Santiago (11 etapas)',
+                routeDescIngles: 'Ferrol → Santiago (5 etapas)',
+                routeDescPortuguesCosta: 'Porto → Santiago costa (9 etapas)',
+                routeDescEspiritual: 'Pontevedra → Padrón con barco (3 etapas)',
+                stages: 'etapas',
+                share: 'Compartir',
+                shareTitle: 'Compartir con Amigos',
+                shareDescription: 'Elige cómo compartir',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'Correo',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'Copiar Enlace',
+                linkCopied: '¡Enlace copiado!',
+                shareText: '¡Descubre esta herramienta del tiempo para el Camino! ☁️🚶',
+                wechatShareTip: 'Copia el enlace y pégalo en WeChat para compartir',
+                close: 'Cerrar'
             }
-        };
-
-        // 繁体中文
-        translations['zh-TW'] = {
-            ...translations['zh-CN'],
-            title: '朝聖之路天氣查詢',
-            subtitle: '為所有朝聖者提供精準的天氣預報服務 • 支持所有路線 • 歷史數據參考',
-            ...shareTranslations['zh-TW']
-        };
-
-        // 法语
-        translations['fr'] = {
-            title: 'Météo du Chemin',
-            subtitle: 'Prévisions météo précises pour tous les pèlerins',
-            selectRoute: 'Sélectionner Route',
-            customRoute: '✨ Route Personnalisée',
-            customRouteDesc: 'Créez votre propre route',
-            itinerary: 'Itinéraire',
-            days: 'jours',
-            total: 'Total',
-            autoFillDates: 'Remplir Dates',
-            addDay: 'Ajouter Jour',
-            locationPlaceholder: 'Tapez nom de ville',
-            queryWeather: 'Consulter Météo',
-            querying: 'Consultation...',
-            weatherForecast: 'Prévisions Météo',
-            cardView: '📋 Vue Tableau',
-            tableView: '🎴 Vue Cartes',
-            copyTable: 'Copier Tableau',
-            copied: 'Copié',
-            weather: 'Météo',
-            dayTemp: 'Temp. Jour',
-            nightTemp: 'Temp. Nuit',
-            feelsLike: 'Ressenti',
-            rainProb: 'Prob. Pluie',
-            rainyDays: 'Jours Pluie',
-            sunrise: 'Lever',
-            sunset: 'Coucher',
-            usageTip: '💡 Astuce',
-            usageTipText: 'Changez en "Vue Cartes" pour meilleur affichage.',
-            notice: '⚠️ Avertissement',
-            noticeText: 'La météo en montagne change rapidement. Sécurité d\'abord!',
-            footerText: 'Outil météo pour pèlerins du Camino',
-            dataSource: 'Source: AEMET',
-            weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
-            dateTooFarTitle: 'Date Hors Limite',
-            dateTooFarMessage: 'Date à plus d\'1 an. Consultez dans l\'année.',
-            understand: 'Compris',
-            historicalDataBadge: 'Prédiction Historique',
-            realTimeForecast: 'Prévision Temps Réel',
-            dataInformation: 'Informations Données',
-            routeFrances115: 'Chemin Français 115km',
-            routeFrancesFull: 'Chemin Français Complet',
-            routePortugueseLisbonCentral: 'Chemin Portugais (Lisbonne)',
-            routePortuguesePortoCentral: 'Chemin Portugais (Porto)',
-            routeNorthern: 'Chemin du Nord',
-            routePrimitivo: 'Chemin Primitif',
-            ...shareTranslations['fr']
-        };
-
-        // 德语
-        translations['de'] = {
-            title: 'Camino Wetter-Tool',
-            subtitle: 'Genaue Wettervorhersagen für alle Pilger',
-            selectRoute: 'Route Wählen',
-            customRoute: '✨ Eigene Route',
-            itinerary: 'Reiseplan',
-            days: 'Tage',
-            total: 'Gesamt',
-            autoFillDates: 'Daten Ausfüllen',
-            addDay: 'Tag Hinzufügen',
-            locationPlaceholder: 'Stadtname eingeben',
-            queryWeather: 'Wetter Abfragen',
-            querying: 'Abfrage...',
-            weatherForecast: 'Wettervorhersage',
-            cardView: '📋 Tabellenansicht',
-            tableView: '🎴 Kartenansicht',
-            copyTable: 'Tabelle Kopieren',
-            copied: 'Kopiert',
-            weather: 'Wetter',
-            dayTemp: 'Tagestemperatur',
-            nightTemp: 'Nachttemperatur',
-            feelsLike: 'Gefühlt',
-            rainProb: 'Regenwahrsch.',
-            rainyDays: 'Regentage',
-            sunrise: 'Sonnenaufgang',
-            sunset: 'Sonnenuntergang',
-            usageTip: '💡 Tipp',
-            notice: '⚠️ Hinweis',
-            noticeText: 'Bergwetter ändert sich schnell!',
-            footerText: 'Wetter-Tool für Camino-Pilger',
-            dataSource: 'Datenquelle: AEMET',
-            weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-            dateTooFarTitle: 'Datum Außerhalb',
-            understand: 'Verstanden',
-            historicalDataBadge: 'Historische Vorhersage',
-            realTimeForecast: 'Echtzeit-Vorhersage',
-            dataInformation: 'Dateninformation',
-            ...shareTranslations['de']
-        };
-
-        // 葡萄牙语
-        translations['pt'] = {
-            title: 'Ferramenta Meteorológica do Caminho',
-            subtitle: 'Previsões precisas para todos os peregrinos',
-            selectRoute: 'Selecionar Rota',
-            customRoute: '✨ Rota Personalizada',
-            itinerary: 'Itinerário',
-            days: 'dias',
-            total: 'Total',
-            autoFillDates: 'Preencher Datas',
-            addDay: 'Adicionar Dia',
-            locationPlaceholder: 'Digite nome da cidade',
-            queryWeather: 'Consultar Tempo',
-            querying: 'Consultando...',
-            weatherForecast: 'Previsão do Tempo',
-            cardView: '📋 Vista Tabela',
-            tableView: '🎴 Vista Cartões',
-            copyTable: 'Copiar Tabela',
-            copied: 'Copiado',
-            weather: 'Tempo',
-            dayTemp: 'Temp. Dia',
-            nightTemp: 'Temp. Noite',
-            feelsLike: 'Sensação',
-            rainProb: 'Prob. Chuva',
-            sunrise: 'Nascer do Sol',
-            sunset: 'Pôr do Sol',
-            usageTip: '💡 Dica',
-            notice: '⚠️ Aviso',
-            noticeText: 'Tempo na montanha muda rápido!',
-            footerText: 'Ferramenta para peregrinos',
-            dataSource: 'Fonte: AEMET',
-            weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-            understand: 'Entendi',
-            historicalDataBadge: 'Previsão Histórica',
-            realTimeForecast: 'Previsão Tempo Real',
-            dataInformation: 'Informação de Dados',
-            ...shareTranslations['pt']
-        };
-
-        // 韩语
-        translations['ko'] = {
-            title: '산티아고 순례길 날씨 도구',
-            subtitle: '모든 순례자를 위한 정확한 날씨 예보',
-            selectRoute: '경로 선택',
-            customRoute: '✨ 맞춤 경로',
-            itinerary: '일정',
-            days: '일',
-            total: '총',
-            autoFillDates: '날짜 자동 입력',
-            addDay: '일정 추가',
-            locationPlaceholder: '도시 이름 입력',
-            queryWeather: '날씨 조회',
-            querying: '조회 중...',
-            weatherForecast: '날씨 예보',
-            cardView: '📋 표 보기',
-            tableView: '🎴 카드 보기',
-            copyTable: '표 복사',
-            copied: '복사됨',
-            weather: '날씨',
-            dayTemp: '낮 기온',
-            nightTemp: '밤 기온',
-            feelsLike: '체감',
-            rainProb: '강수 확률',
-            sunrise: '일출',
-            sunset: '일몰',
-            usageTip: '💡 사용 팁',
-            notice: '⚠️ 주의',
-            noticeText: '산악 날씨는 빠르게 변합니다!',
-            footerText: '순례길 날씨 도구',
-            dataSource: '데이터 출처: AEMET',
-            weekdays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-            understand: '알겠습니다',
-            historicalDataBadge: '역사적 예측',
-            realTimeForecast: '실시간 예보',
-            dataInformation: '데이터 정보',
-            ...shareTranslations['ko']
         };
 
         // ==================== 分享模态框组件 ====================
@@ -724,36 +714,11 @@
             };
             
             const shareOptions = [
-                {
-                    name: t('shareToWeChat'),
-                    icon: '💬',
-                    color: 'bg-green-500 hover:bg-green-600',
-                    action: handleWeChatShare
-                },
-                {
-                    name: t('shareToWhatsApp'),
-                    icon: '📱',
-                    color: 'bg-green-600 hover:bg-green-700',
-                    url: `https://wa.me/?text=${encodedText}%20${encodedUrl}`
-                },
-                {
-                    name: t('shareToEmail'),
-                    icon: '📧',
-                    color: 'bg-blue-500 hover:bg-blue-600',
-                    url: `mailto:?subject=${encodeURIComponent(t('title') || 'Camino Weather Tool')}&body=${encodedText}%20${encodedUrl}`
-                },
-                {
-                    name: t('shareToLine'),
-                    icon: '🟢',
-                    color: 'bg-green-400 hover:bg-green-500',
-                    url: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}&text=${encodedText}`
-                },
-                {
-                    name: t('shareToKakao'),
-                    icon: '💛',
-                    color: 'bg-yellow-400 hover:bg-yellow-500 text-gray-800',
-                    url: `https://story.kakao.com/share?url=${encodedUrl}`
-                }
+                { name: t('shareToWeChat'), icon: '💬', color: 'bg-green-500 hover:bg-green-600', action: handleWeChatShare },
+                { name: t('shareToWhatsApp'), icon: '📱', color: 'bg-green-600 hover:bg-green-700', url: `https://wa.me/?text=${encodedText}%20${encodedUrl}` },
+                { name: t('shareToEmail'), icon: '📧', color: 'bg-blue-500 hover:bg-blue-600', url: `mailto:?subject=${encodeURIComponent(t('title') || 'Camino Weather')}&body=${encodedText}%20${encodedUrl}` },
+                { name: t('shareToLine'), icon: '🟢', color: 'bg-green-400 hover:bg-green-500', url: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}&text=${encodedText}` },
+                { name: t('shareToKakao'), icon: '💛', color: 'bg-yellow-400 hover:bg-yellow-500 text-gray-800', url: `https://story.kakao.com/share?url=${encodedUrl}` }
             ];
             
             return (
@@ -767,12 +732,7 @@
                                     <p className="text-sm text-gray-500">{t('shareDescription')}</p>
                                 </div>
                             </div>
-                            <button 
-                                onClick={onClose} 
-                                className="text-gray-400 hover:text-gray-600 text-2xl leading-none p-1"
-                            >
-                                ×
-                            </button>
+                            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none p-1">×</button>
                         </div>
                         
                         {showWeChatTip && (
@@ -786,11 +746,8 @@
                                 <button
                                     key={index}
                                     onClick={() => {
-                                        if (option.action) {
-                                            option.action();
-                                        } else if (option.url) {
-                                            window.open(option.url, '_blank', 'noopener,noreferrer');
-                                        }
+                                        if (option.action) option.action();
+                                        else if (option.url) window.open(option.url, '_blank', 'noopener,noreferrer');
                                     }}
                                     className={`share-platform-btn flex items-center justify-center gap-2 ${option.color} text-white font-semibold py-3 px-4 rounded-xl transition-all`}
                                 >
@@ -804,9 +761,7 @@
                             <button
                                 onClick={handleCopyLink}
                                 className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold transition-all ${
-                                    linkCopied 
-                                        ? 'bg-green-100 text-green-700 border-2 border-green-300' 
-                                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-2 border-gray-200'
+                                    linkCopied ? 'bg-green-100 text-green-700 border-2 border-green-300' : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-2 border-gray-200'
                                 }`}
                             >
                                 <span className="text-xl">{linkCopied ? '✅' : '📋'}</span>
@@ -836,32 +791,6 @@
                         <button onClick={onClose} className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all">
                             {t('understand')}
                         </button>
-                    </div>
-                </div>
-            );
-        };
-
-        const QRCodeModal = ({ isOpen, onClose, type, t }) => {
-            if (!isOpen) return null;
-            
-            const titles = { alipay: t('alipay'), wechat: t('wechat') };
-            
-            return (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={onClose}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-2xl font-bold text-gray-800">
-                                {type === 'alipay' ? '💰' : '💚'} {titles[type]}
-                            </h3>
-                            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">×</button>
-                        </div>
-                        <div className="bg-gray-50 rounded-xl p-6 mb-4 flex justify-center">
-                            <div className="w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
-                                QR Code
-                            </div>
-                        </div>
-                        <p className="text-center text-gray-600 mb-4">{t('scanQRCode')} ❤️</p>
-                        <p className="text-center text-sm text-amber-600 bg-amber-50 rounded-lg p-3">{t('thankYou')}</p>
                     </div>
                 </div>
             );
@@ -931,11 +860,7 @@
                         value={value}
                         onChange={handleInputChange}
                         onKeyDown={handleKeyDown}
-                        onFocus={() => {
-                            if (value.length > 0 && suggestions.length > 0) {
-                                setShowSuggestions(true);
-                            }
-                        }}
+                        onFocus={() => { if (value.length > 0 && suggestions.length > 0) setShowSuggestions(true); }}
                         className="w-full px-3 py-2 border rounded-lg"
                         placeholder={placeholder}
                     />
@@ -961,9 +886,6 @@
             const [unit, setUnit] = useState('metric');
             const [days, setDays] = useState([{ date: '', location: '' }]);
             const [weatherData, setWeatherData] = useState(null);
-            const [qrModalOpen, setQrModalOpen] = useState(false);
-            const [qrModalType, setQrModalType] = useState('');
-            const [showDonation, setShowDonation] = useState(true);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const [copied, setCopied] = useState(false);
@@ -971,34 +893,12 @@
             const [showModal, setShowModal] = useState(false);
             const [showShareModal, setShowShareModal] = useState(false);
 
-            const t = (key) => translations[language]?.[key] || translations['zh-CN'][key] || key;
+            const t = (key) => translations[language]?.[key] || translations['en'][key] || key;
             const tempUnit = unit === 'metric' ? '°C' : '°F';
 
             const convertTemp = (celsius) => {
                 if (celsius === null || celsius === undefined) return 'N/A';
                 return unit === 'imperial' ? Math.round(celsius * 9 / 5 + 32) : Math.round(celsius);
-            };
-
-            const locationToCoordinates = {
-                'santiago de compostela': { lat: 42.88, lon: -8.54 }, 'santiago': { lat: 42.88, lon: -8.54 },
-                'sarria': { lat: 42.78, lon: -7.42 }, 'portomarin': { lat: 42.81, lon: -7.62 },
-                'leon': { lat: 42.60, lon: -5.57 }, 'burgos': { lat: 42.34, lon: -3.70 },
-                'pamplona': { lat: 42.82, lon: -1.64 }, 'porto': { lat: 41.16, lon: -8.63 }
-            };
-
-            const getCoordinates = (location) => {
-                const normalized = location.toLowerCase().trim();
-                return locationToCoordinates[normalized] || { lat: 42.88, lon: -8.54 };
-            };
-
-            const locationToMunicipioId = {
-                'santiago de compostela': '15078', 'santiago': '15078', 'sarria': '27062',
-                'portomarin': '27046', 'leon': '24089', 'burgos': '09059', 'pamplona': '31201'
-            };
-
-            const getMunicipioId = (location) => {
-                const normalized = location.toLowerCase().trim();
-                return locationToMunicipioId[normalized] || '15078';
             };
 
             const getDaysDifference = (dateString) => {
@@ -1009,22 +909,22 @@
                 return Math.floor((targetDate - today) / (1000 * 60 * 60 * 24));
             };
 
-            const presetRoutes = {
-                custom: { days: [{ date: '', location: '' }] },
-                frances115: {
-                    days: [
-                        { date: '', location: 'Sarria' },
-                        { date: '', location: 'Portomarín' },
-                        { date: '', location: 'Palas de Rei' },
-                        { date: '', location: 'Arzúa' },
-                        { date: '', location: 'O Pedrouzo' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                }
-            };
+            // 路线配置
+            const routeOptions = [
+                { key: 'custom', nameKey: 'customRoute', descKey: 'customRouteDesc', distance: '' },
+                { key: 'francesFull', nameKey: 'routeFrancesFull', descKey: 'routeDescFrancesFull', distance: '~780 km' },
+                { key: 'francesSarria', nameKey: 'routeFrancesSarria', descKey: 'routeDescFrancesSarria', distance: '~114 km' },
+                { key: 'norte', nameKey: 'routeNorte', descKey: 'routeDescNorte', distance: '~784 km' },
+                { key: 'portuguesPorto', nameKey: 'routePortuguesPorto', descKey: 'routeDescPortuguesPorto', distance: '~240 km' },
+                { key: 'portuguesLisboa', nameKey: 'routePortuguesLisboa', descKey: 'routeDescPortuguesLisboa', distance: '~620 km' },
+                { key: 'primitivo', nameKey: 'routePrimitivo', descKey: 'routeDescPrimitivo', distance: '~313 km' },
+                { key: 'ingles', nameKey: 'routeIngles', descKey: 'routeDescIngles', distance: '~112 km' },
+                { key: 'portuguesCosta', nameKey: 'routePortuguesCosta', descKey: 'routeDescPortuguesCosta', distance: '~271 km' },
+                { key: 'espiritual', nameKey: 'routeEspiritual', descKey: 'routeDescEspiritual', distance: '~74 km' }
+            ];
 
             const loadRoute = (routeKey) => {
-                setDays([...presetRoutes[routeKey].days]);
+                setDays([...routeData[routeKey].days]);
                 setWeatherData(null);
                 setError(null);
             };
@@ -1152,7 +1052,6 @@
                             <div className="flex-1">
                                 <div className="flex items-center gap-3 mb-2">
                                     <h1 className="text-3xl md:text-4xl font-bold text-gray-800">{t('title')}</h1>
-                                    {/* ==================== 分享按钮 ==================== */}
                                     <button
                                         onClick={() => setShowShareModal(true)}
                                         className="share-button flex items-center gap-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1.5 rounded-full text-sm font-semibold hover:from-blue-600 hover:to-purple-600 shadow-md"
@@ -1169,10 +1068,6 @@
                                     <option value="zh-TW">🇹🇼 繁體中文</option>
                                     <option value="en">🇬🇧 English</option>
                                     <option value="es">🇪🇸 Español</option>
-                                    <option value="fr">🇫🇷 Français</option>
-                                    <option value="de">🇩🇪 Deutsch</option>
-                                    <option value="pt">🇵🇹 Português</option>
-                                    <option value="ko">🇰🇷 한국어</option>
                                 </select>
                                 <button onClick={() => setUnit(unit === 'metric' ? 'imperial' : 'metric')} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm md:text-base">
                                     {tempUnit}
@@ -1180,28 +1075,37 @@
                             </div>
                         </div>
 
+                        {/* 数据说明 - 使用翻译 */}
                         <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
                             <h3 className="font-semibold text-blue-900 mb-2 text-sm md:text-base">📊 {t('dataInformation')}</h3>
                             <div className="text-xs md:text-sm text-blue-800 space-y-1">
-                                <p><strong>• </strong>{t('dataInfo0to15') || 'Within 15 days: Real-time forecast'}</p>
-                                <p><strong>• </strong>{t('dataInfo15to365') || '15 days - 1 year: Historical average'}</p>
+                                <p><strong>• </strong>{t('dataInfo0to15')}</p>
+                                <p><strong>• </strong>{t('dataInfo15to365')}</p>
+                                <p><strong>• </strong>{t('dataInfoOver1Year')}</p>
                             </div>
                         </div>
 
+                        {/* 路线选择 */}
                         <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 md:p-6 mb-6">
                             <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-4">{t('selectRoute')}</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                <button onClick={() => loadRoute('custom')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">{t('customRoute')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">{t('customRouteDesc')}</div>
-                                </button>
-                                <button onClick={() => loadRoute('frances115')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrances115') || 'French Way 115km'}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (5{t('days')})</div>
-                                </button>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                {routeOptions.map((route) => (
+                                    <button
+                                        key={route.key}
+                                        onClick={() => loadRoute(route.key)}
+                                        className="route-card p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 transition-all text-left"
+                                    >
+                                        <div className="font-semibold text-gray-800 text-sm md:text-base">{t(route.nameKey)}</div>
+                                        <div className="text-xs md:text-sm text-gray-600 mt-1">{t(route.descKey)}</div>
+                                        {route.distance && (
+                                            <div className="text-xs text-amber-600 mt-1 font-medium">{route.distance}</div>
+                                        )}
+                                    </button>
+                                ))}
                             </div>
                         </div>
 
+                        {/* 行程安排 */}
                         <div className="bg-gray-50 rounded-xl p-4 md:p-6">
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
                                 <h2 className="text-lg md:text-xl font-semibold">{t('itinerary')}（{t('total')} {days.length} {t('days')}）</h2>
@@ -1251,6 +1155,7 @@
                         </div>
                     </div>
 
+                    {/* 天气结果 */}
                     {weatherData && weatherData.length > 0 && (
                         <div className="bg-white rounded-3xl shadow-2xl p-4 md:p-10">
                             {hasHistoricalData && (
