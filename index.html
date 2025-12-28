@@ -113,7 +113,8 @@
             'Llanes', 'Ribadesella', 'Gijón', 'Avilés', 'Luarca', 'Ribadeo', 'Mondoñedo', 'Vilalba',
             'Baamonde', 'Sobrado dos Monxes', 'Ferrol', 'Pontedeume', 'Betanzos', 'Sigüeiro',
             'Grado', 'Salas', 'Tineo', 'Grandas de Salime', 'A Fonsagrada', 'Vigo',
-            'Viana do Castelo', 'Caminha', 'A Ramallosa', 'Vilanova de Arousa', 'A Armenteira'
+            'Viana do Castelo', 'Caminha', 'A Ramallosa', 'Vilanova de Arousa', 'A Armenteira',
+            'Labruge', 'Póvoa de Varzim', 'Marinhas', 'A Ponte Ferreira'
         ].sort();
 
         const weatherTranslations = {
@@ -252,23 +253,6 @@
                 distance: '~784 km',
                 stages: 36
             },
-            portuguesPorto: {
-                days: [
-                    { date: '', location: 'Porto' },
-                    { date: '', location: 'Vilarinho' },
-                    { date: '', location: 'Barcelos' },
-                    { date: '', location: 'Ponte de Lima' },
-                    { date: '', location: 'Rubiães' },
-                    { date: '', location: 'Tui' },
-                    { date: '', location: 'Redondela' },
-                    { date: '', location: 'Pontevedra' },
-                    { date: '', location: 'Caldas de Reis' },
-                    { date: '', location: 'Padrón' },
-                    { date: '', location: 'Santiago de Compostela' }
-                ],
-                distance: '~240 km',
-                stages: 10
-            },
             portuguesLisboa: {
                 days: [
                     { date: '', location: 'Lisboa' },
@@ -322,12 +306,16 @@
                 distance: '~112 km',
                 stages: 5
             },
+            // 葡萄牙海岸线 Porto → Santiago (13阶段, ~271km)
             portuguesCosta: {
                 days: [
                     { date: '', location: 'Porto' },
+                    { date: '', location: 'Labruge' },
                     { date: '', location: 'Póvoa de Varzim' },
+                    { date: '', location: 'Marinhas' },
                     { date: '', location: 'Viana do Castelo' },
                     { date: '', location: 'Caminha' },
+                    { date: '', location: 'A Ramallosa' },
                     { date: '', location: 'Vigo' },
                     { date: '', location: 'Redondela' },
                     { date: '', location: 'Pontevedra' },
@@ -336,7 +324,38 @@
                     { date: '', location: 'Santiago de Compostela' }
                 ],
                 distance: '~271 km',
-                stages: 9
+                stages: 13
+            },
+            // 葡萄牙中央线 Porto → Santiago (10阶段, ~240km)
+            portuguesCentral: {
+                days: [
+                    { date: '', location: 'Porto' },
+                    { date: '', location: 'Vilarinho' },
+                    { date: '', location: 'Barcelos' },
+                    { date: '', location: 'Ponte de Lima' },
+                    { date: '', location: 'Rubiães' },
+                    { date: '', location: 'Tui' },
+                    { date: '', location: 'Redondela' },
+                    { date: '', location: 'Pontevedra' },
+                    { date: '', location: 'Caldas de Reis' },
+                    { date: '', location: 'Padrón' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~240 km',
+                stages: 10
+            },
+            // 原始之路从Lugo出发 Lugo → Santiago (5阶段, ~100km)
+            primitivoLugo: {
+                days: [
+                    { date: '', location: 'Lugo' },
+                    { date: '', location: 'A Ponte Ferreira' },
+                    { date: '', location: 'Melide' },
+                    { date: '', location: 'Arzúa' },
+                    { date: '', location: 'O Pedrouzo' },
+                    { date: '', location: 'Santiago de Compostela' }
+                ],
+                distance: '~100 km',
+                stages: 5
             },
             espiritual: {
                 days: [
@@ -411,21 +430,23 @@
                 routeFrancesFull: '🇫🇷 法国之路全程',
                 routeFrancesSarria: '🇫🇷 法国之路（从Sarria）',
                 routeNorte: '🌊 北方之路',
-                routePortuguesPorto: '🇵🇹 葡萄牙之路（从Porto）',
                 routePortuguesLisboa: '🇵🇹 葡萄牙之路（从Lisboa）',
-                routePrimitivo: '⛰️ 原始之路',
+                routePrimitivo: '⛰️ 原始之路（全程）',
                 routeIngles: '🇬🇧 英国之路',
-                routePortuguesCosta: '🏖️ 葡萄牙海岸之路',
                 routeEspiritual: '🙏 灵性变体',
                 routeDescFrancesFull: 'Saint-Jean → Santiago（33阶段）',
                 routeDescFrancesSarria: 'Sarria → Santiago（5阶段）',
                 routeDescNorte: 'Irún → Santiago（36阶段）',
-                routeDescPortuguesPorto: 'Porto → Santiago（10阶段）',
+                routeDescPortuguesCentral: 'Porto → Santiago 中央线（10阶段）',
+                routeDescPortuguesCosta: 'Porto → Santiago 海岸线（13阶段）',
                 routeDescPortuguesLisboa: 'Lisboa → Santiago（25阶段）',
                 routeDescPrimitivo: 'Oviedo → Santiago（11阶段）',
+                routeDescPrimitivoLugo: 'Lugo → Santiago（5阶段）',
                 routeDescIngles: 'Ferrol → Santiago（5阶段）',
-                routeDescPortuguesCosta: 'Porto → Santiago 沿海岸（9阶段）',
                 routeDescEspiritual: 'Pontevedra → Padrón 含渡船（3阶段）',
+                routePortuguesCentral: '🇵🇹 葡萄牙中央线',
+                routePortuguesCosta: '🏖️ 葡萄牙海岸线',
+                routePrimitivoLugo: '⛰️ 原始之路（从Lugo）',
                 stages: '阶段',
                 // 分享
                 share: '分享',
@@ -490,20 +511,22 @@
                 routeFrancesFull: '🇫🇷 法國之路全程',
                 routeFrancesSarria: '🇫🇷 法國之路（從Sarria）',
                 routeNorte: '🌊 北方之路',
-                routePortuguesPorto: '🇵🇹 葡萄牙之路（從Porto）',
                 routePortuguesLisboa: '🇵🇹 葡萄牙之路（從Lisboa）',
-                routePrimitivo: '⛰️ 原始之路',
+                routePrimitivo: '⛰️ 原始之路（全程）',
                 routeIngles: '🇬🇧 英國之路',
-                routePortuguesCosta: '🏖️ 葡萄牙海岸之路',
                 routeEspiritual: '🙏 靈性變體',
+                routePortuguesCentral: '🇵🇹 葡萄牙中央線',
+                routePortuguesCosta: '🏖️ 葡萄牙海岸線',
+                routePrimitivoLugo: '⛰️ 原始之路（從Lugo）',
                 routeDescFrancesFull: 'Saint-Jean → Santiago（33階段）',
                 routeDescFrancesSarria: 'Sarria → Santiago（5階段）',
                 routeDescNorte: 'Irún → Santiago（36階段）',
-                routeDescPortuguesPorto: 'Porto → Santiago（10階段）',
+                routeDescPortuguesCentral: 'Porto → Santiago 中央線（10階段）',
+                routeDescPortuguesCosta: 'Porto → Santiago 海岸線（13階段）',
                 routeDescPortuguesLisboa: 'Lisboa → Santiago（25階段）',
                 routeDescPrimitivo: 'Oviedo → Santiago（11階段）',
+                routeDescPrimitivoLugo: 'Lugo → Santiago（5階段）',
                 routeDescIngles: 'Ferrol → Santiago（5階段）',
-                routeDescPortuguesCosta: 'Porto → Santiago 沿海岸（9階段）',
                 routeDescEspiritual: 'Pontevedra → Padrón 含渡船（3階段）',
                 stages: '階段',
                 share: '分享',
@@ -568,20 +591,22 @@
                 routeFrancesFull: '🇫🇷 French Way (Full)',
                 routeFrancesSarria: '🇫🇷 French Way (from Sarria)',
                 routeNorte: '🌊 Northern Way',
-                routePortuguesPorto: '🇵🇹 Portuguese Way (from Porto)',
                 routePortuguesLisboa: '🇵🇹 Portuguese Way (from Lisbon)',
-                routePrimitivo: '⛰️ Primitive Way',
+                routePrimitivo: '⛰️ Primitive Way (Full)',
                 routeIngles: '🇬🇧 English Way',
-                routePortuguesCosta: '🏖️ Portuguese Coastal Way',
                 routeEspiritual: '🙏 Spiritual Variant',
+                routePortuguesCentral: '🇵🇹 Portuguese Central Way',
+                routePortuguesCosta: '🏖️ Portuguese Coastal Way',
+                routePrimitivoLugo: '⛰️ Primitive Way (from Lugo)',
                 routeDescFrancesFull: 'Saint-Jean → Santiago (33 stages)',
                 routeDescFrancesSarria: 'Sarria → Santiago (5 stages)',
                 routeDescNorte: 'Irún → Santiago (36 stages)',
-                routeDescPortuguesPorto: 'Porto → Santiago (10 stages)',
+                routeDescPortuguesCentral: 'Porto → Santiago Central (10 stages)',
+                routeDescPortuguesCosta: 'Porto → Santiago Coastal (13 stages)',
                 routeDescPortuguesLisboa: 'Lisbon → Santiago (25 stages)',
                 routeDescPrimitivo: 'Oviedo → Santiago (11 stages)',
+                routeDescPrimitivoLugo: 'Lugo → Santiago (5 stages)',
                 routeDescIngles: 'Ferrol → Santiago (5 stages)',
-                routeDescPortuguesCosta: 'Porto → Santiago coastal (9 stages)',
                 routeDescEspiritual: 'Pontevedra → Padrón with boat (3 stages)',
                 stages: 'stages',
                 share: 'Share',
@@ -646,20 +671,22 @@
                 routeFrancesFull: '🇫🇷 Camino Francés (Completo)',
                 routeFrancesSarria: '🇫🇷 Camino Francés (desde Sarria)',
                 routeNorte: '🌊 Camino del Norte',
-                routePortuguesPorto: '🇵🇹 Camino Portugués (desde Porto)',
                 routePortuguesLisboa: '🇵🇹 Camino Portugués (desde Lisboa)',
-                routePrimitivo: '⛰️ Camino Primitivo',
+                routePrimitivo: '⛰️ Camino Primitivo (Completo)',
                 routeIngles: '🇬🇧 Camino Inglés',
-                routePortuguesCosta: '🏖️ Camino Portugués de la Costa',
                 routeEspiritual: '🙏 Variante Espiritual',
+                routePortuguesCentral: '🇵🇹 Camino Portugués Central',
+                routePortuguesCosta: '🏖️ Camino Portugués de la Costa',
+                routePrimitivoLugo: '⛰️ Camino Primitivo (desde Lugo)',
                 routeDescFrancesFull: 'Saint-Jean → Santiago (33 etapas)',
                 routeDescFrancesSarria: 'Sarria → Santiago (5 etapas)',
                 routeDescNorte: 'Irún → Santiago (36 etapas)',
-                routeDescPortuguesPorto: 'Porto → Santiago (10 etapas)',
+                routeDescPortuguesCentral: 'Porto → Santiago Central (10 etapas)',
+                routeDescPortuguesCosta: 'Porto → Santiago Costa (13 etapas)',
                 routeDescPortuguesLisboa: 'Lisboa → Santiago (25 etapas)',
                 routeDescPrimitivo: 'Oviedo → Santiago (11 etapas)',
+                routeDescPrimitivoLugo: 'Lugo → Santiago (5 etapas)',
                 routeDescIngles: 'Ferrol → Santiago (5 etapas)',
-                routeDescPortuguesCosta: 'Porto → Santiago costa (9 etapas)',
                 routeDescEspiritual: 'Pontevedra → Padrón con barco (3 etapas)',
                 stages: 'etapas',
                 share: 'Compartir',
@@ -915,11 +942,12 @@
                 { key: 'francesFull', nameKey: 'routeFrancesFull', descKey: 'routeDescFrancesFull', distance: '~780 km' },
                 { key: 'francesSarria', nameKey: 'routeFrancesSarria', descKey: 'routeDescFrancesSarria', distance: '~114 km' },
                 { key: 'norte', nameKey: 'routeNorte', descKey: 'routeDescNorte', distance: '~784 km' },
-                { key: 'portuguesPorto', nameKey: 'routePortuguesPorto', descKey: 'routeDescPortuguesPorto', distance: '~240 km' },
+                { key: 'portuguesCentral', nameKey: 'routePortuguesCentral', descKey: 'routeDescPortuguesCentral', distance: '~240 km' },
+                { key: 'portuguesCosta', nameKey: 'routePortuguesCosta', descKey: 'routeDescPortuguesCosta', distance: '~271 km' },
                 { key: 'portuguesLisboa', nameKey: 'routePortuguesLisboa', descKey: 'routeDescPortuguesLisboa', distance: '~620 km' },
                 { key: 'primitivo', nameKey: 'routePrimitivo', descKey: 'routeDescPrimitivo', distance: '~313 km' },
+                { key: 'primitivoLugo', nameKey: 'routePrimitivoLugo', descKey: 'routeDescPrimitivoLugo', distance: '~100 km' },
                 { key: 'ingles', nameKey: 'routeIngles', descKey: 'routeDescIngles', distance: '~112 km' },
-                { key: 'portuguesCosta', nameKey: 'routePortuguesCosta', descKey: 'routeDescPortuguesCosta', distance: '~271 km' },
                 { key: 'espiritual', nameKey: 'routeEspiritual', descKey: 'routeDescEspiritual', distance: '~74 km' }
             ];
 
