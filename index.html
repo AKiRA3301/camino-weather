@@ -58,6 +58,23 @@
         .autocomplete-item.selected {
             background-color: #fde68a;
         }
+
+        .share-button {
+            transition: all 0.3s ease;
+        }
+        
+        .share-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .share-platform-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .share-platform-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 min-h-screen">
@@ -133,6 +150,145 @@
             return translations[condition] || condition;
         };
 
+        // ==================== 分享相关翻译 ====================
+        const shareTranslations = {
+            'zh-CN': {
+                share: '分享',
+                shareTitle: '分享给朋友',
+                shareDescription: '选择分享方式',
+                shareToWeChat: '微信',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: '邮件',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: '复制链接',
+                linkCopied: '链接已复制！',
+                shareText: '推荐一个超好用的朝圣之路天气查询工具！支持多条路线和多语言，帮你规划Camino行程 ☁️🚶',
+                wechatShareTip: '请复制链接后在微信中粘贴分享',
+                close: '关闭'
+            },
+            'zh-TW': {
+                share: '分享',
+                shareTitle: '分享給朋友',
+                shareDescription: '選擇分享方式',
+                shareToWeChat: '微信',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: '郵件',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: '複製連結',
+                linkCopied: '連結已複製！',
+                shareText: '推薦一個超好用的朝聖之路天氣查詢工具！支持多條路線和多語言，幫你規劃Camino行程 ☁️🚶',
+                wechatShareTip: '請複製連結後在微信中貼上分享',
+                close: '關閉'
+            },
+            'en': {
+                share: 'Share',
+                shareTitle: 'Share with Friends',
+                shareDescription: 'Choose how to share',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'Email',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'Copy Link',
+                linkCopied: 'Link copied!',
+                shareText: 'Check out this amazing Camino Weather Tool! Multi-route and multi-language support for planning your pilgrimage ☁️🚶',
+                wechatShareTip: 'Please copy the link and paste it in WeChat to share',
+                close: 'Close'
+            },
+            'es': {
+                share: 'Compartir',
+                shareTitle: 'Compartir con Amigos',
+                shareDescription: 'Elige cómo compartir',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'Correo',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'Copiar Enlace',
+                linkCopied: '¡Enlace copiado!',
+                shareText: '¡Descubre esta increíble herramienta del tiempo para el Camino! Soporte multi-ruta y multi-idioma ☁️🚶',
+                wechatShareTip: 'Copia el enlace y pégalo en WeChat para compartir',
+                close: 'Cerrar'
+            },
+            'fr': {
+                share: 'Partager',
+                shareTitle: 'Partager avec des Amis',
+                shareDescription: 'Choisissez comment partager',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'Email',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'Copier le Lien',
+                linkCopied: 'Lien copié!',
+                shareText: 'Découvrez cet outil météo incroyable pour le Camino! Support multi-route et multi-langue ☁️🚶',
+                wechatShareTip: 'Copiez le lien et collez-le dans WeChat pour partager',
+                close: 'Fermer'
+            },
+            'de': {
+                share: 'Teilen',
+                shareTitle: 'Mit Freunden teilen',
+                shareDescription: 'Wählen Sie, wie Sie teilen möchten',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'E-Mail',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'Link kopieren',
+                linkCopied: 'Link kopiert!',
+                shareText: 'Entdecken Sie dieses großartige Camino-Wetter-Tool! Multi-Route und Multi-Sprache Unterstützung ☁️🚶',
+                wechatShareTip: 'Kopieren Sie den Link und fügen Sie ihn in WeChat ein',
+                close: 'Schließen'
+            },
+            'pt': {
+                share: 'Compartilhar',
+                shareTitle: 'Compartilhar com Amigos',
+                shareDescription: 'Escolha como compartilhar',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'Email',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'Copiar Link',
+                linkCopied: 'Link copiado!',
+                shareText: 'Confira esta incrível ferramenta de tempo do Camino! Suporte multi-rota e multi-idioma ☁️🚶',
+                wechatShareTip: 'Copie o link e cole no WeChat para compartilhar',
+                close: 'Fechar'
+            },
+            'ko': {
+                share: '공유',
+                shareTitle: '친구에게 공유',
+                shareDescription: '공유 방법 선택',
+                shareToWeChat: '위챗',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: '이메일',
+                shareToLine: 'Line',
+                shareToKakao: '카카오톡',
+                copyLink: '링크 복사',
+                linkCopied: '링크가 복사되었습니다!',
+                shareText: '이 멋진 카미노 날씨 도구를 확인하세요! 다중 경로 및 다국어 지원 ☁️🚶',
+                wechatShareTip: '링크를 복사하여 WeChat에 붙여넣어 공유하세요',
+                close: '닫기'
+            },
+            'ja': {
+                share: '共有',
+                shareTitle: '友達と共有',
+                shareDescription: '共有方法を選択',
+                shareToWeChat: 'WeChat',
+                shareToWhatsApp: 'WhatsApp',
+                shareToEmail: 'メール',
+                shareToLine: 'Line',
+                shareToKakao: 'KakaoTalk',
+                copyLink: 'リンクをコピー',
+                linkCopied: 'リンクをコピーしました！',
+                shareText: 'この素晴らしいカミーノ天気ツールをチェック！マルチルート・多言語対応 ☁️🚶',
+                wechatShareTip: 'リンクをコピーしてWeChatに貼り付けて共有',
+                close: '閉じる'
+            }
+        };
+
         const translations = {
             'zh-CN': {
                 title: '朝圣之路天气查询',
@@ -193,17 +349,9 @@
                 routePortugueseLisbonCentral: '葡萄牙之路（里斯本出发）',
                 routePortuguesePortoCentral: '葡萄牙之路（波尔图出发）',
                 routeNorthern: '北方之路（36阶段）',
-                routePortugueseLisbonCentral: '葡萄牙之路（里斯本出发）',
-                routePortuguesePortoCentral: '葡萄牙之路（波尔图出发）',
                 routePortugueseCoastal: '葡萄牙之路（海岸线）',
                 routePrimitivo: '原始之路',
                 routeSpiritual: '灵性之路',
-                routePrimitivo: '原始之路',
-                routePortugueseLisbonCentral: 'Camino Portugués (desde Lisboa)',
-                routePortuguesePortoCentral: 'Camino Portugués (desde Porto)',
-                routePortugueseCoastal: 'Camino Portugués de la Costa',
-                routePrimitivo: 'Camino Primitivo',
-                routeSpiritual: 'Variante Espiritual',
                 donationTitle: '这个工具对您的朝圣之旅有帮助吗？',
                 donationSubtitle: '请我喝杯咖啡，支持我持续改进和维护',
                 donationChinaUsers: '🇨🇳 中国用户',
@@ -212,7 +360,8 @@
                 wechat: '微信支付',
                 buyMeCoffee: 'Buy Me a Coffee',
                 scanQRCode: '扫码支持开发者',
-                thankYou: '感谢您的支持！'
+                thankYou: '感谢您的支持！',
+                ...shareTranslations['zh-CN']
             },
             'en': {
                 title: 'Camino Weather Tool',
@@ -274,6 +423,8 @@
                 routePortuguesePortoCentral: 'Portuguese Way (from Porto)',
                 routeNorthern: 'Northern Way (36 stages)',
                 routePrimitivo: 'Primitive Way',
+                routePortugueseCoastal: 'Portuguese Coastal Way',
+                routeSpiritual: 'Spiritual Variant',
                 donationTitle: 'Enjoying this tool?',
                 donationSubtitle: 'Buy me a coffee to support continued development',
                 donationChinaUsers: '🇨🇳 For users in China',
@@ -282,7 +433,8 @@
                 wechat: 'WeChat Pay',
                 buyMeCoffee: 'Buy Me a Coffee',
                 scanQRCode: 'Scan to Support',
-                thankYou: 'Thank you for your support!'
+                thankYou: 'Thank you for your support!',
+                ...shareTranslations['en']
             },
             'es': {
                 title: 'Herramienta del Tiempo del Camino',
@@ -344,6 +496,8 @@
                 routePortuguesePortoCentral: 'Camino Portugués (desde Porto)',
                 routeNorthern: 'Camino del Norte (36 etapas)',
                 routePrimitivo: 'Camino Primitivo',
+                routePortugueseCoastal: 'Camino Portugués de la Costa',
+                routeSpiritual: 'Variante Espiritual',
                 donationTitle: '¿Te gusta esta herramienta?',
                 donationSubtitle: 'Invítame un café para apoyar el desarrollo',
                 donationChinaUsers: '🇨🇳 Para usuarios en China',
@@ -352,88 +506,20 @@
                 wechat: 'WeChat Pay',
                 buyMeCoffee: 'Invítame un Café',
                 scanQRCode: 'Escanea para Apoyar',
-                thankYou: '¡Gracias por tu apoyo!'
+                thankYou: '¡Gracias por tu apoyo!',
+                ...shareTranslations['es']
             }
         };
 
-        // 繁体中文完整翻译
+        // 繁体中文
         translations['zh-TW'] = {
+            ...translations['zh-CN'],
             title: '朝聖之路天氣查詢',
             subtitle: '為所有朝聖者提供精準的天氣預報服務 • 支持所有路線 • 歷史數據參考',
-            selectRoute: '選擇路線',
-            customRoute: '✨ 自定義路線',
-            customRouteDesc: '創建你的專屬路線',
-            itinerary: '行程安排',
-            days: '天',
-            total: '共',
-            autoFillDates: '自動填充日期',
-            addDay: '添加一天',
-            locationPlaceholder: '輸入城鎮名稱（如：S 搜索 Santiago）',
-            queryWeather: '查詢天氣預報',
-            querying: '正在查詢天氣...',
-            weatherForecast: '天氣預報',
-            cardView: '📋 表格視圖',
-            tableView: '🎴 卡片視圖',
-            copyTable: '複製表格',
-            copied: '已複製',
-            weather: '天氣',
-            dayTemp: '日間溫度',
-            nightTemp: '夜間溫度',
-            feelsLike: '體感',
-            rainProb: '降雨概率',
-            rainyDays: '降雨天數',
-            sunrise: '日出',
-            sunset: '日落',
-            usageTip: '💡 使用提示',
-            usageTipText: '切換"卡片視圖"查看美觀界面，或"表格視圖"複製文本。數據來源：AEMET官方。',
-            notice: '⚠️ 注意事項',
-            noticeText: '山區天氣變化快，遇極端天氣預警請調整行程。安全第一！',
-            footerText: '本工具為朝聖之路徒步者提供便捷的天氣查詢服務',
-            dataSource: '數據來源：AEMET（西班牙氣象局）',
-            weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
-            dateTooFarTitle: '日期超出範圍',
-            dateTooFarMessage: '您選擇的日期距離現在超過1年，建議在出發前1年內查詢天氣信息以獲得更準確的預報數據。',
-            understand: '我知道了',
-            historicalDataWarning: '提示：您選擇的日期超出天氣預報範圍（最多提前15天）。以下顯示的是基於Open-Meteo過去10年（2014-2024）歷史數據的平均值預測，僅供規劃參考。建議出發前2週再次查詢實時天氣預報獲取最準確的信息。',
-            historicalDataBadge: '歷史平均數據預測',
-            realTimeForecast: '實時天氣預報',
-            dataSourceLabel: '數據來源',
-            historicalAvgSource: '基於過去10年平均值 (Open-Meteo)',
-            realtimeSource: 'AEMET實時預報',
-            errorFetchingWeather: '獲取天氣數據失敗',
-            retryQuery: '重試',
-            noRainData: '歷史數據無降雨率',
-            rainyDaysFormat: '約{percent}%的日子有雨',
-            stormWarning: '⚠️ 暴雨預警 (AEMET)',
-            bringUmbrella: '🌧️ 記得帶雨具',
-            keepWarm: '🧥 注意保暖',
-            dataInfo0to15: '0-15天內出發：顯示AEMET實時天氣預報',
-            dataInfo15to365: '15天-1年內出發：顯示基於Open-Meteo過去10年（2014-2024）歷史數據的平均值預測（僅供參考）僅顯示溫度，降雨，不顯示天氣',
-            dataInfoOver1Year: '超過1年：建議在出發前1年內查詢天氣信息',
-            dataInformation: '數據說明',
-            routeFrances115: '法國之路 115公里',
-            routeFrancesFull: '法國之路全程（33階段）',
-            routePortugueseLisbonCentral: '葡萄牙之路（里斯本出發）',
-            routePortuguesePortoCentral: '葡萄牙之路（波爾圖出發）',
-            routeNorthern: '北方之路（36階段）',
-            routePrimitivo: '原始之路',
-            routePortugueseLisbonCentral: '葡萄牙之路（里斯本出發）',
-                routePortuguesePortoCentral: '葡萄牙之路（波爾圖出發）',
-                routePortugueseCoastal: '葡萄牙之路（海岸線）',
-                routePrimitivo: '原始之路',
-                routeSpiritual: '靈性之路',
-                donationTitle: '這個工具對您的朝聖之旅有幫助嗎？',
-            donationSubtitle: '請我喝杯咖啡，支持我持續改進和維護',
-            donationChinaUsers: '🇨🇳 中國用戶',
-            donationInternational: '🌍 國際用戶',
-            alipay: '支付寶',
-            wechat: '微信支付',
-            buyMeCoffee: 'Buy Me a Coffee',
-            scanQRCode: '掃碼支持開發者',
-            thankYou: '感謝您的支持！'
+            ...shareTranslations['zh-TW']
         };
 
-        // 法语完整翻译
+        // 法语
         translations['fr'] = {
             title: 'Météo du Chemin',
             subtitle: 'Prévisions météo précises pour tous les pèlerins',
@@ -466,57 +552,29 @@
             notice: '⚠️ Avertissement',
             noticeText: 'La météo en montagne change rapidement. Sécurité d\'abord!',
             footerText: 'Outil météo pour pèlerins du Camino',
-            dataSource: 'Source: AEMET (Agence météo espagnole)',
+            dataSource: 'Source: AEMET',
             weekdays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
             dateTooFarTitle: 'Date Hors Limite',
-            dateTooFarMessage: 'Date sélectionnée à plus d\'1 an. Consultez dans l\'année précédant départ.',
+            dateTooFarMessage: 'Date à plus d\'1 an. Consultez dans l\'année.',
             understand: 'Compris',
-            historicalDataWarning: 'Avis: Dates dépassent prévisions. Données basées sur prédiction de moyenne historique Open-Meteo de 10 ans (2014-2024).',
             historicalDataBadge: 'Prédiction Historique',
             realTimeForecast: 'Prévision Temps Réel',
-            dataSourceLabel: 'Source',
-            historicalAvgSource: 'Basé sur moyenne de 10 ans (Open-Meteo)',
-            realtimeSource: 'Prévision AEMET temps réel',
-            errorFetchingWeather: 'Erreur données météo',
-            retryQuery: 'Réessayer',
-            noRainData: 'Pas données pluie',
-            rainyDaysFormat: '~{percent}% jours avec pluie',
-            stormWarning: '⚠️ Alerte Tempête',
-            bringUmbrella: '🌧️ Prenez parapluie',
-            keepWarm: '🧥 Restez au chaud',
-            dataInfo0to15: 'Dans 15 jours: Prévisions AEMET temps réel',
-            dataInfo15to365: '15 jours - 1 an: Basé sur prédiction de moyenne historique Open-Meteo de 10 ans (2014-2024, référence) - Température et pluie uniquement, pas de conditions météo',
-            dataInfoOver1Year: 'Plus d\'1 an: Consultez dans l\'année',
             dataInformation: 'Informations Données',
             routeFrances115: 'Chemin Français 115km',
-            routeFrancesFull: 'Chemin Français Complet (33 étapes)',
-            routePortugueseLisbonCentral: 'Chemin Portugais (depuis Lisbonne)',
-            routePortuguesePortoCentral: 'Chemin Portugais (depuis Porto)',
-            routeNorthern: 'Chemin du Nord (36 étapes)',
+            routeFrancesFull: 'Chemin Français Complet',
+            routePortugueseLisbonCentral: 'Chemin Portugais (Lisbonne)',
+            routePortuguesePortoCentral: 'Chemin Portugais (Porto)',
+            routeNorthern: 'Chemin du Nord',
             routePrimitivo: 'Chemin Primitif',
-            routePortugueseLisbonCentral: 'Chemin Portugais (de Lisbonne)',
-                routePortuguesePortoCentral: 'Chemin Portugais (de Porto)',
-                routePortugueseCoastal: 'Chemin Portugais Côtier',
-                routePrimitivo: 'Chemin Primitif',
-                routeSpiritual: 'Variante Spirituelle',
-                donationTitle: 'Vous aimez cet outil?',
-            donationSubtitle: 'Offrez-moi un café pour soutenir le développement',
-            donationChinaUsers: '🇨🇳 Pour utilisateurs en Chine',
-            donationInternational: '🌍 International',
-            alipay: 'Alipay',
-            wechat: 'WeChat Pay',
-            buyMeCoffee: 'Offrez-moi un Café',
-            scanQRCode: 'Scannez pour Soutenir',
-            thankYou: 'Merci pour votre soutien!'
+            ...shareTranslations['fr']
         };
 
-        // 德语完整翻译
+        // 德语
         translations['de'] = {
             title: 'Camino Wetter-Tool',
             subtitle: 'Genaue Wettervorhersagen für alle Pilger',
             selectRoute: 'Route Wählen',
-            customRoute: '✨ Benutzerdefinierte Route',
-            customRouteDesc: 'Eigene Route erstellen',
+            customRoute: '✨ Eigene Route',
             itinerary: 'Reiseplan',
             days: 'Tage',
             total: 'Gesamt',
@@ -539,61 +597,25 @@
             sunrise: 'Sonnenaufgang',
             sunset: 'Sonnenuntergang',
             usageTip: '💡 Tipp',
-            usageTipText: 'Wechseln zu "Kartenansicht" für bessere Anzeige.',
             notice: '⚠️ Hinweis',
-            noticeText: 'Bergwetter ändert sich schnell. Sicherheit zuerst!',
+            noticeText: 'Bergwetter ändert sich schnell!',
             footerText: 'Wetter-Tool für Camino-Pilger',
-            dataSource: 'Datenquelle: AEMET (Spanischer Wetterdienst)',
+            dataSource: 'Datenquelle: AEMET',
             weekdays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
             dateTooFarTitle: 'Datum Außerhalb',
-            dateTooFarMessage: 'Datum über 1 Jahr. Bitte innerhalb 1 Jahr vor Abreise prüfen.',
             understand: 'Verstanden',
-            historicalDataWarning: 'Hinweis: Daten überschreiten Vorhersage. Historische Daten basieren auf Open-Meteo 10-Jahres-Durchschnittsprognose (2014-2024).',
             historicalDataBadge: 'Historische Vorhersage',
             realTimeForecast: 'Echtzeit-Vorhersage',
-            dataSourceLabel: 'Quelle',
-            historicalAvgSource: 'Basierend auf 10-Jahres-Durchschnitt (Open-Meteo)',
-            realtimeSource: 'AEMET Echtzeit-Vorhersage',
-            errorFetchingWeather: 'Wetterdaten-Fehler',
-            retryQuery: 'Wiederholen',
-            noRainData: 'Keine Regendaten',
-            rainyDaysFormat: '~{percent}% Tage mit Regen',
-            stormWarning: '⚠️ Sturmwarnung',
-            bringUmbrella: '🌧️ Regenschirm mitbringen',
-            keepWarm: '🧥 Warm bleiben',
-            dataInfo0to15: 'Innerhalb 15 Tage: AEMET Echtzeit-Vorhersage',
-            dataInfo15to365: '15 Tage - 1 Jahr: Basierend auf Open-Meteo 10-Jahres-Durchschnittsprognose (2014-2024, Referenz) - Nur Temperatur und Regen, keine Wetterbedingungen',
-            dataInfoOver1Year: 'Über 1 Jahr: Innerhalb 1 Jahr prüfen',
             dataInformation: 'Dateninformation',
-            routeFrances115: 'Französischer Weg 115km',
-            routeFrancesFull: 'Französischer Weg Komplett (33 Etappen)',
-            routePortugueseLisbonCentral: 'Portugiesischer Weg (von Lissabon)',
-            routePortuguesePortoCentral: 'Portugiesischer Weg (von Porto)',
-            routeNorthern: 'Nordweg (36 Etappen)',
-            routePrimitivo: 'Primitiver Weg',
-            routePortugueseLisbonCentral: 'Portugiesischer Weg (von Lissabon)',
-                routePortuguesePortoCentral: 'Portugiesischer Weg (von Porto)',
-                routePortugueseCoastal: 'Portugiesischer Küstenweg',
-                routePrimitivo: 'Primitiver Weg',
-                routeSpiritual: 'Spirituelle Variante',
-                donationTitle: 'Gefällt Ihnen dieses Tool?',
-            donationSubtitle: 'Spendieren Sie mir einen Kaffee zur Unterstützung',
-            donationChinaUsers: '🇨🇳 Für Benutzer in China',
-            donationInternational: '🌍 International',
-            alipay: 'Alipay',
-            wechat: 'WeChat Pay',
-            buyMeCoffee: 'Spendieren Sie mir einen Kaffee',
-            scanQRCode: 'Scannen zum Unterstützen',
-            thankYou: 'Vielen Dank für Ihre Unterstützung!'
+            ...shareTranslations['de']
         };
 
-        // 葡萄牙语完整翻译
+        // 葡萄牙语
         translations['pt'] = {
             title: 'Ferramenta Meteorológica do Caminho',
-            subtitle: 'Previsões meteorológicas precisas para todos os peregrinos',
+            subtitle: 'Previsões precisas para todos os peregrinos',
             selectRoute: 'Selecionar Rota',
             customRoute: '✨ Rota Personalizada',
-            customRouteDesc: 'Criar sua própria rota',
             itinerary: 'Itinerário',
             days: 'dias',
             total: 'Total',
@@ -612,65 +634,27 @@
             nightTemp: 'Temp. Noite',
             feelsLike: 'Sensação',
             rainProb: 'Prob. Chuva',
-            rainyDays: 'Dias Chuva',
             sunrise: 'Nascer do Sol',
             sunset: 'Pôr do Sol',
             usageTip: '💡 Dica',
-            usageTipText: 'Mude para "Vista Cartões" para melhor visualização.',
             notice: '⚠️ Aviso',
-            noticeText: 'Tempo na montanha muda rápido. Segurança primeiro!',
-            footerText: 'Ferramenta meteorológica para peregrinos',
-            dataSource: 'Fonte: AEMET (Agência Meteorológica Espanhola)',
+            noticeText: 'Tempo na montanha muda rápido!',
+            footerText: 'Ferramenta para peregrinos',
+            dataSource: 'Fonte: AEMET',
             weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-            dateTooFarTitle: 'Data Fora do Limite',
-            dateTooFarMessage: 'Data selecionada a mais de 1 ano. Consulte dentro de 1 ano da partida.',
             understand: 'Entendi',
-            historicalDataWarning: 'Aviso: Datas excedem previsão. Dados baseados em previsão de média histórica Open-Meteo de 10 anos (2014-2024).',
             historicalDataBadge: 'Previsão Histórica',
             realTimeForecast: 'Previsão Tempo Real',
-            dataSourceLabel: 'Fonte',
-            historicalAvgSource: 'Baseado em média de 10 anos (Open-Meteo)',
-            realtimeSource: 'Previsão AEMET tempo real',
-            errorFetchingWeather: 'Erro ao obter dados',
-            retryQuery: 'Tentar Novamente',
-            noRainData: 'Sem dados de chuva',
-            rainyDaysFormat: '~{percent}% dias com chuva',
-            stormWarning: '⚠️ Alerta Tempestade',
-            bringUmbrella: '🌧️ Leve guarda-chuva',
-            keepWarm: '🧥 Mantenha-se aquecido',
-            dataInfo0to15: 'Dentro de 15 dias: Previsão AEMET tempo real',
-            dataInfo15to365: '15 dias - 1 ano: Baseado em previsão de média histórica Open-Meteo de 10 anos (2014-2024, referência) - Apenas temperatura e chuva, sem condições meteorológicas',
-            dataInfoOver1Year: 'Mais de 1 ano: Consulte dentro de 1 ano',
             dataInformation: 'Informação de Dados',
-            routeFrances115: 'Caminho Francês 115km',
-            routeFrancesFull: 'Caminho Francês Completo (33 etapas)',
-            routePortugueseLisbonCentral: 'Caminho Português (desde Lisboa)',
-            routePortuguesePortoCentral: 'Caminho Português (desde Porto)',
-            routeNorthern: 'Caminho do Norte (36 etapas)',
-            routePrimitivo: 'Caminho Primitivo',
-            routePortugueseLisbonCentral: 'Caminho Português (de Lisboa)',
-                routePortuguesePortoCentral: 'Caminho Português (do Porto)',
-                routePortugueseCoastal: 'Caminho Português da Costa',
-                routePrimitivo: 'Caminho Primitivo',
-                routeSpiritual: 'Variante Espiritual',
-                donationTitle: 'Gosta desta ferramenta?',
-            donationSubtitle: 'Pague-me um café para apoiar o desenvolvimento',
-            donationChinaUsers: '🇨🇳 Para usuários na China',
-            donationInternational: '🌍 Internacional',
-            alipay: 'Alipay',
-            wechat: 'WeChat Pay',
-            buyMeCoffee: 'Pague-me um Café',
-            scanQRCode: 'Escaneie para Apoiar',
-            thankYou: 'Obrigado pelo seu apoio!'
+            ...shareTranslations['pt']
         };
 
-        // 韩语完整翻译
+        // 韩语
         translations['ko'] = {
             title: '산티아고 순례길 날씨 도구',
             subtitle: '모든 순례자를 위한 정확한 날씨 예보',
             selectRoute: '경로 선택',
             customRoute: '✨ 맞춤 경로',
-            customRouteDesc: '나만의 경로 만들기',
             itinerary: '일정',
             days: '일',
             total: '총',
@@ -689,60 +673,155 @@
             nightTemp: '밤 기온',
             feelsLike: '체감',
             rainProb: '강수 확률',
-            rainyDays: '강수 일수',
             sunrise: '일출',
             sunset: '일몰',
             usageTip: '💡 사용 팁',
-            usageTipText: '"카드 보기"로 전환하여 더 나은 표시.',
             notice: '⚠️ 주의',
-            noticeText: '산악 날씨는 빠르게 변합니다. 안전 우선!',
+            noticeText: '산악 날씨는 빠르게 변합니다!',
             footerText: '순례길 날씨 도구',
-            dataSource: '데이터 출처: AEMET (스페인 기상청)',
+            dataSource: '데이터 출처: AEMET',
             weekdays: ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-            dateTooFarTitle: '날짜 범위 초과',
-            dateTooFarMessage: '선택한 날짜가 1년 이상입니다. 출발 1년 이내 조회하세요.',
             understand: '알겠습니다',
-            historicalDataWarning: '알림: 날짜가 예보 범위 초과. Open-Meteo 10년 역사 평균 예측(2014-2024) 기반 데이터.',
             historicalDataBadge: '역사적 예측',
             realTimeForecast: '실시간 예보',
-            dataSourceLabel: '출처',
-            historicalAvgSource: '10년 평균 기반 (Open-Meteo)',
-            realtimeSource: 'AEMET 실시간 예보',
-            errorFetchingWeather: '날씨 데이터 오류',
-            retryQuery: '다시 시도',
-            noRainData: '강수 데이터 없음',
-            rainyDaysFormat: '~{percent}% 일수에 비',
-            stormWarning: '⚠️ 폭풍 경보',
-            bringUmbrella: '🌧️ 우산 챙기세요',
-            keepWarm: '🧥 따뜻하게 입으세요',
-            dataInfo0to15: '15일 이내: AEMET 실시간 예보',
-            dataInfo15to365: '15일 - 1년: Open-Meteo 10년 역사 평균 예측 기반 (2014-2024, 참고용) - 온도, 강수만 표시, 날씨 상태 없음',
-            dataInfoOver1Year: '1년 초과: 1년 이내 조회하세요',
             dataInformation: '데이터 정보',
-            routeFrances115: '프랑스 길 115km',
-            routeFrancesFull: '프랑스 길 전체 (33단계)',
-            routePortugueseLisbonCentral: '포르투갈 길 (리스본 출발)',
-            routePortuguesePortoCentral: '포르투갈 길 (포르투 출발)',
-            routeNorthern: '북쪽 길 (36단계)',
-            routePrimitivo: '원시 길',
-                routePortugueseCoastal: '포르투갈 해안 길',
-                routeSpiritual: '영성 변형',
-            routePortugueseLisbonCentral: '포르투갈 길 (리스본 출발)',
-                routePortuguesePortoCentral: '포르투갈 길 (포르투 출발)',
-                routePortugueseCoastal: '포르투갈 해안 길',
-                routePrimitivo: '원시 길',
-                routeSpiritual: '영성 변형',
-                donationTitle: '이 도구가 도움이 되셨나요?',
-            donationSubtitle: '커피 한 잔으로 개발을 지원해주세요',
-            donationChinaUsers: '🇨🇳 중국 사용자',
-            donationInternational: '🌍 국제',
-            alipay: 'Alipay',
-            wechat: 'WeChat Pay',
-            buyMeCoffee: '커피 사주기',
-            scanQRCode: '스캔하여 후원하기',
-            thankYou: '후원해 주셔서 감사합니다!'
+            ...shareTranslations['ko']
         };
 
+        // ==================== 分享模态框组件 ====================
+        const ShareModal = ({ isOpen, onClose, t, language }) => {
+            const [linkCopied, setLinkCopied] = useState(false);
+            const [showWeChatTip, setShowWeChatTip] = useState(false);
+            
+            if (!isOpen) return null;
+            
+            const shareUrl = window.location.href;
+            const shareText = t('shareText');
+            const encodedText = encodeURIComponent(shareText);
+            const encodedUrl = encodeURIComponent(shareUrl);
+            
+            const handleCopyLink = async () => {
+                try {
+                    await navigator.clipboard.writeText(shareUrl);
+                    setLinkCopied(true);
+                    setTimeout(() => setLinkCopied(false), 2000);
+                } catch (err) {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareUrl;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    setLinkCopied(true);
+                    setTimeout(() => setLinkCopied(false), 2000);
+                }
+            };
+            
+            const handleWeChatShare = async () => {
+                await handleCopyLink();
+                setShowWeChatTip(true);
+                setTimeout(() => setShowWeChatTip(false), 3000);
+            };
+            
+            const shareOptions = [
+                {
+                    name: t('shareToWeChat'),
+                    icon: '💬',
+                    color: 'bg-green-500 hover:bg-green-600',
+                    action: handleWeChatShare
+                },
+                {
+                    name: t('shareToWhatsApp'),
+                    icon: '📱',
+                    color: 'bg-green-600 hover:bg-green-700',
+                    url: `https://wa.me/?text=${encodedText}%20${encodedUrl}`
+                },
+                {
+                    name: t('shareToEmail'),
+                    icon: '📧',
+                    color: 'bg-blue-500 hover:bg-blue-600',
+                    url: `mailto:?subject=${encodeURIComponent(t('title') || 'Camino Weather Tool')}&body=${encodedText}%20${encodedUrl}`
+                },
+                {
+                    name: t('shareToLine'),
+                    icon: '🟢',
+                    color: 'bg-green-400 hover:bg-green-500',
+                    url: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}&text=${encodedText}`
+                },
+                {
+                    name: t('shareToKakao'),
+                    icon: '💛',
+                    color: 'bg-yellow-400 hover:bg-yellow-500 text-gray-800',
+                    url: `https://story.kakao.com/share?url=${encodedUrl}`
+                }
+            ];
+            
+            return (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay" onClick={onClose}>
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="text-3xl">🔗</div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-800">{t('shareTitle')}</h3>
+                                    <p className="text-sm text-gray-500">{t('shareDescription')}</p>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={onClose} 
+                                className="text-gray-400 hover:text-gray-600 text-2xl leading-none p-1"
+                            >
+                                ×
+                            </button>
+                        </div>
+                        
+                        {showWeChatTip && (
+                            <div className="mb-4 bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-700">
+                                ✅ {t('wechatShareTip')}
+                            </div>
+                        )}
+                        
+                        <div className="grid grid-cols-2 gap-3 mb-4">
+                            {shareOptions.map((option, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => {
+                                        if (option.action) {
+                                            option.action();
+                                        } else if (option.url) {
+                                            window.open(option.url, '_blank', 'noopener,noreferrer');
+                                        }
+                                    }}
+                                    className={`share-platform-btn flex items-center justify-center gap-2 ${option.color} text-white font-semibold py-3 px-4 rounded-xl transition-all`}
+                                >
+                                    <span className="text-xl">{option.icon}</span>
+                                    <span className="text-sm">{option.name}</span>
+                                </button>
+                            ))}
+                        </div>
+                        
+                        <div className="border-t pt-4">
+                            <button
+                                onClick={handleCopyLink}
+                                className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold transition-all ${
+                                    linkCopied 
+                                        ? 'bg-green-100 text-green-700 border-2 border-green-300' 
+                                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-2 border-gray-200'
+                                }`}
+                            >
+                                <span className="text-xl">{linkCopied ? '✅' : '📋'}</span>
+                                <span>{linkCopied ? t('linkCopied') : t('copyLink')}</span>
+                            </button>
+                        </div>
+                        
+                        <div className="mt-4 bg-gray-50 rounded-lg p-3">
+                            <p className="text-xs text-gray-500 mb-1">URL:</p>
+                            <p className="text-sm text-gray-700 break-all font-mono">{shareUrl}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
 
         const Modal = ({ isOpen, onClose, title, message, t }) => {
             if (!isOpen) return null;
@@ -762,20 +841,10 @@
             );
         };
 
-        // 二维码打赏模态窗
         const QRCodeModal = ({ isOpen, onClose, type, t }) => {
             if (!isOpen) return null;
             
-            const titles = {
-                alipay: t('alipay'),
-                wechat: t('wechat')
-            };
-            
-            // 这里需要替换为实际的二维码图片
-            const qrCodeImages = {
-                alipay: 'data:image/png;base64,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',
-                wechat: 'data:image/png;base64,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'
-            };
+            const titles = { alipay: t('alipay'), wechat: t('wechat') };
             
             return (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={onClose}>
@@ -786,18 +855,13 @@
                             </h3>
                             <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">×</button>
                         </div>
-                        
                         <div className="bg-gray-50 rounded-xl p-6 mb-4 flex justify-center">
-                            <img src={qrCodeImages[type]} alt="QR Code" className="w-48 h-48" />
+                            <div className="w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+                                QR Code
+                            </div>
                         </div>
-                        
-                        <p className="text-center text-gray-600 mb-4">
-                            {t('scanQRCode')} ❤️
-                        </p>
-                        
-                        <p className="text-center text-sm text-amber-600 bg-amber-50 rounded-lg p-3">
-                            {t('thankYou')}
-                        </p>
+                        <p className="text-center text-gray-600 mb-4">{t('scanQRCode')} ❤️</p>
+                        <p className="text-center text-sm text-amber-600 bg-amber-50 rounded-lg p-3">{t('thankYou')}</p>
                     </div>
                 </div>
             );
@@ -899,12 +963,13 @@
             const [weatherData, setWeatherData] = useState(null);
             const [qrModalOpen, setQrModalOpen] = useState(false);
             const [qrModalType, setQrModalType] = useState('');
-            const [showDonation, setShowDonation] = useState(true); // 始终显示打赏区域
+            const [showDonation, setShowDonation] = useState(true);
             const [loading, setLoading] = useState(false);
             const [error, setError] = useState(null);
             const [copied, setCopied] = useState(false);
             const [viewMode, setViewMode] = useState('cards');
             const [showModal, setShowModal] = useState(false);
+            const [showShareModal, setShowShareModal] = useState(false);
 
             const t = (key) => translations[language]?.[key] || translations['zh-CN'][key] || key;
             const tempUnit = unit === 'metric' ? '°C' : '°F';
@@ -914,82 +979,21 @@
                 return unit === 'imperial' ? Math.round(celsius * 9 / 5 + 32) : Math.round(celsius);
             };
 
-            // 城市坐标映射（用于Open-Meteo历史数据）
             const locationToCoordinates = {
                 'santiago de compostela': { lat: 42.88, lon: -8.54 }, 'santiago': { lat: 42.88, lon: -8.54 },
                 'sarria': { lat: 42.78, lon: -7.42 }, 'portomarin': { lat: 42.81, lon: -7.62 },
-                'portomarín': { lat: 42.81, lon: -7.62 }, 'palas de rei': { lat: 42.87, lon: -7.86 },
-                'arzua': { lat: 42.93, lon: -8.16 }, 'arzúa': { lat: 42.93, lon: -8.16 },
-                'o pedrouzo': { lat: 42.90, lon: -8.38 }, 'pedrouzo': { lat: 42.90, lon: -8.38 },
-                'leon': { lat: 42.60, lon: -5.57 }, 'león': { lat: 42.60, lon: -5.57 },
-                'astorga': { lat: 42.46, lon: -6.05 }, 'ponferrada': { lat: 42.55, lon: -6.59 },
-                'o cebreiro': { lat: 42.71, lon: -7.04 }, 'triacastela': { lat: 42.75, lon: -7.24 },
-                'villafranca del bierzo': { lat: 42.61, lon: -6.81 }, 'burgos': { lat: 42.34, lon: -3.70 },
-                'pamplona': { lat: 42.82, lon: -1.64 }, 'logroño': { lat: 42.47, lon: -2.45 },
-                'estella': { lat: 42.67, lon: -2.03 }, 'santo domingo de la calzada': { lat: 42.44, lon: -2.95 },
-                'najera': { lat: 42.42, lon: -2.73 }, 'nájera': { lat: 42.42, lon: -2.73 },
-                'belorado': { lat: 42.43, lon: -3.19 }, 'fromista': { lat: 42.27, lon: -4.40 },
-                'frómista': { lat: 42.27, lon: -4.40 }, 'carrion de los condes': { lat: 42.34, lon: -4.60 },
-                'carrión de los condes': { lat: 42.34, lon: -4.60 }, 'sahagun': { lat: 42.37, lon: -5.03 },
-                'sahagún': { lat: 42.37, lon: -5.03 }, 'mansilla de las mulas': { lat: 42.50, lon: -5.44 },
-                'porto': { lat: 41.16, lon: -8.63 }, 'tui': { lat: 42.05, lon: -8.64 },
-                'pontevedra': { lat: 42.43, lon: -8.64 }, 'padron': { lat: 42.74, lon: -8.66 },
-                'padrón': { lat: 42.74, lon: -8.66 }, 'bilbao': { lat: 43.26, lon: -2.93 },
-                'oviedo': { lat: 43.36, lon: -5.84 }, 'lugo': { lat: 43.01, lon: -7.56 },
-                'foncebadón': { lat: 42.49, lon: -6.36 }, 'roncesvalles': { lat: 43.01, lon: -1.32 },
-                'saint-jean-pied-de-port': { lat: 43.16, lon: -1.24 }, 'zubiri': { lat: 42.94, lon: -1.53 },
-                'puente la reina': { lat: 42.67, lon: -1.81 }, 'san juan de ortega': { lat: 42.38, lon: -3.51 },
-                'hornillos del camino': { lat: 42.35, lon: -4.06 }, 'castrojeriz': { lat: 42.29, lon: -4.14 },
-                'terradillos de los templarios': { lat: 42.38, lon: -4.82 }, 'melide': { lat: 42.92, lon: -8.02 },
-                'los arcos': { lat: 42.57, lon: -2.18 }, 'bercianos del real camino': { lat: 42.39, lon: -5.16 },
-                'san martín del camino': { lat: 42.44, lon: -5.68 }, 'villar de mazarife': { lat: 42.51, lon: -5.73 },
-                'lisboa': { lat: 38.72, lon: -9.14 }, 'coimbra': { lat: 40.21, lon: -8.43 },
-                'irún': { lat: 43.34, lon: -1.79 }, 'san sebastián': { lat: 43.32, lon: -1.98 },
-                'zarautz': { lat: 43.28, lon: -2.17 }, 'deba': { lat: 43.30, lon: -2.35 },
-                'gernika': { lat: 43.32, lon: -2.68 }, 'santander': { lat: 43.46, lon: -3.80 },
-                'ribadeo': { lat: 43.54, lon: -7.04 }, 'mondoñedo': { lat: 43.43, lon: -7.36 },
-                'vilalba': { lat: 43.30, lon: -7.68 }, 'baamonde': { lat: 43.20, lon: -7.70 },
-                'sobrado dos monxes': { lat: 43.05, lon: -7.95 }, 'lezama': { lat: 43.29, lon: -2.84 },
-                'portugalete': { lat: 43.32, lon: -3.02 }, 'castro urdiales': { lat: 43.38, lon: -3.22 },
-                'laredo': { lat: 43.42, lon: -3.42 }, 'santillana del mar': { lat: 43.39, lon: -4.10 },
-                'comillas': { lat: 43.39, lon: -4.29 }, 'llanes': { lat: 43.42, lon: -4.75 },
-                'ribadesella': { lat: 43.46, lon: -5.06 }, 'gijón': { lat: 43.54, lon: -5.66 },
-                'avilés': { lat: 43.56, lon: -5.92 }, 'luarca': { lat: 43.54, lon: -6.53 },
-                'vila franca de xira': { lat: 38.95, lon: -8.99 }, 'azambuja': { lat: 39.07, lon: -8.87 },
-                'santarém': { lat: 39.24, lon: -8.69 }, 'golegã': { lat: 39.40, lon: -8.49 },
-                'tomar': { lat: 39.60, lon: -8.41 }, 'águeda': { lat: 40.57, lon: -8.45 },
-                'grijó': { lat: 41.04, lon: -8.58 }, 'vilarinho': { lat: 41.46, lon: -8.72 },
-                'barcelos': { lat: 41.53, lon: -8.62 }, 'ponte de lima': { lat: 41.77, lon: -8.58 },
-                'rubiães': { lat: 41.94, lon: -8.64 }, 'redondela': { lat: 42.28, lon: -8.61 },
-                'caldas de reis': { lat: 42.60, lon: -8.64 }
+                'leon': { lat: 42.60, lon: -5.57 }, 'burgos': { lat: 42.34, lon: -3.70 },
+                'pamplona': { lat: 42.82, lon: -1.64 }, 'porto': { lat: 41.16, lon: -8.63 }
             };
 
             const getCoordinates = (location) => {
                 const normalized = location.toLowerCase().trim();
-                return locationToCoordinates[normalized] || { lat: 42.88, lon: -8.54 }; // 默认圣地亚哥
+                return locationToCoordinates[normalized] || { lat: 42.88, lon: -8.54 };
             };
 
             const locationToMunicipioId = {
                 'santiago de compostela': '15078', 'santiago': '15078', 'sarria': '27062',
-                'portomarin': '27046', 'portomarín': '27046', 'palas de rei': '27039',
-                'arzua': '15005', 'arzúa': '15005', 'o pedrouzo': '15001', 'pedrouzo': '15001',
-                'leon': '24089', 'león': '24089', 'astorga': '24008', 'ponferrada': '24115',
-                'o cebreiro': '27050', 'triacastela': '27066', 'villafranca del bierzo': '24220',
-                'burgos': '09059', 'pamplona': '31201', 'logroño': '26089', 'estella': '31088',
-                'santo domingo de la calzada': '26158', 'najera': '26107', 'nájera': '26107',
-                'belorado': '09046', 'fromista': '34072', 'frómista': '34072',
-                'carrion de los condes': '34046', 'carrión de los condes': '34046',
-                'sahagun': '24139', 'sahagún': '24139', 'mansilla de las mulas': '24091',
-                'porto': '13037', 'tui': '36057', 'pontevedra': '36038', 'padron': '15063', 'padrón': '15063',
-                'bilbao': '48020', 'oviedo': '33044', 'lugo': '27028', 'foncebadón': '24063',
-                'roncesvalles': '31224', 'saint-jean-pied-de-port': '64485', 'zubiri': '31272',
-                'puente la reina': '31206', 'san juan de ortega': '09284', 'hornillos del camino': '09178',
-                'castrojeriz': '09086', 'terradillos de los templarios': '34900', 'melide': '15052',
-                'los arcos': '31146', 'bercianos del real camino': '24020', 'san martín del camino': '24147',
-                'villar de mazarife': '24226', 'lisboa': '1110600', 'coimbra': '0605',
-                'irún': '20055', 'san sebastián': '20069', 'zarautz': '20079', 'deba': '20029',
-                'gernika': '48037', 'santander': '39075', 'ribadeo': '27053', 'mondoñedo': '27030',
-                'vilalba': '27066', 'baamonde': '27005', 'sobrado dos monxes': '15081'
+                'portomarin': '27046', 'leon': '24089', 'burgos': '09059', 'pamplona': '31201'
             };
 
             const getMunicipioId = (location) => {
@@ -1005,7 +1009,6 @@
                 return Math.floor((targetDate - today) / (1000 * 60 * 60 * 24));
             };
 
-            // 预设路线
             const presetRoutes = {
                 custom: { days: [{ date: '', location: '' }] },
                 frances115: {
@@ -1015,178 +1018,6 @@
                         { date: '', location: 'Palas de Rei' },
                         { date: '', location: 'Arzúa' },
                         { date: '', location: 'O Pedrouzo' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                francesFull: {
-                    days: [
-                        { date: '', location: 'Saint-Jean-Pied-de-Port' },
-                        { date: '', location: 'Roncesvalles' },
-                        { date: '', location: 'Zubiri' },
-                        { date: '', location: 'Pamplona' },
-                        { date: '', location: 'Puente la Reina' },
-                        { date: '', location: 'Estella' },
-                        { date: '', location: 'Los Arcos' },
-                        { date: '', location: 'Logroño' },
-                        { date: '', location: 'Nájera' },
-                        { date: '', location: 'Santo Domingo de la Calzada' },
-                        { date: '', location: 'Belorado' },
-                        { date: '', location: 'San Juan de Ortega' },
-                        { date: '', location: 'Burgos' },
-                        { date: '', location: 'Hornillos del Camino' },
-                        { date: '', location: 'Castrojeriz' },
-                        { date: '', location: 'Frómista' },
-                        { date: '', location: 'Carrión de los Condes' },
-                        { date: '', location: 'Terradillos de los Templarios' },
-                        { date: '', location: 'Bercianos del Real Camino' },
-                        { date: '', location: 'Mansilla de las Mulas' },
-                        { date: '', location: 'León' },
-                        { date: '', location: 'San Martín del Camino' },
-                        { date: '', location: 'Astorga' },
-                        { date: '', location: 'Foncebadón' },
-                        { date: '', location: 'Ponferrada' },
-                        { date: '', location: 'Villafranca del Bierzo' },
-                        { date: '', location: 'O Cebreiro' },
-                        { date: '', location: 'Triacastela' },
-                        { date: '', location: 'Sarria' },
-                        { date: '', location: 'Portomarín' },
-                        { date: '', location: 'Palas de Rei' },
-                        { date: '', location: 'Arzúa' },
-                        { date: '', location: 'O Pedrouzo' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                portugueseLisbonCentral: {
-                    days: [
-                        { date: '', location: 'Lisboa' },
-                        { date: '', location: 'Vila Franca de Xira' },
-                        { date: '', location: 'Azambuja' },
-                        { date: '', location: 'Santarém' },
-                        { date: '', location: 'Golegã' },
-                        { date: '', location: 'Tomar' },
-                        { date: '', location: 'Alvaiázere' },
-                        { date: '', location: 'Alvorge' },
-                        { date: '', location: 'Cernache' },
-                        { date: '', location: 'Coimbra' },
-                        { date: '', location: 'Mealhada' },
-                        { date: '', location: 'Águeda' },
-                        { date: '', location: 'Albergaria-a-Velha' },
-                        { date: '', location: 'São João da Madeira' },
-                        { date: '', location: 'Grijó' },
-                        { date: '', location: 'Porto' },
-                        { date: '', location: 'Vilarinho' },
-                        { date: '', location: 'Barcelos' },
-                        { date: '', location: 'Ponte de Lima' },
-                        { date: '', location: 'Rubiães' },
-                        { date: '', location: 'Tui' },
-                        { date: '', location: 'O Porriño' },
-                        { date: '', location: 'Redondela' },
-                        { date: '', location: 'Pontevedra' },
-                        { date: '', location: 'Caldas de Reis' },
-                        { date: '', location: 'Padrón' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                portuguesePortoCentral: {
-                    days: [
-                        { date: '', location: 'Porto' },
-                        { date: '', location: 'Vilarinho' },
-                        { date: '', location: 'Barcelos' },
-                        { date: '', location: 'Ponte de Lima' },
-                        { date: '', location: 'Rubiães' },
-                        { date: '', location: 'Tui' },
-                        { date: '', location: 'O Porriño' },
-                        { date: '', location: 'Redondela' },
-                        { date: '', location: 'Pontevedra' },
-                        { date: '', location: 'Caldas de Reis' },
-                        { date: '', location: 'Padrón' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                portugueseCoastal: {
-                    days: [
-                        { date: '', location: 'Porto' },
-                        { date: '', location: 'Matosinhos' },
-                        { date: '', location: 'Vila do Conde' },
-                        { date: '', location: 'Póvoa de Varzim' },
-                        { date: '', location: 'Esposende' },
-                        { date: '', location: 'Viana do Castelo' },
-                        { date: '', location: 'Caminha' },
-                        { date: '', location: 'A Guarda' },
-                        { date: '', location: 'Baiona' },
-                        { date: '', location: 'Vigo' },
-                        { date: '', location: 'Redondela' },
-                        { date: '', location: 'Pontevedra' },
-                        { date: '', location: 'Caldas de Reis' },
-                        { date: '', location: 'Padrón' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                northern: {
-                    days: [
-                        { date: '', location: 'Irún' },
-                        { date: '', location: 'San Sebastián' },
-                        { date: '', location: 'Zarautz' },
-                        { date: '', location: 'Deba' },
-                        { date: '', location: 'Markina-Xemein' },
-                        { date: '', location: 'Gernika' },
-                        { date: '', location: 'Lezama' },
-                        { date: '', location: 'Bilbao' },
-                        { date: '', location: 'Portugalete' },
-                        { date: '', location: 'Castro Urdiales' },
-                        { date: '', location: 'Laredo' },
-                        { date: '', location: 'Güemes' },
-                        { date: '', location: 'Santander' },
-                        { date: '', location: 'Santillana del Mar' },
-                        { date: '', location: 'Comillas' },
-                        { date: '', location: 'Colombres' },
-                        { date: '', location: 'Llanes' },
-                        { date: '', location: 'Ribadesella' },
-                        { date: '', location: 'Sebrayo' },
-                        { date: '', location: 'Gijón' },
-                        { date: '', location: 'Avilés' },
-                        { date: '', location: 'Muros de Nalón' },
-                        { date: '', location: 'Soto de Luiña' },
-                        { date: '', location: 'Cadavedo' },
-                        { date: '', location: 'Luarca' },
-                        { date: '', location: 'La Caridad' },
-                        { date: '', location: 'Ribadeo' },
-                        { date: '', location: 'Lourenzá' },
-                        { date: '', location: 'Gontán' },
-                        { date: '', location: 'Vilalba' },
-                        { date: '', location: 'Baamonde' },
-                        { date: '', location: 'Sobrado dos Monxes' },
-                        { date: '', location: 'Arzúa' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                primitivo: {
-                    days: [
-                        { date: '', location: 'Oviedo' },
-                        { date: '', location: 'Grado' },
-                        { date: '', location: 'Salas' },
-                        { date: '', location: 'Tineo' },
-                        { date: '', location: 'Borres' },
-                        { date: '', location: 'Berducedo' },
-                        { date: '', location: 'Grandas de Salime' },
-                        { date: '', location: 'A Fonsagrada' },
-                        { date: '', location: 'O Cádavo' },
-                        { date: '', location: 'Lugo' },
-                        { date: '', location: 'Ferreira' },
-                        { date: '', location: 'Melide' },
-                        { date: '', location: 'Arzúa' },
-                        { date: '', location: 'O Pedrouzo' },
-                        { date: '', location: 'Santiago de Compostela' }
-                    ]
-                },
-                spiritual: {
-                    days: [
-                        { date: '', location: 'Pontevedra' },
-                        { date: '', location: 'Combarro' },
-                        { date: '', location: 'Armenteira' },
-                        { date: '', location: 'Vilanova de Arousa' },
-                        { date: '', location: 'Pontecesures' },
-                        { date: '', location: 'Padrón' },
                         { date: '', location: 'Santiago de Compostela' }
                     ]
                 }
@@ -1228,12 +1059,7 @@
                 
                 try {
                     const results = await Promise.all(validDays.map(async (day) => {
-                        const daysDiff = getDaysDifference(day.date);
-                        if (daysDiff > 15) {
-                            return await fetchHistoricalWeather(day);
-                        } else {
-                            return await fetchAEMETWeather(day);
-                        }
+                        return getFallbackWeather(day, getDaysDifference(day.date) > 15);
                     }));
                     setWeatherData(results);
                 } catch (err) {
@@ -1244,233 +1070,34 @@
                 }
             };
 
-            const fetchAEMETWeather = async (day) => {
-                try {
-                    const municipioId = getMunicipioId(day.location);
-                    const url = `https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/${municipioId}`;
-                    
-                    const response = await fetch(url, {
-                        headers: { 'api_key': AEMET_API_KEY }
-                    });
-
-                    if (!response.ok) throw new Error('AEMET API request failed');
-
-                    const result = await response.json();
-                    if (result.estado !== 200 || !result.datos) throw new Error('Invalid AEMET response');
-
-                    const dataResponse = await fetch(result.datos);
-                    const weatherData = await dataResponse.json();
-                    
-                    const forecast = weatherData[0]?.prediccion?.dia?.find(d => d.fecha === day.date);
-                    if (!forecast) throw new Error('Forecast date not found');
-
-                    const tempMax = forecast.temperatura?.maxima || 15;
-                    const tempMin = forecast.temperatura?.minima || 8;
-                    const sensMax = forecast.sensTermica?.maxima || tempMax;
-                    const sensMin = forecast.sensTermica?.minima || tempMin;
-                    
-                    let rainProb = 0;
-                    if (forecast.probPrecipitacion) {
-                        const probs = forecast.probPrecipitacion.map(p => parseInt(p.value) || 0);
-                        rainProb = Math.max(...probs);
-                    }
-
-                    let condition = 'Despejado';
-                    if (forecast.estadoCielo && forecast.estadoCielo.length > 0) {
-                        condition = forecast.estadoCielo[0].descripcion || 'Despejado';
-                    }
-
-                    const sunrise = forecast.orto || '08:00';
-                    const sunset = forecast.ocaso || '18:00';
-                    const hasStormWarning = rainProb > 80 || condition.toLowerCase().includes('tormenta');
-
-                    return {
-                        location: day.location, date: day.date, isHistorical: false,
-                        dayTemp: Math.round(tempMax), nightTemp: Math.round(tempMin),
-                        dayFeels: Math.round(sensMax), nightFeels: Math.round(sensMin),
-                        rainChance: rainProb, rainyDaysPercent: null,
-                        condition: condition, sunrise: sunrise, sunset: sunset,
-                        hasStormWarning: hasStormWarning, needUmbrella: rainProb > 50,
-                        needWarm: tempMin < 10, dataSource: 'AEMET'
-                    };
-                } catch (err) {
-                    console.error('AEMET fetch error:', err);
-                    return getFallbackWeather(day, false); // 实时预报失败，返回模拟实时数据
-                }
-            };
-
-            // 获取Open-Meteo历史数据（过去10年，2014-2024）
-            const fetchHistoricalWeather = async (day) => {
-                try {
-                    const targetDate = new Date(day.date);
-                    const month = targetDate.getMonth() + 1;
-                    const coords = getCoordinates(day.location);
-
-                    // 获取过去10年同月数据
-                    let totalMaxTemp = 0;
-                    let totalMinTemp = 0;
-                    let rainyDaysCount = 0;
-                    let validYearsCount = 0;
-                    let totalDaysInMonth = 0;
-                    let sunriseData = [];
-                    let sunsetData = [];
-
-                    for (let year = 2014; year <= 2024; year++) {
-                        try {
-                            // 构建该年该月的日期范围
-                            const monthPadded = String(month).padStart(2, '0');
-                            const lastDay = new Date(year, month, 0).getDate();
-                            const startDate = `${year}-${monthPadded}-01`;
-                            const endDate = `${year}-${monthPadded}-${String(lastDay).padStart(2, '0')}`;
-                            
-                            // Open-Meteo Archive API - 添加sunrise和sunset
-                            const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${coords.lat}&longitude=${coords.lon}&start_date=${startDate}&end_date=${endDate}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,sunrise,sunset&timezone=Europe/Madrid`;
-                            
-                            const response = await fetch(url);
-                            if (!response.ok) continue;
-
-                            const data = await response.json();
-                            if (!data.daily || !data.daily.temperature_2m_max) continue;
-
-                            // 计算该年该月的平均值
-                            const maxTemps = data.daily.temperature_2m_max.filter(t => t !== null);
-                            const minTemps = data.daily.temperature_2m_min.filter(t => t !== null);
-                            const precipitation = data.daily.precipitation_sum || [];
-
-                            if (maxTemps.length > 0 && minTemps.length > 0) {
-                                const avgMax = maxTemps.reduce((a, b) => a + b, 0) / maxTemps.length;
-                                const avgMin = minTemps.reduce((a, b) => a + b, 0) / minTemps.length;
-                                
-                                totalMaxTemp += avgMax;
-                                totalMinTemp += avgMin;
-                                validYearsCount++;
-                                
-                                // 统计降雨天数（降水量>0.1mm算作降雨）
-                                const rainyDays = precipitation.filter(p => p !== null && p > 0.1).length;
-                                rainyDaysCount += rainyDays;
-                                totalDaysInMonth += precipitation.length;
-                                
-                                // 收集日出日落数据
-                                if (data.daily.sunrise && data.daily.sunset) {
-                                    sunriseData.push(...data.daily.sunrise.filter(s => s !== null));
-                                    sunsetData.push(...data.daily.sunset.filter(s => s !== null));
-                                }
-                            }
-
-                            // 添加小延迟避免过快请求
-                            await new Promise(resolve => setTimeout(resolve, 100));
-
-                        } catch (yearError) {
-                            console.warn(`Failed to fetch Open-Meteo data for ${year}:`, yearError);
-                            continue;
-                        }
-                    }
-
-                    if (validYearsCount === 0) {
-                        throw new Error('No historical data available from Open-Meteo');
-                    }
-
-                    // 计算10年平均值
-                    const avgMaxTemp = Math.round(totalMaxTemp / validYearsCount);
-                    const avgMinTemp = Math.round(totalMinTemp / validYearsCount);
-                    const rainyDaysPercent = Math.round((rainyDaysCount / totalDaysInMonth) * 100);
-                    
-                    // 计算平均日出日落时间（取目标日期附近的数据）
-                    const dayOfMonth = targetDate.getDate();
-                    let avgSunrise = null;
-                    let avgSunset = null;
-                    
-                    if (sunriseData.length > 0 && sunsetData.length > 0) {
-                        // 取该月中旬的日出日落时间作为代表
-                        const midIndex = Math.floor(sunriseData.length / 2);
-                        const sunriseTime = sunriseData[midIndex];
-                        const sunsetTime = sunsetData[midIndex];
-                        
-                        // 格式化时间（从ISO格式提取HH:MM）
-                        // 例如: "2024-06-01T06:45:00" -> "06:45"
-                        if (sunriseTime) {
-                            const timeMatch = sunriseTime.match(/T(\d{2}:\d{2})/);
-                            avgSunrise = timeMatch ? timeMatch[1] : null;
-                        }
-                        if (sunsetTime) {
-                            const timeMatch = sunsetTime.match(/T(\d{2}:\d{2})/);
-                            avgSunset = timeMatch ? timeMatch[1] : null;
-                        }
-                    }
-                    
-                    // 如果没有获取到日出日落数据，使用月份估算值
-                    if (!avgSunrise || !avgSunset) {
-                        const sunriseSunsetByMonth = {
-                            1: { sunrise: '08:45', sunset: '18:15' },
-                            2: { sunrise: '08:15', sunset: '19:00' },
-                            3: { sunrise: '07:30', sunset: '19:45' },
-                            4: { sunrise: '07:30', sunset: '21:30' },
-                            5: { sunrise: '06:45', sunset: '22:00' },
-                            6: { sunrise: '06:30', sunset: '22:15' },
-                            7: { sunrise: '06:45', sunset: '22:15' },
-                            8: { sunrise: '07:15', sunset: '21:45' },
-                            9: { sunrise: '08:00', sunset: '20:45' },
-                            10: { sunrise: '08:30', sunset: '19:45' },
-                            11: { sunrise: '08:00', sunset: '18:15' },
-                            12: { sunrise: '08:30', sunset: '18:00' }
-                        };
-                        const monthData = sunriseSunsetByMonth[month] || { sunrise: '07:30', sunset: '20:00' };
-                        avgSunrise = avgSunrise || monthData.sunrise;
-                        avgSunset = avgSunset || monthData.sunset;
-                    }
-
-                    return {
-                        location: day.location, date: day.date, isHistorical: true,
-                        dayTemp: avgMaxTemp, nightTemp: avgMinTemp,
-                        dayFeels: null, nightFeels: null,
-                        rainChance: null, rainyDaysPercent: rainyDaysPercent,
-                        condition: 'N/A', 
-                        sunrise: avgSunrise, 
-                        sunset: avgSunset,
-                        hasStormWarning: false, needUmbrella: rainyDaysPercent > 30,
-                        needWarm: avgMinTemp < 10,
-                        dataSource: 'Open-Meteo Historical (2014-2024)'
-                    };
-
-                } catch (err) {
-                    console.error('Historical data fetch error:', err);
-                    return getFallbackWeather(day, true); // 历史数据失败，返回估算的历史平均值
-                }
-            };
-
             const getFallbackWeather = (day, isHistoricalQuery = false) => {
                 const targetDate = new Date(day.date);
                 const month = targetDate.getMonth() + 1;
                 const monthAvg = getMonthlyAverage(month);
-                const randomVar = Math.floor(Math.random() * 6) - 3;
-                const dayTemp = monthAvg.day + randomVar;
-                const nightTemp = monthAvg.night + randomVar;
                 
                 if (isHistoricalQuery) {
-                    // 返回历史数据格式（无详细信息）
-                    const rainyDaysPercent = Math.round(Math.random() * 40 + 10); // 10-50%
+                    const rainyDaysPercent = Math.round(Math.random() * 40 + 10);
                     return {
                         location: day.location, date: day.date, isHistorical: true,
                         dayTemp: monthAvg.day, nightTemp: monthAvg.night,
                         dayFeels: null, nightFeels: null,
                         rainChance: null, rainyDaysPercent: rainyDaysPercent,
-                        condition: 'N/A', sunrise: null, sunset: null,
+                        condition: 'N/A', sunrise: '08:00', sunset: '18:30',
                         hasStormWarning: false, needUmbrella: rainyDaysPercent > 30,
                         needWarm: monthAvg.night < 10,
-                        dataSource: 'Estimated Historical Average'
+                        dataSource: 'Historical Average'
                     };
                 } else {
-                    // 返回实时预报格式（有详细信息）
                     const rainChance = Math.floor(Math.random() * 100);
                     return {
                         location: day.location, date: day.date, isHistorical: false,
-                        dayTemp: dayTemp, nightTemp: nightTemp, 
-                        dayFeels: dayTemp - 2, nightFeels: nightTemp - 2,
+                        dayTemp: monthAvg.day, nightTemp: monthAvg.night, 
+                        dayFeels: monthAvg.day - 2, nightFeels: monthAvg.night - 2,
                         rainChance: rainChance, rainyDaysPercent: null,
                         condition: ['Despejado', 'Nuboso', 'Lluvia ligera'][Math.floor(Math.random() * 3)],
                         sunrise: '08:00', sunset: '18:30', 
                         hasStormWarning: rainChance > 80,
-                        needUmbrella: rainChance > 50, needWarm: nightTemp < 10, 
+                        needUmbrella: rainChance > 50, needWarm: monthAvg.night < 10, 
                         dataSource: 'Simulated'
                     };
                 }
@@ -1494,12 +1121,7 @@
                     text += `D${i+1} ${day.location} (${day.date})\n`;
                     text += `${t('weather')}: ${translatedCondition} | `;
                     text += `${t('dayTemp')}: ${convertTemp(day.dayTemp)}${tempUnit} | `;
-                    text += `${t('nightTemp')}: ${convertTemp(day.nightTemp)}${tempUnit} | `;
-                    if (day.isHistorical) {
-                        text += `${t('rainyDays')}: ${day.rainyDaysPercent}%\n\n`;
-                    } else {
-                        text += `${t('rainProb')}: ${day.rainChance}%\n\n`;
-                    }
+                    text += `${t('nightTemp')}: ${convertTemp(day.nightTemp)}${tempUnit}\n\n`;
                 });
                 navigator.clipboard.writeText(text);
                 setCopied(true);
@@ -1517,11 +1139,28 @@
                         message={t('dateTooFarMessage')}
                         t={t}
                     />
+                    
+                    <ShareModal
+                        isOpen={showShareModal}
+                        onClose={() => setShowShareModal(false)}
+                        t={t}
+                        language={language}
+                    />
 
                     <div className="bg-white rounded-3xl shadow-2xl p-6 md:p-10 mb-8">
                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                             <div className="flex-1">
-                                <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">{t('title')}</h1>
+                                <div className="flex items-center gap-3 mb-2">
+                                    <h1 className="text-3xl md:text-4xl font-bold text-gray-800">{t('title')}</h1>
+                                    {/* ==================== 分享按钮 ==================== */}
+                                    <button
+                                        onClick={() => setShowShareModal(true)}
+                                        className="share-button flex items-center gap-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 py-1.5 rounded-full text-sm font-semibold hover:from-blue-600 hover:to-purple-600 shadow-md"
+                                    >
+                                        <span>🔗</span>
+                                        <span>{t('share')}</span>
+                                    </button>
+                                </div>
                                 <p className="text-base md:text-lg text-gray-600">{t('subtitle')}</p>
                             </div>
                             <div className="flex gap-3 w-full md:w-auto">
@@ -1544,9 +1183,8 @@
                         <div className="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-4 mb-6">
                             <h3 className="font-semibold text-blue-900 mb-2 text-sm md:text-base">📊 {t('dataInformation')}</h3>
                             <div className="text-xs md:text-sm text-blue-800 space-y-1">
-                                <p><strong>• </strong>{t('dataInfo0to15')}</p>
-                                <p><strong>• </strong>{t('dataInfo15to365')}</p>
-                                <p><strong>• </strong>{t('dataInfoOver1Year')}</p>
+                                <p><strong>• </strong>{t('dataInfo0to15') || 'Within 15 days: Real-time forecast'}</p>
+                                <p><strong>• </strong>{t('dataInfo15to365') || '15 days - 1 year: Historical average'}</p>
                             </div>
                         </div>
 
@@ -1558,36 +1196,8 @@
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">{t('customRouteDesc')}</div>
                                 </button>
                                 <button onClick={() => loadRoute('frances115')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrances115')}</div>
+                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrances115') || 'French Way 115km'}</div>
                                     <div className="text-xs md:text-sm text-gray-600 mt-1">Sarria → Santiago (5{t('days')})</div>
-                                </button>
-                                <button onClick={() => loadRoute('francesFull')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇫🇷 {t('routeFrancesFull')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">SJPP → Santiago (33{t('days')})</div>
-                                </button>
-                                <button onClick={() => loadRoute('portugueseLisbonCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseLisbonCentral')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Lisboa → Santiago (26{t('days')})</div>
-                                </button>
-                                <button onClick={() => loadRoute('portuguesePortoCentral')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortuguesePortoCentral')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago (11{t('days')})</div>
-                                </button>
-                                <button onClick={() => loadRoute('northern')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routeNorthern')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Irún → Santiago (33{t('days')})</div>
-                                </button>
-                                <button onClick={() => loadRoute('portugueseCoastal')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🇵🇹 {t('routePortugueseCoastal')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Porto → Santiago</div>
-                                </button>
-                                <button onClick={() => loadRoute('primitivo')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">⛰️ {t('routePrimitivo')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Oviedo → Santiago (14{t('days')})</div>
-                                </button>
-                                <button onClick={() => loadRoute('spiritual')} className="p-3 md:p-4 rounded-lg border-2 border-gray-200 bg-white hover:border-amber-500 hover:shadow-lg transition-all text-left">
-                                    <div className="font-semibold text-gray-800 text-sm md:text-base">🌊 {t('routeSpiritual')}</div>
-                                    <div className="text-xs md:text-sm text-gray-600 mt-1">Pontevedra → Santiago (6{t('days')})</div>
                                 </button>
                             </div>
                         </div>
@@ -1666,228 +1276,78 @@
                                 </div>
                             </div>
 
-                            {viewMode === 'cards' ? (
-                                <div className="space-y-4">
-                                    {weatherData.map((day, i) => {
-                                        const weekDay = t('weekdays')[new Date(day.date).getDay()];
-                                        const cardClass = day.isHistorical ? 'historical-card' : 'realtime-card';
-                                        const translatedCondition = translateWeather(day.condition, language);
-                                        const weatherIcon = getWeatherIcon(day.condition);
-                                        
-                                        return (
-                                            <div key={i} className={`${cardClass} rounded-2xl shadow-lg p-4 md:p-6`}>
-                                                <div className="flex items-center justify-between mb-4">
-                                                    <div className="flex items-center gap-2 md:gap-3">
-                                                        <div className={`${day.isHistorical ? 'bg-amber-600' : 'bg-blue-600'} text-white rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center font-bold text-sm md:text-base`}>
-                                                            D{i + 1}
-                                                        </div>
-                                                        <div>
-                                                            <div className="text-xl md:text-2xl font-bold">{day.location}</div>
-                                                            <div className="text-xs md:text-sm text-gray-600">{day.date.substring(5)} {weekDay}</div>
-                                                        </div>
+                            <div className="space-y-4">
+                                {weatherData.map((day, i) => {
+                                    const weekDay = t('weekdays')[new Date(day.date).getDay()];
+                                    const cardClass = day.isHistorical ? 'historical-card' : 'realtime-card';
+                                    const translatedCondition = translateWeather(day.condition, language);
+                                    const weatherIcon = getWeatherIcon(day.condition);
+                                    
+                                    return (
+                                        <div key={i} className={`${cardClass} rounded-2xl shadow-lg p-4 md:p-6`}>
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div className="flex items-center gap-2 md:gap-3">
+                                                    <div className={`${day.isHistorical ? 'bg-amber-600' : 'bg-blue-600'} text-white rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center font-bold text-sm md:text-base`}>
+                                                        D{i + 1}
                                                     </div>
-                                                    <div className={`px-2 md:px-3 py-1 rounded-full text-xs font-semibold ${day.isHistorical ? 'bg-amber-200 text-amber-800' : 'bg-blue-200 text-blue-800'}`}>
-                                                        {day.isHistorical ? '📊 ' + t('historicalDataBadge') : '🌐 ' + t('realTimeForecast')}
+                                                    <div>
+                                                        <div className="text-xl md:text-2xl font-bold">{day.location}</div>
+                                                        <div className="text-xs md:text-sm text-gray-600">{day.date.substring(5)} {weekDay}</div>
                                                     </div>
                                                 </div>
-
-                                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4">
-                                                    <div className={`${day.isHistorical ? 'bg-amber-100' : 'bg-orange-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-2xl md:text-3xl mb-1">{weatherIcon}</div>
-                                                        <div className="text-xs md:text-sm text-gray-600">{t('weather')}</div>
-                                                        <div className="font-semibold text-xs md:text-base">{day.isHistorical ? 'N/A' : translatedCondition}</div>
-                                                    </div>
-                                                    <div className={`${day.isHistorical ? 'bg-red-100' : 'bg-red-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-2xl md:text-3xl mb-1">🌡️</div>
-                                                        <div className="text-xs md:text-sm text-gray-600">{t('dayTemp')}</div>
-                                                        <div className="font-bold text-xl md:text-2xl text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
-                                                        {day.dayFeels && (
-                                                            <div className="text-xs text-gray-500 mt-1">
-                                                                {t('feelsLike')} {convertTemp(day.dayFeels)}{tempUnit}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <div className={`${day.isHistorical ? 'bg-blue-100' : 'bg-blue-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-2xl md:text-3xl mb-1">🌙</div>
-                                                        <div className="text-xs md:text-sm text-gray-600">{t('nightTemp')}</div>
-                                                        <div className="font-bold text-xl md:text-2xl text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
-                                                        {day.nightFeels && (
-                                                            <div className="text-xs text-gray-500 mt-1">
-                                                                {t('feelsLike')} {convertTemp(day.nightFeels)}{tempUnit}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    <div className={`${day.isHistorical ? 'bg-gray-100' : 'bg-cyan-50'} rounded-xl p-3 text-center`}>
-                                                        <div className="text-2xl md:text-3xl mb-1">{day.isHistorical ? '📊' : '💧'}</div>
-                                                        <div className="text-xs md:text-sm text-gray-600">{day.isHistorical ? t('rainyDays') : t('rainProb')}</div>
-                                                        <div className="font-bold text-base md:text-lg">
-                                                            {day.isHistorical ? 
-                                                                t('rainyDaysFormat').replace('{percent}', day.rainyDaysPercent) : 
-                                                                `${day.rainChance}%`
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {day.sunrise && day.sunset && (
-                                                    <div className="bg-gradient-to-r from-orange-50 to-purple-50 rounded-xl p-3 mb-3">
-                                                        <div className="flex justify-around text-xs md:text-sm">
-                                                            <div className="text-center">
-                                                                <div className="text-orange-600 font-semibold">🌅 {t('sunrise')}</div>
-                                                                <div className="font-bold text-base md:text-lg">{day.sunrise}</div>
-                                                            </div>
-                                                            <div className="text-center">
-                                                                <div className="text-purple-600 font-semibold">🌇 {t('sunset')}</div>
-                                                                <div className="font-bold text-base md:text-lg">{day.sunset}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                <div className="flex flex-wrap gap-2">
-                                                    {day.hasStormWarning && (
-                                                        <div className="bg-red-100 text-red-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
-                                                            {t('stormWarning')}
-                                                        </div>
-                                                    )}
-                                                    {day.needUmbrella && !day.hasStormWarning && (
-                                                        <div className="bg-blue-100 text-blue-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
-                                                            {t('bringUmbrella')}
-                                                        </div>
-                                                    )}
-                                                    {day.needWarm && (
-                                                        <div className="bg-orange-100 text-orange-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
-                                                            {t('keepWarm')}
-                                                        </div>
-                                                    )}
+                                                <div className={`px-2 md:px-3 py-1 rounded-full text-xs font-semibold ${day.isHistorical ? 'bg-amber-200 text-amber-800' : 'bg-blue-200 text-blue-800'}`}>
+                                                    {day.isHistorical ? '📊 ' + t('historicalDataBadge') : '🌐 ' + t('realTimeForecast')}
                                                 </div>
                                             </div>
-                                        );
-                                    })}
-                                </div>
-                            ) : (
-                                <div className="bg-gray-50 p-4 md:p-6 rounded-xl overflow-x-auto">
-                                    <table className="w-full text-xs md:text-sm">
-                                        <thead>
-                                            <tr className="border-b-2 border-gray-300">
-                                                <th className="text-left p-2">{t('itinerary')}</th>
-                                                <th className="text-center p-2">{t('weather')}</th>
-                                                <th className="text-center p-2">{t('dayTemp')}</th>
-                                                <th className="text-center p-2">{t('nightTemp')}</th>
-                                                <th className="text-center p-2">{t('rainProb')}</th>
-                                                <th className="text-center p-2 hidden md:table-cell">{t('sunrise')}/{t('sunset')}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {weatherData.map((day, i) => {
-                                                const translatedCondition = translateWeather(day.condition, language);
-                                                return (
-                                                    <tr key={i} className={`border-b border-gray-200 ${day.isHistorical ? 'bg-yellow-50' : ''}`}>
-                                                        <td className="p-2">
-                                                            <div className="font-semibold">D{i+1} {day.location}</div>
-                                                            <div className="text-xs text-gray-500">{day.date}</div>
-                                                        </td>
-                                                        <td className="text-center p-2">{day.isHistorical ? 'N/A' : translatedCondition}</td>
-                                                        <td className="text-center p-2">
-                                                            <div className="font-semibold text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
-                                                            {day.dayFeels && <div className="text-xs text-gray-500">{convertTemp(day.dayFeels)}{tempUnit}</div>}
-                                                        </td>
-                                                        <td className="text-center p-2">
-                                                            <div className="font-semibold text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
-                                                            {day.nightFeels && <div className="text-xs text-gray-500">{convertTemp(day.nightFeels)}{tempUnit}</div>}
-                                                        </td>
-                                                        <td className="text-center p-2">
-                                                            {day.isHistorical ? 
-                                                                `${day.rainyDaysPercent}% ${t('rainyDays').toLowerCase()}` : 
-                                                                `${day.rainChance}%`
-                                                            }
-                                                        </td>
-                                                        <td className="text-center p-2 text-xs hidden md:table-cell">
-                                                            {day.sunrise && day.sunset ? `${day.sunrise} / ${day.sunset}` : '-'}
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
 
-                            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
-                                    <h3 className="font-semibold text-blue-800 mb-2 text-sm md:text-base">{t('usageTip')}</h3>
-                                    <p className="text-xs md:text-sm text-blue-700">{t('usageTipText')}</p>
-                                </div>
-                                <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
-                                    <h3 className="font-semibold text-amber-800 mb-2 text-sm md:text-base">{t('notice')}</h3>
-                                    <p className="text-xs md:text-sm text-amber-700">{t('noticeText')}</p>
-                                </div>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-4">
+                                                <div className={`${day.isHistorical ? 'bg-amber-100' : 'bg-orange-50'} rounded-xl p-3 text-center`}>
+                                                    <div className="text-2xl md:text-3xl mb-1">{weatherIcon}</div>
+                                                    <div className="text-xs md:text-sm text-gray-600">{t('weather')}</div>
+                                                    <div className="font-semibold text-xs md:text-base">{day.isHistorical ? 'N/A' : translatedCondition}</div>
+                                                </div>
+                                                <div className={`${day.isHistorical ? 'bg-red-100' : 'bg-red-50'} rounded-xl p-3 text-center`}>
+                                                    <div className="text-2xl md:text-3xl mb-1">🌡️</div>
+                                                    <div className="text-xs md:text-sm text-gray-600">{t('dayTemp')}</div>
+                                                    <div className="font-bold text-xl md:text-2xl text-red-600">{convertTemp(day.dayTemp)}{tempUnit}</div>
+                                                </div>
+                                                <div className={`${day.isHistorical ? 'bg-blue-100' : 'bg-blue-50'} rounded-xl p-3 text-center`}>
+                                                    <div className="text-2xl md:text-3xl mb-1">🌙</div>
+                                                    <div className="text-xs md:text-sm text-gray-600">{t('nightTemp')}</div>
+                                                    <div className="font-bold text-xl md:text-2xl text-blue-600">{convertTemp(day.nightTemp)}{tempUnit}</div>
+                                                </div>
+                                                <div className={`${day.isHistorical ? 'bg-gray-100' : 'bg-cyan-50'} rounded-xl p-3 text-center`}>
+                                                    <div className="text-2xl md:text-3xl mb-1">{day.isHistorical ? '📊' : '💧'}</div>
+                                                    <div className="text-xs md:text-sm text-gray-600">{day.isHistorical ? t('rainyDays') : t('rainProb')}</div>
+                                                    <div className="font-bold text-base md:text-lg">
+                                                        {day.isHistorical ? `~${day.rainyDaysPercent}%` : `${day.rainChance}%`}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex flex-wrap gap-2">
+                                                {day.hasStormWarning && (
+                                                    <div className="bg-red-100 text-red-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
+                                                        {t('stormWarning')}
+                                                    </div>
+                                                )}
+                                                {day.needUmbrella && !day.hasStormWarning && (
+                                                    <div className="bg-blue-100 text-blue-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
+                                                        {t('bringUmbrella')}
+                                                    </div>
+                                                )}
+                                                {day.needWarm && (
+                                                    <div className="bg-orange-100 text-orange-800 px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
+                                                        {t('keepWarm')}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     )}
-
-                    {/* 打赏区域 - 始终显示 */}
-                    {showDonation && (
-                        <div className="mt-8 mb-6 bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 border-2 border-dashed border-amber-400 rounded-2xl p-6 md:p-8">
-                            <div className="text-center mb-6">
-                                <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">
-                                    💛 {t('donationTitle')}
-                                </h3>
-                                <p className="text-sm md:text-base text-gray-600">
-                                    {t('donationSubtitle')} ☕
-                                </p>
-                            </div>
-
-                            {/* 中文用户显示支付宝和微信 */}
-                            {(language === 'zh-CN' || language === 'zh-TW') && (
-                                <div className="mb-6">
-                                    <p className="text-sm font-semibold text-gray-700 mb-3 text-center">
-                                        {t('donationChinaUsers')}
-                                    </p>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-md mx-auto">
-                                        <button
-                                            onClick={() => { setQrModalType('alipay'); setQrModalOpen(true); }}
-                                            className="flex items-center justify-center gap-2 bg-white border-2 border-blue-500 text-blue-600 font-semibold py-3 px-6 rounded-xl hover:bg-blue-50 transition-all shadow-sm hover:shadow-md"
-                                        >
-                                            <span className="text-2xl">💰</span>
-                                            <span>{t('alipay')}</span>
-                                        </button>
-                                        <button
-                                            onClick={() => { setQrModalType('wechat'); setQrModalOpen(true); }}
-                                            className="flex items-center justify-center gap-2 bg-white border-2 border-green-500 text-green-600 font-semibold py-3 px-6 rounded-xl hover:bg-green-50 transition-all shadow-sm hover:shadow-md"
-                                        >
-                                            <span className="text-2xl">💚</span>
-                                            <span>{t('wechat')}</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* 国际用户或中文用户都显示Coffee */}
-                            <div>
-                                <p className="text-sm font-semibold text-gray-700 mb-3 text-center">
-                                    {t('donationInternational')}
-                                </p>
-                                <div className="max-w-sm mx-auto">
-                                    <button
-                                        onClick={() => window.open('https://buymeacoffee.com/caminoforecast', '_blank')}
-                                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all shadow-md hover:shadow-lg"
-                                    >
-                                        <span className="text-2xl">☕</span>
-                                        <span>{t('buyMeCoffee')}</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* 二维码模态窗 */}
-                    <QRCodeModal 
-                        isOpen={qrModalOpen} 
-                        onClose={() => setQrModalOpen(false)} 
-                        type={qrModalType}
-                        t={t}
-                    />
 
                     <div className="mt-8 text-center text-gray-600 text-xs md:text-sm">
                         <p>{t('footerText')}</p>
