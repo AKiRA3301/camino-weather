@@ -553,7 +553,7 @@
                     // 并行处理所有城市
                     const results = await Promise.all(valid.map(async (day) => {
                         const daysDiff = getDaysDiff(day.date);
-                        const isHist = daysDiff > 16;
+                        const isHist = daysDiff >= 16;
                         const isAemetRange = daysDiff <= 7; // AEMET提供7天预报
                         
                         // 获取坐标
