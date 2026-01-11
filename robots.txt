@@ -1,41 +1,29 @@
-# Robots.txt for CaminoForecast.com
+# Robots.txt for caminoforecast.com
+# 允许所有搜索引擎爬取网站
 
 User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /private/
-Disallow: /*.json$
 
-# Sitemap location
-Sitemap: https://caminoforecast.com/sitemap.xml
-
-# Google
+# 特别允许常用搜索引擎
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0
 
-# Bing
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 0
 
-# Baidu (Chinese search engine)
 User-agent: Baiduspider
 Allow: /
-Crawl-delay: 1
 
-# Yandex (Russian search engine)
 User-agent: Yandex
 Allow: /
+
+# Sitemap 位置
+Sitemap: https://caminoforecast.com/sitemap.xml
+
+# 爬取延迟（可选，对某些搜索引擎有效）
 Crawl-delay: 1
 
-# DuckDuckGo
-User-agent: DuckDuckBot
-Allow: /
-
-# Block bad bots
-User-agent: AhrefsBot
-Crawl-delay: 2
-
-User-agent: SemrushBot
-Crawl-delay: 2
+# 主机（告诉搜索引擎首选域名）
+Host: https://caminoforecast.com
